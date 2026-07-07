@@ -1,0 +1,27 @@
+# =========================================================================
+# GIT ATTRIBUTES FILE
+# Standardizes text formats and line endings (as per 23_Coding_Standards.md)
+# =========================================================================
+
+# Enforce LF endings on checkouts for all text files (prevents Windows CR+LF clashes)
+* text=auto eol=lf
+
+# Explicit syntax markers for visual diffs
+*.ts text
+*.tsx text
+*.json text
+*.css text
+*.md text
+*.mdx text
+
+# Configure binary formats to prevent automated merges or line alterations
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.glb binary
+*.gltf binary
+*.ktx2 binary
+*.mp3 binary
+*.webm binary
