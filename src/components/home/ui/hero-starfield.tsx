@@ -28,6 +28,24 @@ function generateStars(count: number, seed: number) {
   return stars;
 }
 
+function generateMeteors(count: number, seed: number) {
+  const meteors: { top: number; left: number; delay: number; duration: number }[] = [];
+  for (let i = 0; i < count; i++) {
+    const hash = Math.sin(seed + i * 812.1) * 43758.5453;
+    const r = hash - Math.floor(hash);
+    
+    const duration = 6 + r * 4; // Between 6s and 10s
+    
+    meteors.push({
+      top: -10 + r * 50, // Spawn in top half mostly (-10 to 40)
+      left: 40 + r * 60, // Spawn towards the right (40 to 100)
+      delay: -(i * (12 / count)), // Evenly stagger across 12 seconds so they continuously spawn
+      duration: duration
+    });
+  }
+  return meteors;
+}
+
 interface HeroStarfieldProps {
   /** 0 = invisible, 1 = fully visible. Drives star density and brightness. */
   intensity?: number;
@@ -104,6 +122,25 @@ export function HeroStarfield({ intensity = 1, parallaxY = 0 }: HeroStarfieldPro
               animationDelay: `${star.delay * 0.5}s`,
               background: `radial-gradient(circle, rgba(255,255,255,0.9) 0%, rgba(200,180,140,0.3) 60%, transparent 100%)`,
               boxShadow: `0 0 ${star.size * 3}px rgba(255,255,255,${star.opacity * 0.3})`,
+            }}
+          />
+        ))}
+      </div>
+
+      {/* Layer 4: Falling Meteors */}
+      <div
+        className="absolute inset-0"
+        style={{ transform: `translateY(${parallaxY * 0.2}px)` }}
+      >
+        {React.useMemo(() => generateMeteors(12, 1337), []).map((meteor, i) => (
+          <div
+            key={`meteor-${i}`}
+            className="meteor"
+            style={{
+              top: `${meteor.top}%`,
+              left: `${meteor.left}%`,
+              animation: `meteor ${meteor.duration}s linear infinite`,
+              animationDelay: `${meteor.delay}s`,
             }}
           />
         ))}

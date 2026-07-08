@@ -2871,6 +2871,7 @@ body {
     color: rgba(138, 141, 152, 0.82);
     display: -webkit-box;
     -webkit-line-clamp: 2;
+    line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
@@ -3484,4 +3485,48 @@ body {
 
 .resume-page__footer a:hover {
   color: #f0e9dc;
+}
+
+@keyframes meteor {
+  0% {
+    transform: rotate(-45deg) translateX(0);
+    opacity: 0;
+  }
+  5% {
+    opacity: 1;
+  }
+  30% {
+    opacity: 1;
+  }
+  40% {
+    transform: rotate(-45deg) translateX(-300vw);
+    opacity: 0;
+  }
+  100% {
+    transform: rotate(-45deg) translateX(-300vw);
+    opacity: 0;
+  }
+}
+
+.meteor {
+  position: absolute;
+  width: 200px;
+  height: 2px;
+  background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%);
+  border-radius: 999px;
+  filter: drop-shadow(0 0 10px rgba(255,255,255,1));
+  z-index: 10;
+}
+
+.meteor::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 10px 2px #fff;
 }

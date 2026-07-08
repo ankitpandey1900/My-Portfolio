@@ -14,6 +14,7 @@ import { HomePlanetController } from '../home-planet-controller';
 import { HOME_PLANET_CONFIG } from '../home-planet-config';
 import { useHomePlanetStore } from '../home-planet-state';
 import { Utensils, Mail } from 'lucide-react';
+import { HeroStarfield } from './hero-starfield';
 
 const IconX = ({ className }: { className?: string }) => (
   <svg className={className} viewBox="0 0 24 24" fill="currentColor">
@@ -381,6 +382,7 @@ export function HomeHero() {
             className="w-full h-full object-cover opacity-60"
             aria-hidden
           />
+          <HeroStarfield intensity={1} parallaxY={0} />
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#030305]/60 to-[#030305]/95" />
         </motion.div>
 
