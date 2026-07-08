@@ -11,14 +11,11 @@ const QUALITY_TIERS: QualityTier[] = ['ultra', 'high', 'medium', 'low'];
  * Maps quality tiers to renderer settings.
  * These are applied to the Zustand store when the tier changes.
  */
-const TIER_CONFIGS: Record<
-  QualityTier,
-  { dpr: number; postProcessing: boolean; starDensity: number }
-> = {
-  ultra: { dpr: 2, postProcessing: true, starDensity: 10000 },
-  high: { dpr: 2, postProcessing: true, starDensity: 8000 },
-  medium: { dpr: 1.5, postProcessing: false, starDensity: 5000 },
-  low: { dpr: 1, postProcessing: false, starDensity: 3000 },
+const TIER_CONFIGS: Record<QualityTier, { dpr: number; postProcessing: boolean }> = {
+  ultra: { dpr: 2, postProcessing: true },
+  high: { dpr: 1.5, postProcessing: true },
+  medium: { dpr: 1.25, postProcessing: false },
+  low: { dpr: 1, postProcessing: false },
 };
 
 /**
@@ -31,7 +28,8 @@ const TIER_CONFIGS: Record<
 export function useAdaptiveQuality() {
   const setQualityTier = useStore((state) => state.setQualityTier);
   const setPostProcessing = useStore((state) => state.setPostProcessing);
-  const setEnvironment = useStore((state) => state.setEnvironment);
+  const setQuality = useStore((state) => state.setQuality);
+  const setDpr = useStore((state) => state.setDpr);
 
   const currentTierIndex = React.useRef(1); // Start at 'high' (index 1)
   const recoveryTimeout = React.useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -44,7 +42,8 @@ export function useAdaptiveQuality() {
       const config = TIER_CONFIGS[tier];
       setQualityTier(tier);
       setPostProcessing(config.postProcessing);
-      setEnvironment(0.1, config.starDensity, 0.5);
+      setDpr(config.dpr);
+      setQuality(tier === 'low' || tier === 'medium' ? 'low' : 'high');
     };
 
     const handleDegraded = () => {
@@ -77,6 +76,6 @@ export function useAdaptiveQuality() {
       unsubRecovered();
       if (recoveryTimeout.current) clearTimeout(recoveryTimeout.current);
     };
-  }, [setQualityTier, setPostProcessing, setEnvironment]);
+  }, [setQualityTier, setPostProcessing, setQuality, setDpr]);
 }
 export default useAdaptiveQuality;

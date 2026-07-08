@@ -2,26 +2,24 @@
 
 import * as React from 'react';
 import { SceneWrapper } from '../scene-wrapper';
+import { BlackHole } from '../solar-system/environment/black-hole';
+import { HeroEngineScene } from './hero-engine-scene';
 import { useGalaxySceneLifecycle } from './galaxy-scene-lifecycle';
 import { GalaxySceneProvider } from './galaxy-scene-provider';
 
 function GalaxySceneContent() {
-  // Bind dynamic scene lifecycle stages
   useGalaxySceneLifecycle();
 
   return (
     <group name="galaxy-scene-contents">
-      {/* 3D Galaxy background particles placeholder */}
-      <group name="galaxy-particles-placeholder" />
+      <group scale={0.55} position={[-48, 6, -42]}>
+        <BlackHole />
+      </group>
+      <HeroEngineScene />
     </group>
   );
 }
 
-/**
- * GalaxyScene coordinates the overall scene integration:
- * Provider context wraps the SceneWrapper to inject configs,
- * and SceneContent handles active mount/unmount triggers.
- */
 export function GalaxyScene() {
   return (
     <GalaxySceneProvider>

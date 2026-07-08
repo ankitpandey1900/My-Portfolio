@@ -2,15 +2,15 @@
 
 import * as React from 'react';
 import * as THREE from 'three';
-import { SceneLifecycleOptions, useSceneLifecycle } from '../lifecycle/use-scene-lifecycle';
 
-interface SceneWrapperProps extends SceneLifecycleOptions {
+interface SceneWrapperProps {
+  name: string;
   children: React.ReactNode;
+  onDestroy?: () => void;
 }
 
 /**
  * Texture map keys that may be attached to a MeshStandardMaterial.
- * Each of these can hold a GPU-resident texture that must be disposed.
  */
 const TEXTURE_KEYS = [
   'map',
@@ -26,7 +26,6 @@ const TEXTURE_KEYS = [
   'bumpMap',
 ] as const;
 
-/** Dispose all GPU-resident textures attached to a material. */
 function disposeTextures(material: THREE.Material) {
   for (const key of TEXTURE_KEYS) {
     const texture = (material as unknown as Record<string, unknown>)[key];
@@ -36,16 +35,11 @@ function disposeTextures(material: THREE.Material) {
   }
 }
 
-/** Dispose a single material and its textures. */
 function disposeMaterial(material: THREE.Material) {
   disposeTextures(material);
   material.dispose();
 }
 
-/**
- * Recursively dispose all GPU resources (geometries, materials, textures)
- * within a scene group. Call on unmount to prevent VRAM leaks.
- */
 function disposeSceneGroup(group: THREE.Group) {
   group.traverse((node) => {
     if (node instanceof THREE.Mesh) {
@@ -64,26 +58,32 @@ function disposeSceneGroup(group: THREE.Group) {
   });
 }
 
-export function SceneWrapper({ children, ...lifecycleProps }: SceneWrapperProps) {
+/**
+ * SceneWrapper provides GPU disposal on unmount.
+ * Lifecycle hooks (initialize/mount/suspend) live in scene managers only.
+ */
+export function SceneWrapper({ name, children, onDestroy }: SceneWrapperProps) {
   const groupRef = React.useRef<THREE.Group>(null);
+  const onDestroyRef = React.useRef(onDestroy);
 
-  useSceneLifecycle({
-    ...lifecycleProps,
-    onDestroy: () => {
-      // Invoke consumer's custom cleanup first
-      lifecycleProps.onDestroy?.();
+  React.useEffect(() => {
+    onDestroyRef.current = onDestroy;
+  });
 
-      // Perform deep traversal GPU memory release
+  React.useEffect(() => {
+    return () => {
+      onDestroyRef.current?.();
       if (groupRef.current) {
         disposeSceneGroup(groupRef.current);
       }
-    },
-  });
+    };
+  }, []);
 
   return (
-    <group ref={groupRef} name={`scene-${lifecycleProps.name}`}>
+    <group ref={groupRef} name={`scene-${name}`}>
       {children}
     </group>
   );
 }
+
 export default SceneWrapper;

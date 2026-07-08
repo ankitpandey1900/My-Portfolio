@@ -1,46 +1,34 @@
 import type { CameraPresetType } from '@/lib/store';
 
-/**
- * Configuration schema for a camera viewport preset.
- */
 export interface CameraPreset {
-  /** Target coordinates in local 3D world space. */
   position: [number, number, number];
-  /** Focal coordinates where the camera is directed. */
   lookAt: [number, number, number];
-  /** Field of View (FOV) in degrees. */
   fov: number;
 }
 
-/**
- * Interactive viewport presets for the deep-space simulation.
- */
 export const CAMERA_PRESETS: Record<CameraPresetType, CameraPreset> = {
   galaxy: {
-    position: [0, 60, 120],
-    lookAt: [0, 0, 0],
-    fov: 45,
+    position: [0, 16, 68],
+    lookAt: [24, -3, -12],
+    fov: 34,
   },
   system: {
-    position: [0, 25, 55],
+    position: [-20, 32, 98],
     lookAt: [0, 0, 0],
-    fov: 45,
+    fov: 40,
   },
   planet: {
-    position: [0, 6, 15],
+    position: [0, 4, 14],
     lookAt: [0, 0, 0],
-    fov: 35,
+    fov: 30,
   },
   cockpit: {
     position: [0, 1.2, 3.5],
     lookAt: [0, 0, 0],
-    fov: 65,
+    fov: 50,
   },
 };
 
-/**
- * Hard clip limits for future interactive controls.
- */
 export const CAMERA_CONSTRAINTS = {
   minDistance: 4,
   maxDistance: 400,

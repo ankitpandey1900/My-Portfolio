@@ -39,10 +39,8 @@ export function validateEnv() {
   }
 }
 
-// Automatically validate when imported in server executions (non-browser target)
-if (typeof window === 'undefined' && process.env.NODE_ENV !== 'test') {
-  validateEnv();
-}
+// Validate explicitly in server routes/actions — not on module import.
+// Call validateEnv() at the top of API handlers when backend is configured.
 
 export const env = {
   url: process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000',

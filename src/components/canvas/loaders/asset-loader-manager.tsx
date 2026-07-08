@@ -8,25 +8,34 @@ interface LoaderProps {
   children: React.ReactNode;
 }
 
-export function AssetLoaderManager({ children }: LoaderProps) {
-  // Bind Drei useProgress hook metrics
+function LoaderProgressSync() {
   const { active, progress, loaded, total } = useProgress();
-
   const startLoading = useStore((state) => state.startLoading);
   const updateProgress = useStore((state) => state.updateProgress);
   const finishLoading = useStore((state) => state.finishLoading);
 
   React.useEffect(() => {
-    if (active) {
-      // Sync loader metrics to Zustand sub-store
-      startLoading(total);
-      updateProgress(loaded, progress);
-    } else {
-      finishLoading();
-    }
+    const sync = () => {
+      if (active) {
+        startLoading(total);
+        updateProgress(loaded, progress);
+      } else {
+        finishLoading();
+      }
+    };
+
+    queueMicrotask(sync);
   }, [active, progress, loaded, total, startLoading, updateProgress, finishLoading]);
 
-  // Use Suspense to wrap async asset loading components (GLTF/models, textures, etc.)
-  return <React.Suspense fallback={null}>{children}</React.Suspense>;
+  return null;
+}
+
+export function AssetLoaderManager({ children }: LoaderProps) {
+  return (
+    <>
+      <LoaderProgressSync />
+      <React.Suspense fallback={null}>{children}</React.Suspense>
+    </>
+  );
 }
 export default AssetLoaderManager;

@@ -16,6 +16,7 @@ interface RendererState {
   dpr: number;
   postProcessingEnabled: boolean;
   setQuality: (quality: GraphicsQuality) => void;
+  setDpr: (dpr: number) => void;
   setPostProcessing: (enabled: boolean) => void;
 }
 
@@ -42,23 +43,6 @@ interface LoadingState {
   startLoading: (total: number) => void;
   updateProgress: (loaded: number, progress: number) => void;
   finishLoading: () => void;
-}
-
-interface EnvironmentState {
-  ambientIntensity: number;
-  starDensity: number;
-  nebulaIntensity: number;
-  exposure: number;
-  environmentIntensity: number;
-  envPreset: SpaceEnvPreset;
-  toneMapping: ToneMappingType;
-  showHDRIBackground: boolean;
-  setEnvironment: (ambient: number, density: number, nebula: number) => void;
-  setExposure: (exposure: number) => void;
-  setEnvironmentIntensity: (intensity: number) => void;
-  setEnvPreset: (preset: SpaceEnvPreset) => void;
-  setToneMapping: (toneMapping: ToneMappingType) => void;
-  setHDRIBackground: (show: boolean) => void;
 }
 
 interface PlanetState {
@@ -105,7 +89,6 @@ interface AppState
     RendererState,
     CameraState,
     LoadingState,
-    EnvironmentState,
     PlanetState,
     AudioState,
     ViewportState,
@@ -115,9 +98,10 @@ interface AppState
 export const useStore = create<AppState>((set) => ({
   // 1. Renderer Subsystem State
   quality: 'high',
-  dpr: 2,
+  dpr: 1.5,
   postProcessingEnabled: true,
-  setQuality: (quality) => set({ quality, dpr: quality === 'high' ? 2 : 1 }),
+  setQuality: (quality) => set({ quality, dpr: quality === 'high' ? 1.5 : 1 }),
+  setDpr: (dpr) => set({ dpr }),
   setPostProcessing: (postProcessingEnabled) => set({ postProcessingEnabled }),
 
   // 2. Camera Viewport State
@@ -126,7 +110,7 @@ export const useStore = create<AppState>((set) => ({
   isWarping: false,
   cameraMode: 'cinematic',
   cameraPreset: 'galaxy',
-  cameraFov: 45,
+  cameraFov: 34,
   setCameraTarget: (targetPosition, targetLookAt) => set({ targetPosition, targetLookAt }),
   setWarping: (isWarping) => set({ isWarping }),
   setCameraMode: (cameraMode) => set({ cameraMode }),
@@ -136,7 +120,7 @@ export const useStore = create<AppState>((set) => ({
     set({
       targetPosition: [0, 15, 30],
       targetLookAt: [0, 0, 0],
-      cameraFov: 45,
+      cameraFov: 34,
       cameraPreset: 'galaxy',
       cameraMode: 'cinematic',
       isWarping: false,
@@ -150,23 +134,6 @@ export const useStore = create<AppState>((set) => ({
   startLoading: (total) => set({ isLoading: true, progress: 0, loadedCount: 0, totalCount: total }),
   updateProgress: (loaded, progress) => set({ loadedCount: loaded, progress }),
   finishLoading: () => set({ isLoading: false, progress: 100 }),
-
-  // 4. Cosmic Environment State
-  ambientIntensity: 0.1,
-  starDensity: 10000,
-  nebulaIntensity: 0.5,
-  exposure: 1.0,
-  environmentIntensity: 1.0,
-  envPreset: 'deep-space',
-  toneMapping: 'ACESFilmic',
-  showHDRIBackground: false,
-  setEnvironment: (ambientIntensity, starDensity, nebulaIntensity) =>
-    set({ ambientIntensity, starDensity, nebulaIntensity }),
-  setExposure: (exposure) => set({ exposure }),
-  setEnvironmentIntensity: (environmentIntensity) => set({ environmentIntensity }),
-  setEnvPreset: (envPreset) => set({ envPreset }),
-  setToneMapping: (toneMapping) => set({ toneMapping }),
-  setHDRIBackground: (showHDRIBackground) => set({ showHDRIBackground }),
 
   // 5. Future Celestial Positions & Actions State
   activePlanet: null,

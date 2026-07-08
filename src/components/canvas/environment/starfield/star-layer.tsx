@@ -1,14 +1,18 @@
 'use client';
 
 import * as React from 'react';
-import { useThree } from '@react-three/fiber';
+import { useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
+import { useStore } from '@/lib/store';
 import { generateStarLayer } from './star-generator';
 import { createStarMaterial } from './star-material';
-import type { StarLayerConfig } from './starfield-config';
+import type { StarLayerConfig } from './starfield-types';
 
 interface StarLayerProps {
   config: StarLayerConfig;
+  globalOpacity: number;
+  globalSize: number;
+  globalTwinkleSpeed: number;
 }
 
 /**
@@ -21,7 +25,13 @@ interface StarLayerProps {
  * any Zustand state. The parent Starfield component handles quality
  * tier selection and passes the appropriate config.
  */
-export function StarLayer({ config }: StarLayerProps) {
+export function StarLayer({
+  config,
+  globalOpacity,
+  globalSize,
+  globalTwinkleSpeed,
+}: StarLayerProps) {
+  const isRenderActive = useStore((state) => state.isRenderActive);
   const { gl } = useThree();
   const pointsRef = React.useRef<THREE.Points>(null);
 
@@ -36,6 +46,7 @@ export function StarLayer({ config }: StarLayerProps) {
     geo.setAttribute('aSize', new THREE.Float32BufferAttribute(data.sizes, 1));
     geo.setAttribute('aBrightness', new THREE.Float32BufferAttribute(data.brightnesses, 1));
     geo.setAttribute('aColor', new THREE.Float32BufferAttribute(data.colors, 3));
+    geo.setAttribute('aPhaseOffset', new THREE.Float32BufferAttribute(data.phaseOffsets, 1));
 
     // Compute bounding sphere for frustum culling
     geo.computeBoundingSphere();
@@ -43,7 +54,27 @@ export function StarLayer({ config }: StarLayerProps) {
     const mat = createStarMaterial(dpr);
 
     return { geometry: geo, material: mat };
-  }, [config, gl]);
+  }, [config.count, config.seed, config.radiusInner, config.radiusOuter, gl]);
+
+  // Imperative uniform syncing to bypass WebGL recompilations
+  React.useEffect(() => {
+    /* eslint-disable react-hooks/immutability */
+    if (material.uniforms.uOpacity) material.uniforms.uOpacity.value = globalOpacity;
+    if (material.uniforms.uSizeMultiplier) material.uniforms.uSizeMultiplier.value = globalSize;
+    if (material.uniforms.uTwinkleSpeed) material.uniforms.uTwinkleSpeed.value = globalTwinkleSpeed;
+    /* eslint-enable react-hooks/immutability */
+  }, [material, globalOpacity, globalSize, globalTwinkleSpeed]);
+
+  // Animate twinkling via useFrame if not suspended
+  useFrame((state) => {
+    if (!isRenderActive) return;
+
+    const elapsed = state.clock.getElapsedTime();
+    if (material.uniforms.uTime) {
+      // eslint-disable-next-line react-hooks/immutability
+      material.uniforms.uTime.value = elapsed;
+    }
+  });
 
   // Dispose GPU resources on unmount
   React.useEffect(() => {

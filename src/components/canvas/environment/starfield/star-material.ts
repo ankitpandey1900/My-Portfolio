@@ -12,23 +12,32 @@ const vertexShader = /* glsl */ `
   attribute float aSize;
   attribute float aBrightness;
   attribute vec3 aColor;
+  attribute float aPhaseOffset;
 
   uniform float uDprScale;
   uniform float uTime;
+  uniform float uSizeMultiplier;
+  uniform float uTwinkleSpeed;
+  uniform float uDistanceScale;
 
   varying float vBrightness;
   varying vec3 vColor;
 
   void main() {
-    vBrightness = aBrightness;
+    // Twinkling effect: Sine wave modulated by time, speed, and offset
+    float twinkle = sin(uTime * uTwinkleSpeed + aPhaseOffset) * 0.5 + 0.5;
+    // Map twinkle to [0.3, 1.0] to prevent stars from completely disappearing
+    float twinkleMod = mix(0.3, 1.0, twinkle);
+
+    vBrightness = aBrightness * twinkleMod;
     vColor = aColor;
 
     vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
 
     // Distance attenuation: stars shrink with distance from camera
-    float distanceFactor = 300.0 / (-mvPosition.z);
+    float distanceFactor = uDistanceScale / (-mvPosition.z);
 
-    gl_PointSize = aSize * distanceFactor * uDprScale;
+    gl_PointSize = aSize * distanceFactor * uDprScale * uSizeMultiplier;
 
     // Clamp minimum size so distant stars remain visible as single pixels
     gl_PointSize = max(gl_PointSize, 0.5);
@@ -87,6 +96,9 @@ export function createStarMaterial(dprScale: number = 1): THREE.ShaderMaterial {
       uTime: { value: 0 },
       uOpacity: { value: 1.0 },
       uDprScale: { value: dprScale },
+      uSizeMultiplier: { value: 1.0 },
+      uTwinkleSpeed: { value: 1.0 },
+      uDistanceScale: { value: 300.0 },
     },
     transparent: true,
     blending: THREE.AdditiveBlending,

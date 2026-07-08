@@ -1,0 +1,31 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+
+jobs:
+  docker:
+    name: Build Docker image
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build production image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: false
+          tags: solar-portfolio:latest
+          build-args: |
+            NEXT_PUBLIC_APP_URL=http://localhost:3000
+            NEXT_PUBLIC_SUPABASE_URL=https://dummy-project.supabase.co
+            NEXT_PUBLIC_SUPABASE_ANON_KEY=dummy-anon-key-placeholder
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

@@ -6,8 +6,8 @@ export interface GalaxySceneConfig {
   exposure: number;
   environmentIntensity: number;
   ambientIntensity: number;
-  starDensity: number;
-  nebulaIntensity: number;
+  starfieldPreset: string;
+  nebulaPreset: string;
   toneMapping: ToneMappingType;
 }
 
@@ -17,7 +17,7 @@ export const GALAXY_SCENE_CONFIG: GalaxySceneConfig = {
   exposure: 1.0,
   environmentIntensity: 0.8,
   ambientIntensity: 0.1,
-  starDensity: 12000,
-  nebulaIntensity: 0.6,
+  starfieldPreset: 'ultra-dense',
+  nebulaPreset: 'deep-space',
   toneMapping: 'ACESFilmic',
 };

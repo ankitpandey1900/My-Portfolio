@@ -92,7 +92,8 @@ const vertexShader = /* glsl */ `
 `;
 
 const fragmentShader = /* glsl */ `
-  uniform vec3 uColor;
+  uniform vec3 uColor1;
+  uniform vec3 uColor2;
   uniform float uOpacity;
   uniform float uScale;
   uniform float uTime;
@@ -129,8 +130,9 @@ const fragmentShader = /* glsl */ `
     // Rescale noise to [0, 1] range for thresholding
     float gasDensity = smoothstep(-0.25, 0.45, n);
 
-    // Apply color and falloff
-    vec3 finalColor = uColor * gasDensity;
+    // Apply color gradient based on density
+    vec3 blendedColor = mix(uColor2, uColor1, smoothstep(0.0, 0.8, gasDensity));
+    vec3 finalColor = blendedColor * gasDensity;
 
     // Output transparent alpha values corresponding directly to density maps
     gl_FragColor = vec4(finalColor, gasDensity * uOpacity);
@@ -145,7 +147,8 @@ export function createNebulaMaterial(): THREE.ShaderMaterial {
     vertexShader,
     fragmentShader,
     uniforms: {
-      uColor: { value: new THREE.Color('#580bb5') },
+      uColor1: { value: new THREE.Color('#580bb5') },
+      uColor2: { value: new THREE.Color('#2b0559') },
       uOpacity: { value: 1.0 },
       uScale: { value: 0.003 },
       uTime: { value: 0 },

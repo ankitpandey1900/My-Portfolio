@@ -1,9 +1,10 @@
 'use client';
 
 import * as React from 'react';
-import { EnvironmentManager } from './environment-manager';
-import { NebulaSystem } from './nebula';
-import { Starfield } from './starfield';
+import { EnvironmentProvider } from './environment-provider';
+import { NebulaProvider } from './nebula';
+import { ParticleProvider } from './particles';
+import { StarfieldProvider } from './starfield';
 
 /**
  * SpaceEnvironment composes all deep-space environmental elements.
@@ -20,9 +21,10 @@ import { Starfield } from './starfield';
 export function SpaceEnvironment() {
   return (
     <group name="space-environment">
-      <Starfield />
-      <NebulaSystem />
-      <EnvironmentManager />
+      <StarfieldProvider />
+      <ParticleProvider />
+      <NebulaProvider />
+      <EnvironmentProvider />
     </group>
   );
 }

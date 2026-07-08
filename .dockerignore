@@ -1,0 +1,10 @@
+node_modules
+.next
+.git
+.husky
+tests/e2e/test-results
+playwright-report
+coverage
+*.md
+.env*
+!.env.example

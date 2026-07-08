@@ -1,5 +1,11 @@
 'use client';
 
+import { EnvironmentController } from '@/components/canvas/environment/environment-controller';
+import type { EnvironmentPresetId } from '@/components/canvas/environment/environment-types';
+import { NebulaController } from '@/components/canvas/environment/nebula/nebula-controller';
+import type { NebulaPresetId } from '@/components/canvas/environment/nebula/nebula-types';
+import { StarfieldController } from '@/components/canvas/environment/starfield/starfield-controller';
+import type { StarfieldPresetId } from '@/components/canvas/environment/starfield/starfield-types';
 import { useStore } from '@/lib/store';
 import { useSceneLifecycle } from '../../lifecycle/use-scene-lifecycle';
 import { GALAXY_SCENE_CONFIG } from './galaxy-scene-config';
@@ -10,11 +16,6 @@ import { GALAXY_SCENE_CONFIG } from './galaxy-scene-config';
  * and setting up initial camera preset focal points.
  */
 export function useGalaxySceneLifecycle() {
-  const setEnvironment = useStore((state) => state.setEnvironment);
-  const setExposure = useStore((state) => state.setExposure);
-  const setEnvironmentIntensity = useStore((state) => state.setEnvironmentIntensity);
-  const setEnvPreset = useStore((state) => state.setEnvPreset);
-  const setToneMapping = useStore((state) => state.setToneMapping);
   const setCameraPreset = useStore((state) => state.setCameraPreset);
   const setCameraMode = useStore((state) => state.setCameraMode);
 
@@ -23,11 +24,9 @@ export function useGalaxySceneLifecycle() {
     onInitialize: () => {
       // Configure environmental scales matching Galaxy configurations
       const config = GALAXY_SCENE_CONFIG;
-      setEnvironment(config.ambientIntensity, config.starDensity, config.nebulaIntensity);
-      setExposure(config.exposure);
-      setEnvironmentIntensity(config.environmentIntensity);
-      setEnvPreset(config.envPreset);
-      setToneMapping(config.toneMapping);
+      StarfieldController.setPreset(config.starfieldPreset as StarfieldPresetId);
+      EnvironmentController.setPreset(config.envPreset as EnvironmentPresetId);
+      NebulaController.setPreset(config.nebulaPreset as NebulaPresetId);
     },
     onMount: () => {
       // Focus camera on galaxy overview preset on mount

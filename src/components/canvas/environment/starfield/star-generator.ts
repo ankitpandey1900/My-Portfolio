@@ -1,4 +1,4 @@
-import type { StarLayerConfig } from './starfield-config';
+import type { StarLayerConfig } from './starfield-types';
 
 /**
  * Mulberry32 — A fast, seedable 32-bit PRNG.
@@ -43,6 +43,8 @@ export interface StarLayerData {
   brightnesses: Float32Array;
   /** Interleaved RGB color values (count * 3 floats). */
   colors: Float32Array;
+  /** Phase offsets for twinkling animations (count floats). */
+  phaseOffsets: Float32Array;
 }
 
 /**
@@ -117,6 +119,7 @@ export function generateStarLayer(config: StarLayerConfig): StarLayerData {
   const sizes = new Float32Array(count);
   const brightnesses = new Float32Array(count);
   const colors = new Float32Array(count * 3);
+  const phaseOffsets = new Float32Array(count);
 
   let generated = 0;
 
@@ -145,6 +148,7 @@ export function generateStarLayer(config: StarLayerConfig): StarLayerData {
     // Star visual properties
     sizes[generated] = rng.range(sizeRange[0], sizeRange[1]);
     brightnesses[generated] = rng.range(brightnessRange[0], brightnessRange[1]);
+    phaseOffsets[generated] = rng.range(0, Math.PI * 2);
 
     // Color from blackbody temperature
     const kelvin = rng.range(colorTemperatureRange[0], colorTemperatureRange[1]);
@@ -156,5 +160,5 @@ export function generateStarLayer(config: StarLayerConfig): StarLayerData {
     generated++;
   }
 
-  return { positions, sizes, brightnesses, colors };
+  return { positions, sizes, brightnesses, colors, phaseOffsets };
 }

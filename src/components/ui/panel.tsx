@@ -12,7 +12,7 @@ const Panel = React.forwardRef<HTMLDivElement, PanelProps>(
       <div
         ref={ref}
         className={cn(
-          'fixed top-0 bottom-0 z-40 w-full max-w-md bg-space-black/90 border-hud-teal/20 backdrop-blur-lg shadow-dialog transition-transform duration-500 p-6 flex flex-col',
+          'fixed top-0 bottom-0 z-40 w-full max-w-md bg-space-black/95 border-border/20 transition-transform duration-500 p-6 flex flex-col',
           {
             // Alignment controls (Slide-in transitions)
             'right-0 border-l': align === 'right',

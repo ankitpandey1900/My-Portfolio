@@ -11,18 +11,43 @@ interface CanvasProviderProps {
 }
 
 export function CanvasProvider({ children }: CanvasProviderProps) {
-  // Bind dynamic DPR value to Zustand renderer settings
   const dpr = useStore((state) => state.dpr);
+  const isRenderActive = useStore((state) => state.isRenderActive);
+  const setRenderActive = useStore((state) => state.setRenderActive);
+  const [canvasKey, setCanvasKey] = React.useState(0);
+
+  const handleContextLost = React.useCallback(
+    (event: Event) => {
+      event.preventDefault();
+      setRenderActive(false);
+      console.warn('[WebGL] Context lost — remounting canvas on restore.');
+    },
+    [setRenderActive]
+  );
+
+  const handleContextRestored = React.useCallback(() => {
+    setCanvasKey((key) => key + 1);
+    setRenderActive(true);
+  }, [setRenderActive]);
 
   return (
     <WebGLErrorBoundary>
-      <div className="relative w-full h-full min-h-screen select-none outline-none">
-        {/* Render R3F Canvas Layer (Stretches absolute on bottom z-0) */}
+      <div
+        className="relative w-full h-full min-h-screen select-none outline-none"
+        tabIndex={-1}
+        onPointerDown={(event) => {
+          if (event.currentTarget === event.target || event.target instanceof HTMLCanvasElement) {
+            event.currentTarget.focus({ preventScroll: true });
+          }
+        }}
+      >
         <Canvas
+          key={canvasKey}
           shadows
           dpr={dpr}
+          frameloop={isRenderActive ? 'always' : 'never'}
           camera={{
-            fov: 45,
+            fov: 34,
             near: 0.1,
             far: 1000,
             position: [0, 15, 30],
@@ -35,9 +60,12 @@ export function CanvasProvider({ children }: CanvasProviderProps) {
             outputColorSpace: THREE.SRGBColorSpace,
           }}
           onCreated={({ gl }) => {
-            // Assert shadows configuration details
             gl.shadowMap.enabled = true;
-            gl.shadowMap.type = THREE.PCFSoftShadowMap;
+            gl.shadowMap.type = THREE.PCFShadowMap;
+
+            const canvas = gl.domElement;
+            canvas.addEventListener('webglcontextlost', handleContextLost);
+            canvas.addEventListener('webglcontextrestored', handleContextRestored);
           }}
           className="absolute inset-0 z-0 bg-space-black"
         >

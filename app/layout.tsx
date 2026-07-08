@@ -1,51 +1,62 @@
 import type { Metadata } from 'next';
-import { Geist, Inter, JetBrains_Mono, Outfit } from 'next/font/google';
+import { Inter, JetBrains_Mono, Plus_Jakarta_Sans, Syne } from 'next/font/google';
 import './globals.css';
+import { AnalyticsProvider } from '@/components/analytics/analytics-provider';
+import { ServiceWorkerRegister } from '@/components/pwa/service-worker-register';
+import { CustomCursor } from '@/components/ui/custom-cursor';
 import { cn } from '@/lib/utils';
 
-const geist = Geist({ subsets: ['latin'], variable: '--font-sans' });
-
-// Configure Outfit font for Titles and Headings (as per 09_Design_System.md)
-const outfit = Outfit({
+const jakarta = Plus_Jakarta_Sans({
   subsets: ['latin'],
-  variable: '--font-outfit',
+  variable: '--font-jakarta',
+  weight: ['300', '400', '500', '600', '700'],
   display: 'swap',
 });
 
-// Configure Inter font for Core UI elements (as per 09_Design_System.md)
 const inter = Inter({
   subsets: ['latin'],
   variable: '--font-inter',
+  weight: ['300', '400', '500', '600'],
   display: 'swap',
 });
 
-// Configure JetBrains Mono for Telemetry and Data displays (as per 09_Design_System.md)
+const syne = Syne({
+  subsets: ['latin'],
+  variable: '--font-syne',
+  weight: ['400', '500', '600', '700', '800'],
+  display: 'swap',
+});
+
 const jetbrainsMono = JetBrains_Mono({
   subsets: ['latin'],
   variable: '--font-jetbrains-mono',
   display: 'swap',
 });
 
-// Enforce modern Edge API and SEO layout configurations
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'),
   title: {
-    default: 'Solar Portfolio',
-    template: '%s | Solar Portfolio',
+    default: 'Ankit Pandey | Solar Portfolio',
+    template: '%s | Ankit Pandey',
   },
-  description: 'Immersive 3D Space Exploration Game and Professional Developer Portfolio.',
+  description:
+    'A cinematic solar-system portfolio for software engineering, product craft, and immersive web experiences.',
   openGraph: {
-    title: 'Solar Portfolio',
-    description: 'Immersive 3D Space Exploration Game and Professional Developer Portfolio.',
+    title: 'Ankit Pandey | Solar Portfolio',
+    description:
+      'A cinematic solar-system portfolio for software engineering, product craft, and immersive web experiences.',
     url: '/',
-    siteName: 'Solar Portfolio',
+    siteName: 'Ankit Pandey Portfolio',
     locale: 'en_US',
     type: 'website',
+    images: [{ url: '/opengraph-image', width: 1200, height: 630, alt: 'Ankit Pandey Solar Portfolio' }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Solar Portfolio',
-    description: 'Immersive 3D Space Exploration Game and Professional Developer Portfolio.',
+    title: 'Ankit Pandey | Solar Portfolio',
+    description:
+      'A cinematic solar-system portfolio for software engineering, product craft, and immersive web experiences.',
+    images: ['/twitter-image'],
   },
   robots: {
     index: true,
@@ -62,17 +73,19 @@ export default function RootLayout({
     <html
       lang="en"
       className={cn(
-        'h-full',
-        'antialiased',
-        outfit.variable,
+        'h-full antialiased font-sans',
+        jakarta.variable,
         inter.variable,
-        jetbrainsMono.variable,
-        'font-sans',
-        geist.variable
+        syne.variable,
+        jetbrainsMono.variable
       )}
     >
-      <body className="min-h-full flex flex-col bg-space-black text-slate-200 selection:bg-hud-teal/30 selection:text-white">
-        {children}
+      <body className="min-h-full flex flex-col bg-space-black text-foreground selection:bg-gold-soft/25 selection:text-white">
+        <AnalyticsProvider>
+          <ServiceWorkerRegister />
+          <CustomCursor />
+          {children}
+        </AnalyticsProvider>
       </body>
     </html>
   );

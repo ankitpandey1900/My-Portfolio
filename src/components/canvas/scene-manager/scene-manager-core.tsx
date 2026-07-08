@@ -7,7 +7,7 @@ import { ErrorScene } from './scenes/error-scene';
 import { GalaxyScene } from './scenes/galaxy/galaxy-scene';
 import { LoadingScene } from './scenes/loading-scene';
 import { PlanetScene } from './scenes/planet-scene';
-import { SolarSystemScene } from './scenes/solar-system-scene';
+import { SolarSystemScene } from './scenes/solar-system/solar-system-scene';
 
 export function SceneManagerCore() {
   // Sync manager render switches to the Zustand currentScene store
