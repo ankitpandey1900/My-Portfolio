@@ -2,8 +2,8 @@ import type { MetadataRoute } from 'next';
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: 'Solar Portfolio',
-    short_name: 'Solar Portfolio',
+    name: 'Ankit Pandey',
+    short_name: 'Ankit Pandey',
     description: 'Immersive 3D Space Exploration Game and Professional Developer Portfolio.',
     start_url: '/',
     display: 'standalone',
