@@ -1,95 +1,85 @@
 'use client';
 
-import Link from 'next/link';
 import {
   CONTACT_INFO,
   EXPERIENCE,
-  PROJECTS,
   RESUME_PROFILE,
   SKILL_GROUPS,
 } from '../content/portfolio-content';
+import {
+  MissionActions,
+  MissionCard,
+  MissionGrid,
+  MissionLink,
+  MissionTags,
+} from '../ui/mission-card';
 
 export function ResumeSection() {
-  const featuredProjects = PROJECTS.slice(0, 3);
-  const primarySkills = SKILL_GROUPS.flatMap((group) => group.items).slice(0, 10);
   const latestExperience = EXPERIENCE[0];
+  const primarySkills = SKILL_GROUPS.flatMap((group) => group.items).slice(0, 8);
 
   return (
-    <div className="resume-dossier">
-      <div className="resume-dossier__intro">
-        <p className="section-prose">{RESUME_PROFILE.summary}</p>
-        <div className="resume-dossier__actions" aria-label="Resume actions">
-          <Link href="/resume" className="section-cta">
-            View full resume
-          </Link>
-          <a href="/api/resume" className="section-link">
-            Download
-          </a>
-          <a href={`mailto:${CONTACT_INFO.email}`} className="section-link">
-            Email
-          </a>
-        </div>
-      </div>
-
-      <div className="resume-dossier__metrics" aria-label="Resume snapshot">
-        {RESUME_PROFILE.metrics.map((metric) => (
-          <div key={metric.label} className="resume-dossier__metric">
-            <strong>{metric.value}</strong>
-            <span>{metric.label}</span>
-          </div>
-        ))}
-      </div>
-
-      <div className="resume-dossier__grid">
-        <section className="resume-dossier__panel" aria-labelledby="resume-current-heading">
-          <p className="resume-dossier__eyebrow">Current signal</p>
-          <h3 id="resume-current-heading">{latestExperience?.role ?? 'Full-stack developer'}</h3>
-          <p>
-            {latestExperience
-              ? `${latestExperience.company} / ${latestExperience.period}`
-              : RESUME_PROFILE.location}
-          </p>
-          {latestExperience ? (
-            <ul>
-              {latestExperience.highlights.map((highlight) => (
-                <li key={highlight}>{highlight}</li>
-              ))}
-            </ul>
-          ) : null}
-        </section>
-
-        <section className="resume-dossier__panel" aria-labelledby="resume-focus-heading">
-          <p className="resume-dossier__eyebrow">Focus areas</p>
-          <h3 id="resume-focus-heading">Where I create leverage</h3>
-          <ul>
-            {RESUME_PROFILE.focusAreas.map((area) => (
-              <li key={area}>{area}</li>
-            ))}
-          </ul>
-        </section>
-      </div>
-
-      <section
-        className="resume-dossier__panel resume-dossier__panel--wide"
-        aria-labelledby="resume-projects-heading"
+    <div className="mission-stack">
+      {/* Profile Overview */}
+      <MissionCard
+        id="RES-01"
+        status="live"
+        title={RESUME_PROFILE.name}
+        tagline={RESUME_PROFILE.headline}
+        body={RESUME_PROFILE.summary}
       >
-        <p className="resume-dossier__eyebrow">Proof of work</p>
-        <h3 id="resume-projects-heading">Selected shipped systems</h3>
-        <div className="resume-dossier__projects">
-          {featuredProjects.map((project) => (
-            <article key={project.id}>
-              <strong>{project.name}</strong>
-              <span>{project.tagline}</span>
-            </article>
-          ))}
-        </div>
-      </section>
+        <MissionActions>
+          <MissionLink href="/resume">View Full Dossier</MissionLink>
+          <MissionLink href={`mailto:${CONTACT_INFO.email}`}>Initiate Contact</MissionLink>
+        </MissionActions>
+      </MissionCard>
 
-      <div className="resume-dossier__skills" aria-label="Primary skills">
-        {primarySkills.map((skill) => (
-          <span key={skill}>{skill}</span>
+      {/* Metrics Grid */}
+      <MissionGrid columns={2}>
+        {RESUME_PROFILE.metrics.map((metric, idx) => (
+          <MissionCard
+            key={metric.label}
+            id={`MTR-${idx + 1}`}
+            status="signal"
+            title={metric.value}
+            tagline={metric.label}
+          />
         ))}
-      </div>
+      </MissionGrid>
+
+      {/* Current Signal (Latest Experience) */}
+      <MissionCard
+        id="EXP-01"
+        status="active"
+        title="Current Signal"
+        tagline={latestExperience?.role ?? 'Independent Engineer'}
+        body={
+          latestExperience
+            ? `${latestExperience.company} — ${latestExperience.period}`
+            : RESUME_PROFILE.location
+        }
+      >
+        {latestExperience && (
+          <div className="mt-4 text-[13px] text-white/60 leading-relaxed space-y-2">
+            {latestExperience.highlights.slice(0, 2).map((highlight, idx) => (
+              <p key={idx} className="flex items-start gap-2">
+                <span className="text-blue-500 mt-1">›</span>
+                {highlight}
+              </p>
+            ))}
+          </div>
+        )}
+      </MissionCard>
+
+      {/* Technical Arsenal */}
+      <MissionCard
+        id="SKL-01"
+        status="building"
+        title="Technical Arsenal"
+        tagline="Core Systems & Frameworks"
+      >
+        <MissionTags items={primarySkills} />
+      </MissionCard>
     </div>
   );
 }

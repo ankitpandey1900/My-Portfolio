@@ -36,24 +36,31 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'),
   title: {
-    default: 'Ankit Pandey | Solar Portfolio',
+    default: 'Ankit Pandey | Full Stack Developer',
     template: '%s | Ankit Pandey',
   },
   description:
     'A cinematic solar-system portfolio for software engineering, product craft, and immersive web experiences.',
   openGraph: {
-    title: 'Ankit Pandey | Solar Portfolio',
+    title: 'Ankit Pandey | Full Stack Developer',
     description:
       'A cinematic solar-system portfolio for software engineering, product craft, and immersive web experiences.',
     url: '/',
     siteName: 'Ankit Pandey Portfolio',
     locale: 'en_US',
     type: 'website',
-    images: [{ url: '/opengraph-image', width: 1200, height: 630, alt: 'Ankit Pandey Solar Portfolio' }],
+    images: [
+      {
+        url: '/opengraph-image',
+        width: 1200,
+        height: 630,
+        alt: 'Ankit Pandey Full Stack Developer',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Ankit Pandey | Solar Portfolio',
+    title: 'Ankit Pandey | Full Stack Developer',
     description:
       'A cinematic solar-system portfolio for software engineering, product craft, and immersive web experiences.',
     images: ['/twitter-image'],

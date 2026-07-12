@@ -6,6 +6,7 @@ import { useNavigationStore } from '@/components/navigation/navigation-store';
 import { useSectionLoaderStore } from '@/components/section-loader/section-loader-state';
 import type { SectionId } from '@/components/section-loader/section-loader-types';
 import { SectionShell } from './section-shell';
+import { UnderConstruction } from './under-construction';
 
 export function SectionRenderer() {
   const sectionId = useNavigationStore((s) => s.currentSectionId);
@@ -27,7 +28,7 @@ export function SectionRenderer() {
 
   return (
     <SectionShell sectionId={sectionId as SectionId} isOpen={isOpen} onClose={handleClose}>
-      {React.createElement(LoadedView)}
+      <UnderConstruction />
     </SectionShell>
   );
 }

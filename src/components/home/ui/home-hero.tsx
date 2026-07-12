@@ -3,7 +3,7 @@
 import * as React from 'react';
 import Image from 'next/image';
 import { motion, useInView, useScroll, useTransform } from 'framer-motion';
-import { Mail, Utensils } from 'lucide-react';
+import { ExternalLink, Mail, Utensils } from 'lucide-react';
 import { HOME_PLANET_CONFIG } from '../home-planet-config';
 import { HomePlanetController } from '../home-planet-controller';
 import { useHomePlanetStore } from '../home-planet-state';
@@ -39,7 +39,15 @@ const ease = [0.19, 1, 0.22, 1] as const;
 const slowEase = [0.25, 1, 0.25, 1] as const;
 
 /** Animated counter that counts up when element enters viewport */
-function AnimatedCounter({ target, suffix = '' }: { target: string; suffix?: string }) {
+function AnimatedCounter({
+  target,
+  delay = 0,
+  suffix = '',
+}: {
+  target: string;
+  delay?: number;
+  suffix?: string;
+}) {
   const ref = React.useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true, amount: 0.5 });
   const numericPart = parseInt(target.replace(/\D/g, ''), 10);
@@ -48,19 +56,29 @@ function AnimatedCounter({ target, suffix = '' }: { target: string; suffix?: str
 
   React.useEffect(() => {
     if (!inView) return;
-    let frame: number;
-    const duration = 1800;
-    const start = performance.now();
-    const animate = (now: number) => {
-      const elapsed = now - start;
-      const progress = Math.min(elapsed / duration, 1);
-      const eased = 1 - Math.pow(1 - progress, 3);
-      setCount(Math.round(eased * numericPart));
-      if (progress < 1) frame = requestAnimationFrame(animate);
-    };
-    frame = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(frame);
-  }, [inView, numericPart]);
+
+    const timeout = setTimeout(() => {
+      let frame: number;
+      const duration = 6000; // Slower count up for dramatic effect
+      const start = performance.now();
+
+      const animate = (now: number) => {
+        const elapsed = now - start;
+        const progress = Math.min(elapsed / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 5); // Quintic ease for very smooth tail
+        setCount(Math.round(eased * numericPart));
+
+        if (progress < 1) {
+          frame = requestAnimationFrame(animate);
+        }
+      };
+
+      frame = requestAnimationFrame(animate);
+      return () => cancelAnimationFrame(frame);
+    }, delay * 1000);
+
+    return () => clearTimeout(timeout);
+  }, [inView, numericPart, delay]);
 
   return (
     <span ref={ref}>
@@ -112,6 +130,128 @@ function DrawLine({ delay = 0, className = '' }: { delay?: number; className?: s
       animate={inView ? { scaleX: 1 } : {}}
       transition={{ duration: 1.4, delay, ease }}
     />
+  );
+}
+
+/** Contact form wired to /api/contact (Resend) */
+function ContactFormBlock() {
+  const [name, setName] = React.useState('');
+  const [email, setEmail] = React.useState('');
+  const [message, setMessage] = React.useState('');
+  const [status, setStatus] = React.useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!name.trim() || !email.trim() || !message.trim()) return;
+    setStatus('loading');
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, message }),
+      });
+      if (!res.ok) throw new Error('Failed');
+      setStatus('success');
+      setName('');
+      setEmail('');
+      setMessage('');
+    } catch {
+      setStatus('error');
+    }
+  };
+
+  const inputClass =
+    'w-full bg-white/[0.03] border border-white/[0.05] rounded-2xl px-5 py-4 text-sm text-white placeholder:text-white/20 focus:outline-none focus:border-white/30 focus:bg-white/[0.06] transition-all font-sans';
+
+  return (
+    <div className="p-6 sm:p-8 md:p-10 rounded-3xl bg-white/[0.02] border border-white/[0.05] backdrop-blur-md relative shadow-2xl w-full">
+      {status === 'success' ? (
+        <div className="text-center py-8">
+          <div className="w-16 h-16 rounded-full bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mx-auto mb-6">
+            <svg
+              className="w-8 h-8 text-emerald-400"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M5 13l4 4L19 7"
+              />
+            </svg>
+          </div>
+          <h3 className="text-xl font-display font-bold text-white mb-2">Transmission Received</h3>
+          <p className="text-white/50 text-sm font-sans">I&apos;ll get back to you shortly.</p>
+          <button
+            onClick={() => setStatus('idle')}
+            className="mt-6 text-xs font-sans font-semibold text-white/40 hover:text-white uppercase tracking-widest transition-colors"
+          >
+            Send another →
+          </button>
+        </div>
+      ) : (
+        <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div className="flex flex-col gap-3">
+              <label className="text-[10px] font-sans font-bold text-white/40 uppercase tracking-widest pl-1">
+                Name
+              </label>
+              <input
+                type="text"
+                placeholder="Your name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+                minLength={2}
+                className={inputClass}
+              />
+            </div>
+            <div className="flex flex-col gap-3">
+              <label className="text-[10px] font-sans font-bold text-white/40 uppercase tracking-widest pl-1">
+                Email
+              </label>
+              <input
+                type="email"
+                placeholder="you@example.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className={inputClass}
+              />
+            </div>
+          </div>
+          <div className="flex flex-col gap-3">
+            <label className="text-[10px] font-sans font-bold text-white/40 uppercase tracking-widest pl-1">
+              Project Details
+            </label>
+            <textarea
+              placeholder="Tell me about your project, timeline, and goals..."
+              rows={4}
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              required
+              minLength={10}
+              className={`${inputClass} resize-none`}
+            />
+          </div>
+          <button
+            type="submit"
+            disabled={status === 'loading'}
+            className="mt-2 w-full py-4 rounded-2xl bg-white text-black font-sans font-bold uppercase tracking-widest text-xs hover:bg-white/90 hover:scale-[1.02] active:scale-[0.98] transition-all shadow-[0_0_20px_rgba(255,255,255,0.1)] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+          >
+            {status === 'loading' ? 'Sending…' : 'Send Transmission'}
+          </button>
+          {status === 'error' && (
+            <p className="text-center text-xs font-sans text-red-400/80">
+              Something went wrong. Try emailing directly instead.
+            </p>
+          )}
+        </form>
+      )}
+    </div>
   );
 }
 
@@ -442,11 +582,11 @@ export function HomeHero() {
         ════════════════════════════════════════════════════════════════════ */}
         <section className="relative min-h-screen flex flex-col">
           <header className="relative z-10 flex items-center justify-center md:justify-end px-5 md:px-16 pt-8">
-            <nav className="flex items-center justify-center gap-5 md:gap-8 w-full md:w-auto">
-              {['About', 'Projects', 'Skills', 'Contact'].map((item, i) => (
+            <nav className="flex items-center justify-center flex-wrap gap-3 sm:gap-5 md:gap-8 w-full md:w-auto">
+              {['About', 'Projects', 'Skills', 'Contact', 'Resume'].map((item, i) => (
                 <motion.a
                   key={item}
-                  href={`#${item.toLowerCase()}`}
+                  href={item === 'Resume' ? '/resume' : `#${item.toLowerCase()}`}
                   className="text-[10px] md:text-xs font-sans font-semibold uppercase tracking-widest text-white/50 hover:text-white transition-colors cursor-pointer"
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -465,7 +605,7 @@ export function HomeHero() {
             <div className="flex flex-col mb-10 md:mb-12 relative z-10 items-center md:items-start w-full">
               <div className="overflow-hidden">
                 <motion.h1
-                  className="text-[clamp(3.5rem,13vw,9rem)] font-display font-extrabold text-white leading-[0.9] tracking-[-0.04em] max-w-5xl"
+                  className="text-[clamp(2.5rem,11vw,9rem)] font-display font-extrabold text-white leading-[0.9] tracking-[-0.04em] max-w-5xl"
                   initial={{ y: '100%' }}
                   animate={{ y: 0 }}
                   transition={{ delay: 0.3, duration: 1.2, ease }}
@@ -475,7 +615,7 @@ export function HomeHero() {
               </div>
               <div className="overflow-hidden mt-0 md:mt-2">
                 <motion.h1
-                  className="text-[clamp(3.5rem,13vw,9rem)] font-display font-extrabold text-white leading-[0.9] tracking-[-0.04em] max-w-5xl text-transparent bg-clip-text bg-gradient-to-br from-white to-white/60"
+                  className="text-[clamp(2.5rem,11vw,9rem)] font-display font-extrabold text-white leading-[0.9] tracking-[-0.04em] max-w-5xl text-transparent bg-clip-text bg-gradient-to-br from-white to-white/60"
                   initial={{ y: '100%' }}
                   animate={{ y: 0 }}
                   transition={{ delay: 0.5, duration: 1.2, ease }}
@@ -487,7 +627,7 @@ export function HomeHero() {
 
             {/* Apple/Tesla Typography applied to these specific numbers */}
             <motion.div
-              className="grid grid-cols-3 md:flex items-start md:items-end gap-3 md:gap-20 mb-8 md:mb-10 w-full max-w-lg"
+              className="grid grid-cols-3 md:flex items-start md:items-end gap-2 sm:gap-3 md:gap-20 mb-8 md:mb-10 w-full max-w-lg"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 1.4, duration: 0.8 }}
@@ -495,13 +635,13 @@ export function HomeHero() {
               {stats.map((stat, i) => (
                 <motion.div
                   key={stat.label}
-                  className="flex flex-col items-center md:items-start text-center md:text-left"
-                  initial={{ opacity: 0, y: 20 }}
+                  className="flex flex-col items-center md:items-start select-none"
+                  initial={{ opacity: 0, y: 40 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 1.5 + i * 0.15, duration: 0.8, ease }}
                 >
-                  <span className="text-3xl sm:text-4xl md:text-5xl font-sans font-light text-white tracking-tighter">
-                    <AnimatedCounter target={stat.value} />
+                  <span className="text-2xl sm:text-3xl md:text-5xl font-sans font-light text-white tracking-tighter">
+                    <AnimatedCounter target={stat.value} delay={1.5 + i * 0.15} />
                   </span>
                   <span className="text-[9px] sm:text-[10px] md:text-[11px] font-sans font-semibold uppercase tracking-widest text-white/50 mt-1 md:mt-2 leading-relaxed">
                     {stat.label}
@@ -659,310 +799,493 @@ export function HomeHero() {
         </section>
 
         {/* ════════════════════════════════════════════════════════════════════
-            SECTION 5 — PROJECTS (4 CARDS)
+            SECTION 5 — PROJECTS (BENTO GRID - 7 CARDS)
         ════════════════════════════════════════════════════════════════════ */}
-        <section id="projects" className="relative px-5 md:px-16 py-16 md:py-24">
+        <section id="projects" className="relative px-5 md:px-16 py-16 md:py-32">
           <DrawLine className="mb-16" />
           <div className="max-w-7xl mx-auto">
             <Reveal>
-              <p className="text-[11px] md:text-xs font-sans font-semibold tracking-widest uppercase text-white/50 mb-16">
-                02 — Selected Work
-              </p>
+              <div className="flex items-center justify-between mb-16">
+                <p className="text-[11px] md:text-xs font-sans font-semibold tracking-widest uppercase text-white/50">
+                  02 — Selected Work
+                </p>
+                <div className="hidden md:flex gap-2">
+                  <div className="w-1.5 h-1.5 rounded-full bg-white/20" />
+                  <div className="w-1.5 h-1.5 rounded-full bg-white/20" />
+                  <div className="w-8 h-1.5 rounded-full bg-white/80" />
+                </div>
+              </div>
             </Reveal>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10">
-              {/* Project 1: AllTracker */}
-              {/* Project 1: AllTracker (Featured) */}
-              <Reveal delay={0.1} className="md:col-span-2">
-                <motion.a
-                  href="https://alltracker.online/"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="group relative flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 p-5 sm:p-6 rounded-2xl bg-white/[0.01] border border-white/[0.04] hover:border-white/[0.1] hover:bg-white/[0.02] transition-all duration-300"
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+              {/* Row 1: 2-1 */}
+              {/* Project 01: AllTracker (Wide Bento) */}
+              <Reveal delay={0.1} className="md:col-span-2 h-full">
+                <motion.div
+                  className="group relative flex flex-col h-full p-8 md:p-10 rounded-3xl bg-gradient-to-br from-blue-500/[0.04] via-white/[0.01] to-purple-500/[0.03] backdrop-blur-md border border-white/[0.06] hover:border-blue-400/[0.2] hover:bg-white/[0.04] transition-all duration-500 shadow-[0_0_0_1px_rgba(255,255,255,0.02)] hover:shadow-[0_0_40px_rgba(59,130,246,0.08)] overflow-hidden"
                   whileHover={{ y: -2 }}
                 >
-                  <div className="relative w-16 h-16 sm:w-24 sm:h-24 md:w-32 md:h-32 shrink-0 rounded-xl bg-white/[0.02] border border-white/[0.05] flex items-center justify-center overflow-hidden">
-                    <Image
-                      src="/assets/logos/alltracker.jpg"
-                      alt="AllTracker Logo"
-                      width={80}
-                      height={80}
-                      className="relative z-10 w-16 h-16 md:w-20 md:h-20 object-contain group-hover:scale-105 transition-transform duration-500 rounded-lg"
-                    />
-                  </div>
-                  <div className="flex flex-col flex-1 min-w-0 justify-center">
-                    <div className="flex items-center justify-between mb-1.5">
-                      <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-white/40 truncate pr-4">
-                        Productivity
-                      </span>
-                      <svg
-                        className="w-4 h-4 text-white/20 group-hover:text-white group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-300 shrink-0"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M14 5l7 7m0 0l-7 7m7-7H3"
-                        />
-                      </svg>
+                  <div className="flex justify-between items-start sm:items-center mb-8 gap-4">
+                    <div className="relative w-16 h-16 md:w-20 md:h-20 shrink-0 rounded-2xl bg-white/[0.02] border border-white/[0.05] flex items-center justify-center overflow-hidden">
+                      <Image
+                        src="/assets/logos/alltracker.jpg"
+                        alt="AllTracker Logo"
+                        width={80}
+                        height={80}
+                        className="relative z-10 w-full h-full object-contain group-hover:scale-105 transition-transform duration-500 rounded-xl p-1.5"
+                      />
                     </div>
-                    <h3 className="text-xl md:text-2xl font-display font-bold text-white/90 tracking-tight mb-2 group-hover:text-white transition-colors truncate">
-                      AllTracker
-                    </h3>
-                    <p className="text-sm text-white/40 font-light leading-relaxed truncate">
-                      Gamified tracking, global leaderboard, AI strategist.
-                    </p>
-                    <p className="text-[10px] md:text-xs text-white/25 font-mono mt-2 uppercase tracking-wide">
-                      TS · Supabase · Vite
-                    </p>
+                    <div className="flex items-center gap-2 relative z-20">
+                      <a
+                        href="https://github.com/ankitpandey1900/AllTracker"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="p-2.5 rounded-full bg-white/[0.03] border border-white/[0.05] text-white/30 hover:text-white hover:bg-white/[0.1] transition-all backdrop-blur-sm"
+                        title="View Source"
+                      >
+                        <IconGitHub className="w-4 h-4" />
+                      </a>
+                      <a
+                        href="https://www.alltracker.online/"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-white/[0.03] border border-white/[0.05] text-white/30 hover:text-white hover:bg-white/[0.1] transition-all backdrop-blur-sm"
+                        title="Visit Live Site"
+                      >
+                        <span className="text-[10px] font-mono font-bold uppercase tracking-widest hidden sm:block">
+                          Visit Site
+                        </span>
+                        <ExternalLink className="w-4 h-4" />
+                      </a>
+                    </div>
                   </div>
-                </motion.a>
+
+                  <div className="flex flex-col flex-1 justify-end relative z-10 pointer-events-none">
+                    <span className="text-[10px] md:text-xs font-mono uppercase tracking-[0.2em] text-blue-400/80 mb-2">
+                      Productivity & study control system
+                    </span>
+                    <h3 className="text-2xl md:text-4xl font-display font-bold text-white/90 tracking-tight mb-3 group-hover:text-white transition-colors pointer-events-auto w-fit">
+                      <a
+                        href="https://www.alltracker.online/"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="before:absolute before:inset-0 before:z-10"
+                      >
+                        AllTracker
+                      </a>
+                    </h3>
+                    <p className="text-sm md:text-base text-white/60 font-light leading-relaxed max-w-xl mb-6">
+                      Full-stack productivity platform with gamified tracking, real-time global
+                      leaderboard, AI strategist (Maamu), and achievement vault. 90+ days and 500+
+                      hours of focused development.
+                    </p>
+                    <div className="flex gap-2 flex-wrap mt-auto pointer-events-auto">
+                      {[
+                        'TypeScript',
+                        'Vite',
+                        'Supabase',
+                        'PostgreSQL',
+                        'CSS',
+                        'AI API',
+                        'Vercel',
+                        'Beter-Auth',
+                      ].map((tag) => (
+                        <span
+                          key={tag}
+                          className="text-[10px] md:text-xs text-white/40 font-mono uppercase tracking-wide bg-white/[0.03] border border-white/[0.05] px-3 py-1.5 rounded-md"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </motion.div>
               </Reveal>
 
-              {/* Project 2: Tally Mate */}
-              <Reveal delay={0.2}>
-                <motion.a
-                  href="https://tallymate.alltracker.online/"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="group relative flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 p-5 sm:p-6 rounded-2xl bg-white/[0.01] border border-white/[0.04] hover:border-white/[0.1] hover:bg-white/[0.02] transition-all duration-300"
+              {/* Project 02: Tally Mate (Square Bento) */}
+              <Reveal delay={0.2} className="h-full">
+                <motion.div
+                  className="group relative flex flex-col h-full p-6 md:p-8 rounded-3xl bg-white/[0.01] backdrop-blur-md border border-white/[0.04] hover:border-white/[0.12] hover:bg-white/[0.03] transition-all duration-300 overflow-hidden"
                   whileHover={{ y: -2 }}
                 >
-                  <div className="relative w-16 h-16 sm:w-24 sm:h-24 md:w-32 md:h-32 shrink-0 rounded-xl bg-white/[0.02] border border-white/[0.05] flex items-center justify-center overflow-hidden">
-                    <Image
-                      src="/assets/logos/tallymate.png"
-                      alt="Tally Mate Logo"
-                      width={80}
-                      height={80}
-                      className="relative z-10 w-16 h-16 md:w-20 md:h-20 object-contain group-hover:scale-105 transition-transform duration-500"
-                    />
-                  </div>
-                  <div className="flex flex-col flex-1 min-w-0 justify-center">
-                    <div className="flex items-center justify-between mb-1.5">
-                      <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-white/40 truncate pr-4">
-                        Finance
-                      </span>
-                      <svg
-                        className="w-4 h-4 text-white/20 group-hover:text-white group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-300 shrink-0"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M14 5l7 7m0 0l-7 7m7-7H3"
-                        />
-                      </svg>
+                  <div className="flex justify-between items-start mb-6">
+                    <div className="relative w-14 h-14 shrink-0 rounded-2xl bg-white/[0.02] border border-white/[0.05] flex items-center justify-center overflow-hidden">
+                      <Image
+                        src="/assets/logos/tallymate.png"
+                        alt="Tally Mate Logo"
+                        width={50}
+                        height={50}
+                        className="w-10 h-10 object-contain group-hover:scale-105 transition-transform duration-500"
+                      />
                     </div>
-                    <h3 className="text-xl md:text-2xl font-display font-bold text-white/90 tracking-tight mb-2 group-hover:text-white transition-colors truncate">
-                      Tally Mate
-                    </h3>
-                    <p className="text-sm text-white/40 font-light leading-relaxed truncate">
-                      Track expenses, debts, budgets & split bills.
-                    </p>
-                    <p className="text-[10px] md:text-xs text-white/25 font-mono mt-2 uppercase tracking-wide">
-                      Next.js · TS · Prisma
-                    </p>
+                    <div className="flex items-center gap-1.5 relative z-20">
+                      <a
+                        href="https://github.com/ankitpandey1900/tallymate"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="p-2 rounded-full bg-white/[0.03] border border-white/[0.05] text-white/30 hover:text-white hover:bg-white/[0.1] transition-all"
+                      >
+                        <IconGitHub className="w-3.5 h-3.5" />
+                      </a>
+                      <a
+                        href="https://tallymate.alltracker.online/"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="p-2 rounded-full bg-white/[0.03] border border-white/[0.05] text-white/30 hover:text-white hover:bg-white/[0.1] transition-all"
+                      >
+                        <ExternalLink className="w-3.5 h-3.5" />
+                      </a>
+                    </div>
                   </div>
-                </motion.a>
+                  <div className="flex flex-col flex-1 relative z-10 pointer-events-none">
+                    <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-white/40 mb-2 line-clamp-1">
+                      Personal finance center
+                    </span>
+                    <h3 className="text-xl md:text-2xl font-display font-bold text-white/90 tracking-tight mb-3 group-hover:text-white transition-colors pointer-events-auto w-fit">
+                      <a
+                        href="https://tallymate.alltracker.online/"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="before:absolute before:inset-0 before:z-10"
+                      >
+                        Tallymate
+                      </a>
+                    </h3>
+                    <p className="text-xs md:text-sm text-white/50 font-light leading-relaxed mb-6 flex-1">
+                      Full-Stack Expense Tracker. A sleek mix of personal finance manager and
+                      Splitwise clone, built with an Apple-inspired design. Track budgets, split
+                      bills with friends, and visualize where your money goes — without the clutter
+                      of traditional apps.
+                    </p>
+                    <div className="flex gap-1.5 flex-wrap mt-auto pointer-events-auto">
+                      {[
+                        'Next.js',
+                        'TypeScript',
+                        'Prisma',
+                        'PostgreSQL',
+                        'Better Auth',
+                        'shadcn/ui',
+                      ].map((tag) => (
+                        <span
+                          key={tag}
+                          className="text-[9px] text-white/30 font-mono uppercase tracking-wide bg-white/[0.03] border border-white/[0.05] px-2 py-1 rounded"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </motion.div>
               </Reveal>
 
-              {/* Project 3: IP Wala */}
-              <Reveal delay={0.1}>
-                <motion.a
-                  href="https://ipwala.vercel.app/"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="group relative flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 p-5 sm:p-6 rounded-2xl bg-white/[0.01] border border-white/[0.04] hover:border-white/[0.1] hover:bg-white/[0.02] transition-all duration-300"
+              {/* Row 2: 1-1-1 (Three Square Cards) */}
+              {/* Project 03: IP Wala */}
+              <Reveal delay={0.1} className="h-full">
+                <motion.div
+                  className="group relative flex flex-col h-full p-6 md:p-8 rounded-3xl bg-white/[0.01] backdrop-blur-md border border-white/[0.04] hover:border-white/[0.12] hover:bg-white/[0.03] transition-all duration-300 overflow-hidden"
                   whileHover={{ y: -2 }}
                 >
-                  <div className="relative w-16 h-16 sm:w-24 sm:h-24 md:w-32 md:h-32 shrink-0 rounded-xl bg-white/[0.02] border border-white/[0.05] flex items-center justify-center overflow-hidden">
-                    <Image
-                      src="/assets/logos/ipwala.png"
-                      alt="IP Wala Logo"
-                      width={80}
-                      height={80}
-                      className="relative z-10 w-16 h-16 md:w-20 md:h-20 object-contain group-hover:scale-105 transition-transform duration-500"
-                    />
-                  </div>
-                  <div className="flex flex-col flex-1 min-w-0 justify-center">
-                    <div className="flex items-center justify-between mb-1.5">
-                      <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-white/40 truncate pr-4">
-                        Networking
-                      </span>
-                      <svg
-                        className="w-4 h-4 text-white/20 group-hover:text-white group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-300 shrink-0"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M14 5l7 7m0 0l-7 7m7-7H3"
-                        />
-                      </svg>
+                  <div className="flex justify-between items-start mb-6">
+                    <div className="relative w-14 h-14 shrink-0 rounded-2xl bg-white/[0.02] border border-white/[0.05] flex items-center justify-center overflow-hidden">
+                      <Image
+                        src="/assets/logos/ipwala.png"
+                        alt="IP Wala Logo"
+                        width={50}
+                        height={50}
+                        className="w-10 h-10 object-contain group-hover:scale-105 transition-transform duration-500"
+                      />
                     </div>
-                    <h3 className="text-xl md:text-2xl font-display font-bold text-white/90 tracking-tight mb-2 group-hover:text-white transition-colors truncate">
-                      IP Wala
-                    </h3>
-                    <p className="text-sm text-white/40 font-light leading-relaxed truncate">
-                      Terminal-first DNS & Network toolkit.
-                    </p>
-                    <p className="text-[10px] md:text-xs text-white/25 font-mono mt-2 uppercase tracking-wide">
-                      Next.js · TS · Tailwind
-                    </p>
+                    <div className="flex items-center gap-1.5 relative z-20">
+                      <a
+                        href="https://github.com/ankitpandey1900/ipwala"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="p-2 rounded-full bg-white/[0.03] border border-white/[0.05] text-white/30 hover:text-white hover:bg-white/[0.1] transition-all"
+                      >
+                        <IconGitHub className="w-3.5 h-3.5" />
+                      </a>
+                      <a
+                        href="https://ipwala.vercel.app/"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="p-2 rounded-full bg-white/[0.03] border border-white/[0.05] text-white/30 hover:text-white hover:bg-white/[0.1] transition-all"
+                      >
+                        <ExternalLink className="w-3.5 h-3.5" />
+                      </a>
+                    </div>
                   </div>
-                </motion.a>
+                  <div className="flex flex-col flex-1 relative z-10 pointer-events-none">
+                    <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-white/40 mb-2 line-clamp-1">
+                      DNS & network toolkit
+                    </span>
+                    <h3 className="text-xl md:text-2xl font-display font-bold text-white/90 tracking-tight mb-3 group-hover:text-white transition-colors pointer-events-auto w-fit">
+                      <a
+                        href="https://ipwala.vercel.app/"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="before:absolute before:inset-0 before:z-10"
+                      >
+                        IPWala
+                      </a>
+                    </h3>
+                    <p className="text-xs md:text-sm text-white/50 font-light leading-relaxed mb-6 flex-1">
+                      Modern DNS and network analysis toolkit with a terminal-first interface.
+                    </p>
+                    <div className="flex gap-1.5 flex-wrap mt-auto pointer-events-auto">
+                      {['Next.js', 'TS', 'Tailwind'].map((tag) => (
+                        <span
+                          key={tag}
+                          className="text-[9px] text-white/30 font-mono uppercase tracking-wide bg-white/[0.03] border border-white/[0.05] px-2 py-1 rounded"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </motion.div>
               </Reveal>
 
-              {/* Project 4: Bank Niti */}
-              <Reveal delay={0.2}>
-                <motion.a
-                  href="https://github.com/ankitpandey1900/bankniti"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="group relative flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 p-5 sm:p-6 rounded-2xl bg-white/[0.01] border border-white/[0.04] hover:border-white/[0.1] hover:bg-white/[0.02] transition-all duration-300"
+              {/* Project 04: Bank Niti */}
+              <Reveal delay={0.2} className="h-full">
+                <motion.div
+                  className="group relative flex flex-col h-full p-6 md:p-8 rounded-3xl bg-white/[0.01] backdrop-blur-md border border-white/[0.04] hover:border-white/[0.12] hover:bg-white/[0.03] transition-all duration-300 overflow-hidden"
                   whileHover={{ y: -2 }}
                 >
-                  <div className="relative w-16 h-16 sm:w-24 sm:h-24 md:w-32 md:h-32 shrink-0 rounded-xl bg-white/[0.02] border border-white/[0.05] flex items-center justify-center overflow-hidden">
-                    <Image
-                      src="/assets/logos/bankniti.png"
-                      alt="Bank Niti Logo"
-                      width={80}
-                      height={80}
-                      className="relative z-10 w-16 h-16 md:w-20 md:h-20 object-contain group-hover:scale-105 transition-transform duration-500"
-                    />
-                  </div>
-                  <div className="flex flex-col flex-1 min-w-0 justify-center">
-                    <div className="flex items-center justify-between mb-1.5">
-                      <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-white/40 truncate pr-4">
-                        Platform
-                      </span>
-                      <svg
-                        className="w-4 h-4 text-white/20 group-hover:text-white group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-300 shrink-0"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M14 5l7 7m0 0l-7 7m7-7H3"
-                        />
-                      </svg>
+                  <div className="flex justify-between items-start mb-6">
+                    <div className="relative w-14 h-14 shrink-0 rounded-2xl bg-white/[0.02] border border-white/[0.05] flex items-center justify-center overflow-hidden">
+                      <Image
+                        src="/assets/logos/bankniti.png"
+                        alt="Bank Niti Logo"
+                        width={50}
+                        height={50}
+                        className="w-10 h-10 object-contain group-hover:scale-105 transition-transform duration-500"
+                      />
                     </div>
-                    <h3 className="text-xl md:text-2xl font-display font-bold text-white/90 tracking-tight mb-2 group-hover:text-white transition-colors truncate">
-                      Bank Niti
-                    </h3>
-                    <p className="text-sm text-white/40 font-light leading-relaxed truncate">
-                      Premium financial utilities & IFSC lookups.
-                    </p>
-                    <p className="text-[10px] md:text-xs text-white/25 font-mono mt-2 uppercase tracking-wide">
-                      Next.js 16 · Tailwind 4
-                    </p>
+                    <div className="flex items-center gap-1.5 relative z-20">
+                      <a
+                        href="https://github.com/ankitpandey1900/bankniti"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="p-2 rounded-full bg-white/[0.03] border border-white/[0.05] text-white/30 hover:text-white hover:bg-white/[0.1] transition-all"
+                      >
+                        <IconGitHub className="w-3.5 h-3.5" />
+                      </a>
+                      <a
+                        href="https://bankniti.vercel.app/"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="p-2 rounded-full bg-white/[0.03] border border-white/[0.05] text-white/30 hover:text-white hover:bg-white/[0.1] transition-all"
+                      >
+                        <ExternalLink className="w-3.5 h-3.5" />
+                      </a>
+                    </div>
                   </div>
-                </motion.a>
+                  <div className="flex flex-col flex-1 relative z-10 pointer-events-none">
+                    <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-white/40 mb-2 line-clamp-1">
+                      Financial Platform
+                    </span>
+                    <h3 className="text-xl md:text-2xl font-display font-bold text-white/90 tracking-tight mb-3 group-hover:text-white transition-colors pointer-events-auto w-fit">
+                      <a
+                        href="https://bankniti.vercel.app/"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="before:absolute before:inset-0 before:z-10"
+                      >
+                        Bank Niti
+                      </a>
+                    </h3>
+                    <p className="text-xs md:text-sm text-white/50 font-light leading-relaxed mb-6 flex-1">
+                      Premium financial utilities, data lookups, and banking tools.
+                    </p>
+                    <div className="flex gap-1.5 flex-wrap mt-auto pointer-events-auto">
+                      {['Next.js 16', 'Tailwind 4'].map((tag) => (
+                        <span
+                          key={tag}
+                          className="text-[9px] text-white/30 font-mono uppercase tracking-wide bg-white/[0.03] border border-white/[0.05] px-2 py-1 rounded"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </motion.div>
               </Reveal>
 
-              {/* Project 5: Mess Tracker */}
-              <Reveal delay={0.1}>
-                <motion.a
-                  href="https://mess-tracker.netlify.app/"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="group relative flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 p-5 sm:p-6 rounded-2xl bg-white/[0.01] border border-white/[0.04] hover:border-white/[0.1] hover:bg-white/[0.02] transition-all duration-300"
+              {/* Project 05: Fitness Tracker */}
+              <Reveal delay={0.3} className="h-full">
+                <motion.div
+                  className="group relative flex flex-col h-full p-6 md:p-8 rounded-3xl bg-white/[0.01] backdrop-blur-md border border-white/[0.04] hover:border-white/[0.12] hover:bg-white/[0.03] transition-all duration-300 overflow-hidden"
                   whileHover={{ y: -2 }}
                 >
-                  <div className="relative w-16 h-16 sm:w-24 sm:h-24 md:w-32 md:h-32 shrink-0 rounded-xl bg-[#0a100d] border border-white/[0.05] flex items-center justify-center overflow-hidden">
-                    <Utensils
-                      className="w-10 h-10 md:w-12 md:h-12 text-[#00ff88] group-hover:scale-110 transition-transform duration-500"
-                      strokeWidth={2.5}
-                    />
-                  </div>
-                  <div className="flex flex-col flex-1 min-w-0 justify-center">
-                    <div className="flex items-center justify-between mb-1.5">
-                      <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-white/40 truncate pr-4">
-                        Management
-                      </span>
-                      <svg
-                        className="w-4 h-4 text-white/20 group-hover:text-white group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-300 shrink-0"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M14 5l7 7m0 0l-7 7m7-7H3"
-                        />
-                      </svg>
+                  <div className="flex justify-between items-start mb-6">
+                    <div className="relative w-14 h-14 shrink-0 rounded-2xl bg-white/[0.02] border border-white/[0.05] flex items-center justify-center overflow-hidden">
+                      <div className="text-xl font-display font-bold text-white/40 group-hover:text-white/60 transition-colors">
+                        FT
+                      </div>
                     </div>
-                    <h3 className="text-xl md:text-2xl font-display font-bold text-white/90 tracking-tight mb-2 group-hover:text-white transition-colors truncate">
-                      Mess Tracker
-                    </h3>
-                    <p className="text-sm text-white/40 font-light leading-relaxed truncate">
-                      Thali Management with streaks & heatmap.
-                    </p>
-                    <p className="text-[10px] md:text-xs text-white/25 font-mono mt-2 uppercase tracking-wide">
-                      HTML · CSS · JS
-                    </p>
+                    <div className="flex items-center gap-1.5 relative z-20">
+                      <a
+                        href="https://github.com/ankitpandey1900/fitness_tracker"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="p-2 rounded-full bg-white/[0.03] border border-white/[0.05] text-white/30 hover:text-white hover:bg-white/[0.1] transition-all"
+                      >
+                        <IconGitHub className="w-3.5 h-3.5" />
+                      </a>
+                    </div>
                   </div>
-                </motion.a>
+                  <div className="flex flex-col flex-1 relative z-10 pointer-events-none">
+                    <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-white/40 mb-2 line-clamp-1">
+                      Cricket academy routines
+                    </span>
+                    <h3 className="text-xl md:text-2xl font-display font-bold text-white/90 tracking-tight mb-3 group-hover:text-white transition-colors pointer-events-auto w-fit">
+                      <a
+                        href="https://github.com/ankitpandey1900/fitness_tracker"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="before:absolute before:inset-0 before:z-10"
+                      >
+                        Fitness Tracker
+                      </a>
+                    </h3>
+                    <p className="text-xs md:text-sm text-white/50 font-light leading-relaxed mb-6 flex-1">
+                      Daily fitness, weight, and habit tracker designed for athletes.
+                    </p>
+                    <div className="flex gap-1.5 flex-wrap mt-auto pointer-events-auto">
+                      {['Web', 'Tracking', 'Analytics'].map((tag) => (
+                        <span
+                          key={tag}
+                          className="text-[9px] text-white/30 font-mono uppercase tracking-wide bg-white/[0.03] border border-white/[0.05] px-2 py-1 rounded"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </motion.div>
               </Reveal>
 
-              {/* Project 6: Fitness Tracker */}
-              <Reveal delay={0.2}>
-                <motion.a
-                  href="https://github.com/ankitpandey1900/fitness_tracker"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="group relative flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 p-5 sm:p-6 rounded-2xl bg-white/[0.01] border border-white/[0.04] hover:border-white/[0.1] hover:bg-white/[0.02] transition-all duration-300"
+              {/* Row 3: 1-2 */}
+              {/* Project 06: Mess Tracker (Square Bento) */}
+              <Reveal delay={0.1} className="h-full">
+                <motion.div
+                  className="group relative flex flex-col h-full p-6 md:p-8 rounded-3xl bg-white/[0.01] backdrop-blur-md border border-white/[0.04] hover:border-white/[0.12] hover:bg-white/[0.03] transition-all duration-300 overflow-hidden"
                   whileHover={{ y: -2 }}
                 >
-                  <div className="relative w-16 h-16 sm:w-24 sm:h-24 md:w-32 md:h-32 shrink-0 rounded-xl bg-white/[0.02] border border-white/[0.05] flex items-center justify-center overflow-hidden">
-                    <div className="text-3xl font-display font-bold text-white/20 group-hover:text-white/40 transition-colors">
-                      FT
+                  <div className="flex justify-between items-start mb-6">
+                    <div className="relative w-14 h-14 shrink-0 rounded-2xl bg-[#0a100d] border border-white/[0.05] flex items-center justify-center overflow-hidden">
+                      <Utensils
+                        className="w-6 h-6 text-[#00ff88] group-hover:scale-110 transition-transform duration-500"
+                        strokeWidth={2.5}
+                      />
                     </div>
-                  </div>
-                  <div className="flex flex-col flex-1 min-w-0 justify-center">
-                    <div className="flex items-center justify-between mb-1.5">
-                      <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-white/40 truncate pr-4">
-                        Health
-                      </span>
-                      <svg
-                        className="w-4 h-4 text-white/20 group-hover:text-white group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-300 shrink-0"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
+                    <div className="flex items-center gap-1.5 relative z-20">
+                      <a
+                        href="https://github.com/ankitpandey1900/Mess-Tracker"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="p-2 rounded-full bg-white/[0.03] border border-white/[0.05] text-white/30 hover:text-white hover:bg-white/[0.1] transition-all"
                       >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M14 5l7 7m0 0l-7 7m7-7H3"
-                        />
-                      </svg>
+                        <IconGitHub className="w-3.5 h-3.5" />
+                      </a>
+                      <a
+                        href="https://mess-tracker.netlify.app/"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="p-2 rounded-full bg-white/[0.03] border border-white/[0.05] text-white/30 hover:text-white hover:bg-white/[0.1] transition-all"
+                      >
+                        <ExternalLink className="w-3.5 h-3.5" />
+                      </a>
                     </div>
-                    <h3 className="text-xl md:text-2xl font-display font-bold text-white/90 tracking-tight mb-2 group-hover:text-white transition-colors truncate">
-                      Fitness Tracker
-                    </h3>
-                    <p className="text-sm text-white/40 font-light leading-relaxed truncate">
-                      Daily routine for cricket academy athletes.
-                    </p>
-                    <p className="text-[10px] md:text-xs text-white/25 font-mono mt-2 uppercase tracking-wide">
-                      Web · Mobile-first
-                    </p>
                   </div>
-                </motion.a>
+                  <div className="flex flex-col flex-1 relative z-10 pointer-events-none">
+                    <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-white/40 mb-2 line-clamp-1">
+                      Thali management
+                    </span>
+                    <h3 className="text-xl md:text-2xl font-display font-bold text-white/90 tracking-tight mb-3 group-hover:text-white transition-colors pointer-events-auto w-fit">
+                      <a
+                        href="https://mess-tracker.netlify.app/"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="before:absolute before:inset-0 before:z-10"
+                      >
+                        Mess Tracker
+                      </a>
+                    </h3>
+                    <p className="text-xs md:text-sm text-white/50 font-light leading-relaxed mb-6 flex-1">
+                      Smart mess subscription tracker with analytics, streaks, and heatmaps.
+                    </p>
+                    <div className="flex gap-1.5 flex-wrap mt-auto pointer-events-auto">
+                      <span className="text-[9px] text-white/30 font-mono uppercase tracking-wide bg-white/[0.03] border border-white/[0.05] px-2 py-1 rounded">
+                        JS / HTML / CSS
+                      </span>
+                    </div>
+                  </div>
+                </motion.div>
+              </Reveal>
+
+              {/* Project 07: Solar Portfolio (Wide Bento) */}
+              <Reveal delay={0.2} className="md:col-span-2 h-full">
+                <motion.div
+                  className="group relative flex flex-col h-full p-8 md:p-10 rounded-3xl bg-white/[0.01] backdrop-blur-md border border-white/[0.04] hover:border-white/[0.12] hover:bg-white/[0.03] transition-all duration-300 overflow-hidden"
+                  whileHover={{ y: -2 }}
+                >
+                  <div className="flex justify-between items-start sm:items-center mb-8 gap-4">
+                    <div className="relative w-16 h-16 md:w-20 md:h-20 shrink-0 rounded-2xl bg-black/40 border border-white/[0.05] flex items-center justify-center overflow-hidden">
+                      <Image
+                        src="/icon.svg"
+                        alt="Portfolio Icon"
+                        width={50}
+                        height={50}
+                        className="w-10 h-10 md:w-12 md:h-12 object-contain group-hover:scale-110 transition-transform duration-500"
+                      />
+                    </div>
+                    <div className="flex items-center gap-2 relative z-20">
+                      <a
+                        href="https://github.com/ankitpandey1900"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-white/[0.03] border border-white/[0.05] text-white/30 hover:text-white hover:bg-white/[0.1] transition-all backdrop-blur-sm"
+                        title="View Source"
+                      >
+                        <span className="text-[10px] font-mono font-bold uppercase tracking-widest hidden sm:block">
+                          View Source
+                        </span>
+                        <IconGitHub className="w-4 h-4" />
+                      </a>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col flex-1 justify-end relative z-10 pointer-events-none">
+                    <span className="text-[10px] md:text-xs font-mono uppercase tracking-[0.2em] text-orange-400/80 mb-2">
+                      This experience
+                    </span>
+                    <h3 className="text-2xl md:text-4xl font-display font-bold text-white/90 tracking-tight mb-3 group-hover:text-white transition-colors pointer-events-auto w-fit">
+                      <a
+                        href="https://github.com/ankitpandey1900"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="before:absolute before:inset-0 before:z-10"
+                      >
+                        Solar Portfolio
+                      </a>
+                    </h3>
+                    <p className="text-sm md:text-base text-white/60 font-light leading-relaxed max-w-xl mb-6">
+                      Cinematic 3D portfolio with planet travel, sector briefing UI, and modular
+                      scene architecture — the system you are inside right now.
+                    </p>
+                    <div className="flex gap-2 flex-wrap mt-auto pointer-events-auto">
+                      {['Next.js', 'R3F', 'Three.js', 'Zustand', 'Tailwind'].map((tag) => (
+                        <span
+                          key={tag}
+                          className="text-[10px] md:text-xs text-white/40 font-mono uppercase tracking-wide bg-white/[0.03] border border-white/[0.05] px-3 py-1.5 rounded-md"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </motion.div>
               </Reveal>
             </div>
           </div>
@@ -991,27 +1314,28 @@ export function HomeHero() {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {/* Frontend (Col 1 & 2) */}
                 <Reveal delay={0.1} className="lg:col-span-2">
-                  <div className="h-full p-5 md:p-8 rounded-3xl bg-gradient-to-br from-white/[0.03] to-transparent border border-white/[0.05] hover:border-white/[0.1] transition-all cursor-default relative overflow-hidden group">
-                    <div className="absolute inset-0 bg-white/[0.01] opacity-0 group-hover:opacity-100 transition-opacity" />
-                    <h3 className="text-sm font-sans font-semibold text-white/70 tracking-wide mb-8">
+                  <div className="h-full p-6 md:p-8 rounded-3xl bg-gradient-to-br from-blue-500/[0.02] to-transparent backdrop-blur-md border border-white/[0.04] hover:border-blue-500/[0.15] hover:bg-white/[0.02] transition-all duration-500 cursor-default relative overflow-hidden group">
+                    <div className="absolute inset-0 bg-blue-500/[0.02] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                    <h3 className="text-sm font-sans font-bold text-white tracking-wide mb-8 flex items-center gap-3">
+                      <span className="w-2 h-2 rounded-full bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.6)]" />
                       Frontend Architecture
                     </h3>
-                    <div className="flex flex-wrap gap-4">
+                    <div className="grid grid-cols-3 sm:grid-cols-6 gap-3">
                       {[
                         { name: 'React', Icon: TechIcons.React },
                         { name: 'Next.js', Icon: TechIcons.Nextjs },
                         { name: 'TypeScript', Icon: TechIcons.TS },
                         { name: 'JavaScript', Icon: TechIcons.JS },
-                        { name: 'shadcn/ui', Icon: TechIcons.Shadcn },
-                        { name: 'Tailwind CSS', Icon: TechIcons.Tailwind },
+                        { name: 'shadcn', Icon: TechIcons.Shadcn },
+                        { name: 'Tailwind', Icon: TechIcons.Tailwind },
                       ].map((tech) => (
                         <div key={tech.name} className="flex flex-col items-center gap-3">
-                          <div className="w-14 h-14 rounded-2xl bg-white/[0.02] border border-white/[0.05] flex items-center justify-center text-white/40 group-hover:text-white transition-colors duration-500 group-hover:scale-110 group-hover:border-white/[0.15]">
-                            <div className="scale-125">
+                          <div className="w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-white/[0.02] border border-white/[0.05] flex items-center justify-center text-white/40 group-hover:text-white transition-all duration-500 group-hover:-translate-y-1 group-hover:border-white/[0.15] group-hover:shadow-[0_4px_20px_rgba(255,255,255,0.05)]">
+                            <div className="scale-110 md:scale-125">
                               <tech.Icon />
                             </div>
                           </div>
-                          <span className="text-[11px] font-sans font-medium text-white/40 group-hover:text-white/80 transition-colors">
+                          <span className="text-[9px] md:text-[10px] font-sans font-medium text-white/40 group-hover:text-white/80 transition-colors uppercase tracking-widest">
                             {tech.name}
                           </span>
                         </div>
@@ -1022,11 +1346,13 @@ export function HomeHero() {
 
                 {/* Backend (Col 3, Row span 2) */}
                 <Reveal delay={0.2} className="lg:col-span-1 lg:row-span-2">
-                  <div className="h-full p-5 md:p-8 rounded-3xl bg-gradient-to-br from-white/[0.03] to-transparent border border-white/[0.05] hover:border-white/[0.1] transition-all cursor-default relative overflow-hidden group">
-                    <h3 className="text-sm font-sans font-semibold text-white/70 tracking-wide mb-8">
+                  <div className="h-full p-6 md:p-8 rounded-3xl bg-gradient-to-br from-emerald-500/[0.02] to-transparent backdrop-blur-md border border-white/[0.04] hover:border-emerald-500/[0.15] hover:bg-white/[0.02] transition-all duration-500 cursor-default relative overflow-hidden group flex flex-col">
+                    <div className="absolute inset-0 bg-emerald-500/[0.02] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                    <h3 className="text-sm font-sans font-bold text-white tracking-wide mb-8 flex items-center gap-3">
+                      <span className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.6)]" />
                       Backend Systems
                     </h3>
-                    <div className="flex flex-col gap-4">
+                    <div className="flex flex-col gap-3 flex-1 justify-between">
                       {[
                         { name: 'Python', Icon: TechIcons.Python },
                         { name: 'PostgreSQL', Icon: TechIcons.PostgreSQL },
@@ -1034,13 +1360,16 @@ export function HomeHero() {
                         { name: 'Prisma', Icon: TechIcons.Prisma },
                         { name: 'Better Auth', Icon: TechIcons.BetterAuth },
                       ].map((tech) => (
-                        <div key={tech.name} className="flex items-center gap-4">
-                          <div className="w-12 h-12 rounded-xl bg-white/[0.02] border border-white/[0.05] flex items-center justify-center text-white/40 group-hover:text-white transition-colors duration-500 group-hover:scale-110 group-hover:border-white/[0.15] shrink-0">
-                            <div className="scale-110">
+                        <div
+                          key={tech.name}
+                          className="flex items-center gap-4 p-2.5 rounded-2xl hover:bg-white/[0.03] border border-transparent hover:border-white/[0.05] transition-all duration-300"
+                        >
+                          <div className="w-10 h-10 rounded-xl bg-white/[0.02] border border-white/[0.05] flex items-center justify-center text-white/40 group-hover:text-white transition-colors duration-500 shrink-0">
+                            <div className="scale-100">
                               <tech.Icon />
                             </div>
                           </div>
-                          <span className="text-xs font-sans font-medium text-white/50 group-hover:text-white/90 transition-colors">
+                          <span className="text-xs font-sans font-medium text-white/50 group-hover:text-white/90 transition-colors tracking-wide">
                             {tech.name}
                           </span>
                         </div>
@@ -1051,11 +1380,13 @@ export function HomeHero() {
 
                 {/* Animation & State (Col 1) */}
                 <Reveal delay={0.3} className="lg:col-span-1">
-                  <div className="h-full p-5 md:p-8 rounded-3xl bg-gradient-to-br from-white/[0.03] to-transparent border border-white/[0.05] hover:border-white/[0.1] transition-all cursor-default relative overflow-hidden group">
-                    <h3 className="text-sm font-sans font-semibold text-white/70 tracking-wide mb-6">
+                  <div className="h-full p-6 md:p-8 rounded-3xl bg-gradient-to-br from-amber-500/[0.02] to-transparent backdrop-blur-md border border-white/[0.04] hover:border-amber-500/[0.15] hover:bg-white/[0.02] transition-all duration-500 cursor-default relative overflow-hidden group">
+                    <div className="absolute inset-0 bg-amber-500/[0.02] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                    <h3 className="text-sm font-sans font-bold text-white tracking-wide mb-6 flex items-center gap-3">
+                      <span className="w-2 h-2 rounded-full bg-amber-500 shadow-[0_0_10px_rgba(245,158,11,0.6)]" />
                       Creative & State
                     </h3>
-                    <div className="flex flex-wrap gap-4">
+                    <div className="flex flex-wrap gap-2">
                       {[
                         { name: 'Three.js', Icon: TechIcons.Threejs },
                         { name: 'Framer', Icon: TechIcons.FramerMotion },
@@ -1063,12 +1394,12 @@ export function HomeHero() {
                       ].map((tech) => (
                         <div
                           key={tech.name}
-                          className="flex items-center gap-2 bg-white/[0.02] border border-white/[0.05] px-3 py-2 rounded-lg group-hover:border-white/[0.15] transition-colors"
+                          className="flex items-center gap-2 bg-white/[0.02] border border-white/[0.05] px-3 py-2 rounded-xl group-hover:border-white/[0.15] group-hover:bg-white/[0.04] transition-all duration-300"
                         >
                           <div className="text-white/40 group-hover:text-white transition-colors scale-90">
                             <tech.Icon />
                           </div>
-                          <span className="text-[10px] font-sans font-medium text-white/60">
+                          <span className="text-[10px] font-sans font-medium text-white/60 group-hover:text-white">
                             {tech.name}
                           </span>
                         </div>
@@ -1079,8 +1410,10 @@ export function HomeHero() {
 
                 {/* DevOps (Col 2) */}
                 <Reveal delay={0.4} className="lg:col-span-1">
-                  <div className="h-full p-5 md:p-8 rounded-3xl bg-gradient-to-br from-white/[0.03] to-transparent border border-white/[0.05] hover:border-white/[0.1] transition-all cursor-default relative overflow-hidden group">
-                    <h3 className="text-sm font-sans font-semibold text-white/70 tracking-wide mb-6">
+                  <div className="h-full p-6 md:p-8 rounded-3xl bg-gradient-to-br from-violet-500/[0.02] to-transparent backdrop-blur-md border border-white/[0.04] hover:border-violet-500/[0.15] hover:bg-white/[0.02] transition-all duration-500 cursor-default relative overflow-hidden group">
+                    <div className="absolute inset-0 bg-violet-500/[0.02] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                    <h3 className="text-sm font-sans font-bold text-white tracking-wide mb-6 flex items-center gap-3">
+                      <span className="w-2 h-2 rounded-full bg-violet-500 shadow-[0_0_10px_rgba(139,92,246,0.6)]" />
                       DevOps
                     </h3>
                     <div className="flex gap-4">
@@ -1089,12 +1422,12 @@ export function HomeHero() {
                         { name: 'Git', Icon: TechIcons.Git },
                       ].map((tech) => (
                         <div key={tech.name} className="flex-1 flex flex-col items-center gap-3">
-                          <div className="w-full aspect-square rounded-2xl bg-white/[0.02] border border-white/[0.05] flex items-center justify-center text-white/40 group-hover:text-white transition-colors duration-500 group-hover:border-white/[0.15]">
-                            <div className="scale-125">
+                          <div className="w-full aspect-square rounded-2xl bg-white/[0.02] border border-white/[0.05] flex items-center justify-center text-white/40 group-hover:text-white transition-all duration-500 group-hover:-translate-y-1 group-hover:border-white/[0.15] group-hover:shadow-[0_4px_20px_rgba(255,255,255,0.05)]">
+                            <div className="scale-110">
                               <tech.Icon />
                             </div>
                           </div>
-                          <span className="text-[10px] font-sans font-medium text-white/40">
+                          <span className="text-[9px] md:text-[10px] font-sans font-medium text-white/40 uppercase tracking-widest group-hover:text-white/80 transition-colors">
                             {tech.name}
                           </span>
                         </div>
@@ -1106,15 +1439,25 @@ export function HomeHero() {
 
               {/* AI Tools */}
               <Reveal delay={0.3}>
-                <div className="mt-8 flex flex-col sm:flex-row items-center gap-6 p-6 rounded-2xl bg-white/[0.01] border border-white/[0.04]">
-                  <span className="text-[10px] md:text-[11px] font-mono uppercase tracking-[0.2em] text-white/30 whitespace-nowrap">
-                    AI & Productivity
-                  </span>
-                  <div className="flex flex-wrap items-center gap-3">
-                    {['Claude', 'Cursor', 'Antigravity'].map((tool) => (
+                <div className="mt-4 md:mt-8 flex flex-col sm:flex-row items-start sm:items-center justify-between p-6 md:p-8 rounded-3xl bg-gradient-to-br from-white/[0.02] to-transparent border border-white/[0.04] hover:border-white/[0.1] hover:bg-white/[0.03] transition-all duration-500">
+                  <div className="flex items-center gap-4 mb-4 sm:mb-0">
+                    <div className="w-10 h-10 rounded-full bg-white/[0.05] flex items-center justify-center shrink-0">
+                      <span className="w-2 h-2 rounded-full bg-white animate-pulse" />
+                    </div>
+                    <div>
+                      <span className="block text-[10px] md:text-[11px] font-mono uppercase tracking-[0.2em] text-white/30">
+                        Daily Drivers
+                      </span>
+                      <span className="block text-sm font-sans font-bold text-white/80">
+                        AI & Productivity
+                      </span>
+                    </div>
+                  </div>
+                  <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+                    {['Codex', 'Cursor IDE', 'Antigravity'].map((tool) => (
                       <span
                         key={tool}
-                        className="px-4 py-2 rounded-full bg-white/[0.04] border border-white/[0.08] text-xs font-sans text-white/80 font-semibold tracking-wide hover:bg-white/[0.08] hover:text-white transition-all cursor-default"
+                        className="px-4 py-2 rounded-xl bg-white/[0.02] border border-white/[0.05] text-[11px] font-sans text-white/60 font-semibold tracking-wide hover:bg-white/[0.08] hover:text-white hover:border-white/[0.2] transition-all cursor-default shadow-[0_0_0_1px_rgba(255,255,255,0.01)]"
                       >
                         {tool}
                       </span>
@@ -1171,45 +1514,7 @@ export function HomeHero() {
             </div>
 
             <Reveal delay={0.4}>
-              <div className="p-6 sm:p-8 md:p-10 rounded-3xl bg-white/[0.02] border border-white/[0.05] backdrop-blur-md relative shadow-2xl w-full">
-                <form className="flex flex-col gap-6" onSubmit={(e) => e.preventDefault()}>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                    <div className="flex flex-col gap-3">
-                      <label className="text-[10px] font-sans font-bold text-white/40 uppercase tracking-widest pl-1">
-                        Name
-                      </label>
-                      <input
-                        type="text"
-                        placeholder="Ankit Pandey"
-                        className="w-full bg-white/[0.03] border border-white/[0.05] rounded-2xl px-5 py-4 text-sm text-white placeholder:text-white/20 focus:outline-none focus:border-white/30 focus:bg-white/[0.06] transition-all font-sans"
-                      />
-                    </div>
-                    <div className="flex flex-col gap-3">
-                      <label className="text-[10px] font-sans font-bold text-white/40 uppercase tracking-widest pl-1">
-                        Email
-                      </label>
-                      <input
-                        type="email"
-                        placeholder="ankit1pandey11@gmail.com"
-                        className="w-full bg-white/[0.03] border border-white/[0.05] rounded-2xl px-5 py-4 text-sm text-white placeholder:text-white/20 focus:outline-none focus:border-white/30 focus:bg-white/[0.06] transition-all font-sans"
-                      />
-                    </div>
-                  </div>
-                  <div className="flex flex-col gap-3">
-                    <label className="text-[10px] font-sans font-bold text-white/40 uppercase tracking-widest pl-1">
-                      Project Details
-                    </label>
-                    <textarea
-                      placeholder="Tell me about your project, timeline, and goals..."
-                      rows={4}
-                      className="w-full bg-white/[0.03] border border-white/[0.05] rounded-2xl px-5 py-4 text-sm text-white placeholder:text-white/20 focus:outline-none focus:border-white/30 focus:bg-white/[0.06] transition-all font-sans resize-none"
-                    ></textarea>
-                  </div>
-                  <button className="mt-2 w-full py-4 rounded-2xl bg-white text-black font-sans font-bold uppercase tracking-widest text-xs hover:bg-white/90 hover:scale-[1.02] active:scale-[0.98] transition-all shadow-[0_0_20px_rgba(255,255,255,0.1)]">
-                    Send Transmission
-                  </button>
-                </form>
-              </div>
+              <ContactFormBlock />
             </Reveal>
           </div>
         </section>
@@ -1217,20 +1522,23 @@ export function HomeHero() {
         {/* ════════════════════════════════════════════════════════════════════
             FOOTER
         ════════════════════════════════════════════════════════════════════ */}
-        <footer className="relative px-5 md:px-16 py-12">
-          <DrawLine className="mb-8" />
-          <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
-            <motion.span
-              className="text-[11px] font-sans font-semibold uppercase tracking-widest text-white/30"
+        <footer className="relative px-5 md:px-16 py-8 md:py-12">
+          <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 items-center gap-8 p-6 md:p-8 rounded-3xl bg-white/[0.01] border border-white/[0.04] backdrop-blur-md">
+            {/* Left: Branding */}
+            <motion.div
+              className="flex justify-center md:justify-start"
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8 }}
             >
-              © 2026 Ankit Pandey
-            </motion.span>
+              <span className="text-[11px] font-sans font-bold uppercase tracking-widest text-white/50">
+                Ankit Pandey
+              </span>
+            </motion.div>
 
-            <div className="flex items-center gap-3">
+            {/* Center: Social Icons (Larger and Spaced) */}
+            <div className="flex items-center justify-center gap-4">
               {[
                 { name: 'X', Icon: IconX, href: 'https://x.com/AnkitPande5641' },
                 {
@@ -1251,13 +1559,27 @@ export function HomeHero() {
                   href={social.href}
                   target="_blank"
                   rel="noreferrer"
-                  className="w-10 h-10 rounded-full flex items-center justify-center text-white/30 hover:text-white hover:bg-white/[0.05] transition-all"
+                  className="group relative flex items-center justify-center w-12 h-12 rounded-2xl bg-white/[0.02] border border-white/[0.05] hover:border-white/[0.15] hover:bg-white/[0.06] transition-all duration-300 overflow-hidden"
                   aria-label={social.name}
                 >
-                  <social.Icon className="w-4 h-4" />
+                  <div className="absolute inset-0 bg-white/[0.02] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <social.Icon className="w-5 h-5 text-white/40 group-hover:text-white group-hover:scale-110 transition-all duration-300" />
                 </a>
               ))}
             </div>
+
+            {/* Right: Copyright */}
+            <motion.div
+              className="flex justify-center md:justify-end"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+            >
+              <span className="text-[10px] font-sans font-medium tracking-wide text-white/30">
+                &copy; {new Date().getFullYear()} All rights reserved.
+              </span>
+            </motion.div>
           </div>
         </footer>
       </motion.div>

@@ -8,7 +8,8 @@ export const HOME_PLANET_CONFIG: HomePlanetConfig = {
   identity: {
     name: 'Ankit Pandey',
     title: 'Software Engineering Student',
-    tagline: 'I don’t just learn technologies — I build real-world products and robust systems that people can actually use every day.',
+    tagline:
+      'I don’t just learn technologies — I build real-world products and robust systems that people can actually use every day.',
     bio: "I'm a passionate Software Engineering student racing to reach elite-level development.\n\nMy current focus:\n• Full Stack Development\n• Backend Architecture & System Design\n• AI Integration in practical applications\n• Creating polished, production-ready experiences\n\nCurrently investing heavily in building high-quality tools for students, developers, and creators.",
     currentFocus: 'Building high-quality tools',
     availability: {
@@ -30,7 +31,7 @@ export const HOME_PLANET_CONFIG: HomePlanetConfig = {
       description: 'AllTracker, this portfolio, and production-facing apps',
     },
     {
-      value: '500+',
+      value: '800+',
       label: 'Hours building',
       description: 'Deep work on AllTracker and full-stack systems',
     },

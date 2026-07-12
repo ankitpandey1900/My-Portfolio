@@ -2,12 +2,12 @@
 
 import * as React from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { PLANET_DEFINITIONS } from '@/components/canvas/scene-manager/scenes/solar-system/planet/planet-definitions';
+import { useCameraTravelStore } from '@/components/canvas/camera/travel/camera-travel-state';
 import { useInteractionStore } from '@/components/canvas/scene-manager/scenes/solar-system/interaction/interaction-state';
+import { PLANET_DEFINITIONS } from '@/components/canvas/scene-manager/scenes/solar-system/planet/planet-definitions';
 import { useHomePlanetStore } from '@/components/home/home-planet-state';
 import { NavigationController } from '@/components/navigation/navigation-controller';
 import { useNavigationStore } from '@/components/navigation/navigation-store';
-import { useCameraTravelStore } from '@/components/canvas/camera/travel/camera-travel-state';
 import { useKeyboardKeys } from '@/hooks/use-keyboard-keys';
 import { fadeUp, fadeUpTransition } from '@/lib/motion';
 import { cn } from '@/lib/utils';
@@ -18,7 +18,15 @@ const CATALOG = [...PLANET_DEFINITIONS]
 
 type DeckTab = 'fly' | 'destinations';
 
-function KeyCap({ label, active = false, size = 'md' }: { label: string; active?: boolean; size?: 'sm' | 'md' }) {
+function KeyCap({
+  label,
+  active = false,
+  size = 'md',
+}: {
+  label: string;
+  active?: boolean;
+  size?: 'sm' | 'md';
+}) {
   return (
     <kbd className="command-deck__key" data-active={active} data-size={size}>
       {label}
@@ -100,9 +108,9 @@ export function SystemNavigation() {
   return (
     <>
       {inSection ? (
-        <button 
-          type="button" 
-          className="fixed top-24 left-8 z-50 px-6 py-2.5 bg-black/60 backdrop-blur-xl border border-white/10 rounded-full text-white text-sm font-medium tracking-wide shadow-2xl hover:bg-black/80 transition-colors" 
+        <button
+          type="button"
+          className="fixed top-24 left-4 md:left-8 z-50 px-6 py-2.5 bg-black/60 backdrop-blur-xl border border-white/10 rounded-full text-white text-sm font-medium tracking-wide shadow-2xl hover:bg-black/80 transition-colors"
           onClick={() => NavigationController.goHome()}
         >
           Return to orbit
@@ -130,15 +138,19 @@ export function SystemNavigation() {
               aria-expanded={expanded}
               onClick={() => setExpanded((open) => !open)}
             >
-              <span 
+              <span
                 className={cn(
-                  "w-2.5 h-2.5 rounded-full shadow-[0_0_10px_currentColor]",
-                  !travelling && !inSection ? "bg-green-500 text-green-500 animate-pulse" : "bg-amber-500 text-amber-500"
-                )} 
-                aria-hidden 
+                  'w-2.5 h-2.5 rounded-full shadow-[0_0_10px_currentColor]',
+                  !travelling && !inSection
+                    ? 'bg-green-500 text-green-500 animate-pulse'
+                    : 'bg-amber-500 text-amber-500'
+                )}
+                aria-hidden
               />
               <span className="flex flex-col">
-                <span className="text-white font-semibold tracking-tight text-sm">Mission Control</span>
+                <span className="text-white font-semibold tracking-tight text-sm">
+                  Mission Control
+                </span>
                 <span className="text-zinc-400 text-xs font-medium">{statusLabel}</span>
               </span>
               <motion.span
@@ -162,7 +174,10 @@ export function SystemNavigation() {
                   <span>Overview</span>
                   <KeyCap label="0" size="sm" />
                 </button>
-                <div className="hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/[0.02] border border-white/[0.05]" aria-hidden>
+                <div
+                  className="hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/[0.02] border border-white/[0.05]"
+                  aria-hidden
+                >
                   <KeyCap label="W" active={isPressed('w')} size="sm" />
                   <KeyCap label="A" active={isPressed('a')} size="sm" />
                   <KeyCap label="S" active={isPressed('s')} size="sm" />
@@ -182,129 +197,144 @@ export function SystemNavigation() {
             ) : null}
           </div>
 
-        <AnimatePresence initial={false}>
-          {expanded ? (
-            <motion.div
-              className="command-deck__panel"
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.45, ease: [0.19, 1, 0.22, 1] }}
-            >
-              {!inSection ? (
-                <>
-                  <div className="command-deck__tabs" role="tablist">
-                    {(['fly', 'destinations'] as DeckTab[]).map((item) => (
-                      <button
-                        key={item}
-                        type="button"
-                        role="tab"
-                        aria-selected={tab === item}
-                        className="command-deck__tab"
-                        data-active={tab === item}
-                        onClick={() => setTab(item)}
-                      >
-                        {item === 'fly' ? 'Flight' : 'Destinations'}
-                      </button>
-                    ))}
-                  </div>
+          <AnimatePresence initial={false}>
+            {expanded ? (
+              <motion.div
+                className="command-deck__panel"
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.45, ease: [0.19, 1, 0.22, 1] }}
+              >
+                {!inSection ? (
+                  <>
+                    <div className="command-deck__tabs" role="tablist">
+                      {(['fly', 'destinations'] as DeckTab[]).map((item) => (
+                        <button
+                          key={item}
+                          type="button"
+                          role="tab"
+                          aria-selected={tab === item}
+                          className="command-deck__tab"
+                          data-active={tab === item}
+                          onClick={() => setTab(item)}
+                        >
+                          {item === 'fly' ? 'Flight' : 'Destinations'}
+                        </button>
+                      ))}
+                    </div>
 
-                  {tab === 'fly' ? (
-                    <div className="command-deck__fly">
-                      <div className="command-deck__fly-visual">
-                        <KeyCap label="W" active={isPressed('w') || isPressed('ArrowUp')} />
-                        <div className="command-deck__fly-row">
-                          <KeyCap label="A" active={isPressed('a') || isPressed('ArrowLeft')} />
-                          <KeyCap label="S" active={isPressed('s') || isPressed('ArrowDown')} />
-                          <KeyCap label="D" active={isPressed('d') || isPressed('ArrowRight')} />
+                    {tab === 'fly' ? (
+                      <div className="command-deck__fly">
+                        <div className="command-deck__fly-visual">
+                          <KeyCap label="W" active={isPressed('w') || isPressed('ArrowUp')} />
+                          <div className="command-deck__fly-row">
+                            <KeyCap label="A" active={isPressed('a') || isPressed('ArrowLeft')} />
+                            <KeyCap label="S" active={isPressed('s') || isPressed('ArrowDown')} />
+                            <KeyCap label="D" active={isPressed('d') || isPressed('ArrowRight')} />
+                          </div>
+                        </div>
+                        <ul className="command-deck__fly-notes">
+                          <li>
+                            <span className="type-label">Pointer</span>
+                            Drag to orbit · scroll to zoom · right-drag to pan
+                          </li>
+                          <li>
+                            <span className="type-label">Keyboard</span>
+                            WASD fly · Q/E rise & fall · +/- zoom · Shift boost
+                          </li>
+                          <li>
+                            <span className="type-label">Travel</span>
+                            Click to fly · drag to orbit 360° · Enter or double-click to open sector
+                          </li>
+                        </ul>
+                      </div>
+                    ) : (
+                      <div className="command-deck__destinations">
+                        <button
+                          type="button"
+                          className="command-deck__planet command-deck__planet--overview"
+                          onClick={() => NavigationController.viewSystemOverview()}
+                          disabled={travelling}
+                        >
+                          <span className="command-deck__planet-index">00</span>
+                          <span className="command-deck__planet-copy">
+                            <span className="command-deck__planet-name">System overview</span>
+                            <span className="command-deck__planet-desc">
+                              Pull back and explore every orbit
+                            </span>
+                          </span>
+                          <KeyCap label="0" size="sm" />
+                        </button>
+
+                        <div className="command-deck__planet-grid">
+                          {CATALOG.map((planet, index) => {
+                            const isActive = hoveredId === planet.id || selectedId === planet.id;
+                            const accent = planet.colorPalette[0] ?? '#d8a24a';
+
+                            return (
+                              <motion.button
+                                key={planet.id}
+                                type="button"
+                                className={cn(
+                                  'command-deck__planet',
+                                  isActive && 'command-deck__planet--active'
+                                )}
+                                style={
+                                  (isActive ? { borderLeftColor: accent } : {}) as Record<
+                                    string,
+                                    string
+                                  >
+                                }
+                                onClick={() => NavigationController.explorePlanet(planet.id)}
+                                disabled={travelling}
+                                variants={fadeUp}
+                                initial="hidden"
+                                animate="visible"
+                                transition={fadeUpTransition(0.02 * index)}
+                                whileHover={{ y: -2 }}
+                                whileTap={{ scale: 0.98 }}
+                              >
+                                <span className="command-deck__planet-index">
+                                  {String(index + 1).padStart(2, '0')}
+                                </span>
+                                <span className="command-deck__planet-copy">
+                                  <span className="command-deck__planet-name">
+                                    {planet.displayName}
+                                  </span>
+                                  <span className="command-deck__planet-desc">
+                                    {planet.description}
+                                    {planet.moons.length > 0
+                                      ? ` · ${planet.moons.length} moon${planet.moons.length > 1 ? 's' : ''}`
+                                      : ''}
+                                  </span>
+                                </span>
+                                <KeyCap label={String(index + 1)} size="sm" />
+                              </motion.button>
+                            );
+                          })}
                         </div>
                       </div>
-                      <ul className="command-deck__fly-notes">
-                        <li>
-                          <span className="type-label">Pointer</span>
-                          Drag to orbit · scroll to zoom · right-drag to pan
-                        </li>
-                        <li>
-                          <span className="type-label">Keyboard</span>
-                          WASD fly · Q/E rise & fall · +/- zoom · Shift boost
-                        </li>
-                        <li>
-                          <span className="type-label">Travel</span>
-                          Click to fly · drag to orbit 360° · Enter or double-click to open sector
-                        </li>
-                      </ul>
-                    </div>
-                  ) : (
-                    <div className="command-deck__destinations">
-                      <button
-                        type="button"
-                        className="command-deck__planet command-deck__planet--overview"
-                        onClick={() => NavigationController.viewSystemOverview()}
-                        disabled={travelling}
-                      >
-                        <span className="command-deck__planet-index">00</span>
-                        <span className="command-deck__planet-copy">
-                          <span className="command-deck__planet-name">System overview</span>
-                          <span className="command-deck__planet-desc">Pull back and explore every orbit</span>
-                        </span>
-                        <KeyCap label="0" size="sm" />
-                      </button>
+                    )}
+                  </>
+                ) : (
+                  <p className="command-deck__section-note type-body">
+                    Viewing {currentSection ?? 'sector'}. Press Esc or Return to orbit to keep
+                    exploring.
+                  </p>
+                )}
 
-                      <div className="command-deck__planet-grid">
-                        {CATALOG.map((planet, index) => {
-                          const isActive = hoveredId === planet.id || selectedId === planet.id;
-                          const accent = planet.colorPalette[0] ?? '#d8a24a';
-
-                          return (
-                            <motion.button
-                              key={planet.id}
-                              type="button"
-                              className={cn('command-deck__planet', isActive && 'command-deck__planet--active')}
-                              style={
-                                (isActive ? { borderLeftColor: accent } : {}) as Record<string, string>
-                              }
-                              onClick={() => NavigationController.explorePlanet(planet.id)}
-                              disabled={travelling}
-                              variants={fadeUp}
-                              initial="hidden"
-                              animate="visible"
-                              transition={fadeUpTransition(0.02 * index)}
-                              whileHover={{ y: -2 }}
-                              whileTap={{ scale: 0.98 }}
-                            >
-                              <span className="command-deck__planet-index">{String(index + 1).padStart(2, '0')}</span>
-                              <span className="command-deck__planet-copy">
-                                <span className="command-deck__planet-name">{planet.displayName}</span>
-                                <span className="command-deck__planet-desc">
-                                  {planet.description}
-                                  {planet.moons.length > 0
-                                    ? ` · ${planet.moons.length} moon${planet.moons.length > 1 ? 's' : ''}`
-                                    : ''}
-                                </span>
-                              </span>
-                              <KeyCap label={String(index + 1)} size="sm" />
-                            </motion.button>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  )}
-                </>
-              ) : (
-                <p className="command-deck__section-note type-body">
-                  Viewing {currentSection ?? 'sector'}. Press Esc or Return to orbit to keep exploring.
-                </p>
-              )}
-
-              <footer className="command-deck__footer">
-                <a href="/resume" className="command-deck__footer-link">
-                  Resume
-                </a>
-                <span className="command-deck__footer-hint type-label">Interactive solar portfolio</span>
-              </footer>
-            </motion.div>
-          ) : null}
-        </AnimatePresence>
+                <footer className="command-deck__footer">
+                  <a href="/resume" className="command-deck__footer-link">
+                    Resume
+                  </a>
+                  <span className="command-deck__footer-hint type-label">
+                    Interactive solar portfolio
+                  </span>
+                </footer>
+              </motion.div>
+            ) : null}
+          </AnimatePresence>
         </div>
       </motion.div>
     </>
