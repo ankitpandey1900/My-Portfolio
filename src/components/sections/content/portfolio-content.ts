@@ -37,6 +37,19 @@ export interface ServiceOffering {
   deliverables: string[];
 }
 
+export interface ResumeProfile {
+  name: string;
+  headline: string;
+  location: string;
+  summary: string;
+  availability: string;
+  metrics: Array<{
+    label: string;
+    value: string;
+  }>;
+  focusAreas: string[];
+}
+
 export const SECTION_META: Record<SectionId, SectionMeta> = {
   home: {
     id: 'home',
@@ -125,6 +138,30 @@ export const ABOUT_CONTENT = {
   focus: 'Full stack · System design · AI integration · TypeScript · Supabase · Next.js',
 };
 
+export const RESUME_PROFILE: ResumeProfile = {
+  name: 'Ankit Pandey',
+  headline:
+    'Full-stack developer building product systems, immersive web interfaces, and AI-assisted workflows.',
+  location: 'Pune, India',
+  summary:
+    'Software engineering student and product-focused developer with shipped projects across productivity, finance, network tooling, and cinematic 3D web experiences. Strongest in TypeScript, Next.js, React, Supabase, and practical product architecture.',
+  availability:
+    'Open to internships, full-stack roles, freelance builds, and high-signal collaborations.',
+  metrics: [
+    { label: 'Product Hours', value: '500+' },
+    { label: 'Live Projects', value: '6' },
+    { label: 'Primary Stack', value: 'TS/Next' },
+    { label: 'Timeline', value: '2024-2028' },
+  ],
+  focusAreas: [
+    'Full-stack product engineering',
+    'Cinematic UI and interaction design',
+    'Realtime dashboards and analytics',
+    'AI-assisted workflows',
+    'Database-backed SaaS architecture',
+  ],
+};
+
 export const PROJECTS: ProjectEntry[] = [
   {
     id: 'MSN-001',
@@ -184,8 +221,7 @@ export const PROJECTS: ProjectEntry[] = [
     id: 'MSN-006',
     name: 'Fitness Tracker',
     tagline: 'Cricket academy routines',
-    description:
-      'Daily fitness, weight, and habit tracker designed for cricket academy athletes.',
+    description: 'Daily fitness, weight, and habit tracker designed for cricket academy athletes.',
     stack: ['Web', 'Tracking', 'Analytics'],
     github: 'https://github.com/ankitpandey1900/fitness_tracker',
     status: 'live',
@@ -195,7 +231,8 @@ export const PROJECTS: ProjectEntry[] = [
 export const SERVICES: ServiceOffering[] = [
   {
     title: 'Full-Stack Product Builds',
-    description: 'End-to-end web apps from architecture to deployment — SaaS, dashboards, and tools.',
+    description:
+      'End-to-end web apps from architecture to deployment — SaaS, dashboards, and tools.',
     deliverables: ['System design', 'Frontend + backend', 'Database & auth', 'Production deploy'],
   },
   {
@@ -238,14 +275,16 @@ export const EXPERIENCE: TimelineEntry[] = [
     period: 'May 2026 — Present',
     role: 'Open Source Contributor',
     company: 'GirlScript Summer of Code',
-    description: 'Contributing to open-source projects — bug fixes, features, and collaborative Git workflows.',
+    description:
+      'Contributing to open-source projects — bug fixes, features, and collaborative Git workflows.',
     highlights: ['Open-source contributions', 'Git collaboration', 'Backend development'],
   },
   {
     period: 'May 2026 — Present',
     role: 'Web Developer',
     company: 'Freelance',
-    description: 'Building client websites with responsive UI, deployment, and ongoing maintenance.',
+    description:
+      'Building client websites with responsive UI, deployment, and ongoing maintenance.',
     highlights: ['Client delivery', 'Responsive design', 'Production deployment'],
   },
   {
@@ -262,7 +301,8 @@ export const EDUCATION = [
     degree: 'B.E. Information Technology',
     institution: 'I Square IT — International Institute of Information Technology, Pune',
     period: 'Sep 2024 — Jun 2028',
-    detail: 'Pursuing software engineering with focus on systems, web development, and product craft.',
+    detail:
+      'Pursuing software engineering with focus on systems, web development, and product craft.',
   },
   {
     degree: 'HSC Vocational Electronics',
@@ -279,7 +319,11 @@ export const EDUCATION = [
 ];
 
 export const HACKATHONS = [
-  { name: 'GirlScript Summer of Code', result: 'Contributor', project: 'Open-source contributions' },
+  {
+    name: 'GirlScript Summer of Code',
+    result: 'Contributor',
+    project: 'Open-source contributions',
+  },
   { name: 'Personal build sprints', result: 'Shipped', project: 'AllTracker — 500+ hour mission' },
 ];
 
