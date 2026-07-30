@@ -41,63 +41,6 @@ const IconInstagram = ({ className }: { className?: string }) => (
 const ease = [0.19, 1, 0.22, 1] as const;
 const slowEase = [0.25, 1, 0.25, 1] as const;
 
-/** Animated counter that counts up when element enters viewport */
-function AnimatedCounter({
-  target,
-  delay = 0,
-  suffix = '',
-}: {
-  target: string;
-  delay?: number;
-  suffix?: string;
-}) {
-  const ref = React.useRef<HTMLSpanElement>(null);
-  const inView = useInView(ref, { once: true, amount: 0.5 });
-  const numericPart = parseInt(target.replace(/\D/g, ''), 10);
-  const nonNumeric = target.replace(/[0-9]/g, '');
-  const [count, setCount] = React.useState(0);
-
-  React.useEffect(() => {
-    if (!inView) return;
-
-    const timeout = setTimeout(() => {
-      let frame: number;
-      // Scale duration based on the magnitude of the number
-      // Small numbers (6, 12) count slower per-digit, big numbers (800) count faster per-digit
-      const duration = numericPart <= 20 ? 2200 : numericPart <= 100 ? 2800 : 3400;
-      const start = performance.now();
-
-      const animate = (now: number) => {
-        const elapsed = now - start;
-        const progress = Math.min(elapsed / duration, 1);
-        // Smooth cubic ease-in-out: slow start → accelerate → slow finish
-        const eased =
-          progress < 0.5
-            ? 4 * progress * progress * progress
-            : 1 - Math.pow(-2 * progress + 2, 3) / 2;
-        setCount(Math.round(eased * numericPart));
-
-        if (progress < 1) {
-          frame = requestAnimationFrame(animate);
-        }
-      };
-
-      frame = requestAnimationFrame(animate);
-      return () => cancelAnimationFrame(frame);
-    }, delay * 1000);
-
-    return () => clearTimeout(timeout);
-  }, [inView, numericPart, delay]);
-
-  return (
-    <span ref={ref}>
-      {count}
-      {nonNumeric}
-      {suffix}
-    </span>
-  );
-}
-
 /** Scroll-triggered reveal wrapper */
 function Reveal({
   children,
@@ -661,7 +604,6 @@ export function HomeHero() {
               </div>
             </div>
 
-            {/* Apple/Tesla Typography applied to these specific numbers */}
             <motion.div
               className="flex flex-col sm:flex-row items-center md:items-end gap-8 sm:gap-6 md:gap-20 mb-10 md:mb-12 w-full max-w-lg"
               initial={{ opacity: 0 }}

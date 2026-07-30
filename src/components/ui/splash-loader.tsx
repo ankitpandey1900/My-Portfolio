@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 export function SplashLoader() {
   const [isLoading, setIsLoading] = React.useState(true);
   const [progress, setProgress] = React.useState(0);
+  const mountTime = React.useRef(performance.now());
 
   React.useEffect(() => {
     // Simulate progress while the page loads assets in background
@@ -42,25 +43,17 @@ export function SplashLoader() {
 
   React.useEffect(() => {
     if (progress >= 100) {
-      const timeout = setTimeout(() => setIsLoading(false), 600);
+      // Ensure the loader stays visible for at least 2.5s total
+      const minDisplayTime = 2500;
+      const elapsed = performance.now() - mountTime.current;
+      const remaining = Math.max(0, minDisplayTime - elapsed);
+      const timeout = setTimeout(() => setIsLoading(false), remaining + 400);
       return () => clearTimeout(timeout);
     }
   }, [progress]);
 
   return (
     <>
-      {/* Keyframes */}
-      <style jsx global>{`
-        @keyframes orbit-spin {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-        @keyframes planet-pulse {
-          0%, 100% { box-shadow: 0 0 20px rgba(251,146,60,0.3), inset -4px -4px 8px rgba(0,0,0,0.8); }
-          50% { box-shadow: 0 0 35px rgba(251,146,60,0.5), inset -4px -4px 8px rgba(0,0,0,0.8); }
-        }
-      `}</style>
-
       <AnimatePresence>
         {isLoading && (
           <motion.div
@@ -84,30 +77,33 @@ export function SplashLoader() {
             </div>
 
             {/* Orbiting planet system */}
-            <div className="relative w-32 h-32 mb-12">
+            <div className="relative w-40 h-40 mb-12">
               {/* Central glow */}
               <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-1 h-1 bg-orange-400 rounded-full shadow-[0_0_20px_8px_rgba(251,146,60,0.3)]" />
+                <div className="w-1.5 h-1.5 bg-orange-400 rounded-full shadow-[0_0_20px_8px_rgba(251,146,60,0.4)]" />
               </div>
 
-              {/* Orbit ring 1 */}
-              <div
-                className="absolute inset-2 border border-white/[0.06] rounded-full"
-                style={{ animation: 'orbit-spin 3s linear infinite' }}
+              {/* Orbit ring 1 (Mars-like) */}
+              <motion.div
+                className="absolute inset-4 border border-white/[0.08] rounded-full"
+                animate={{ rotate: 360 }}
+                transition={{ duration: 3, ease: 'linear', repeat: Infinity }}
               >
-                <div
-                  className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-gradient-to-br from-orange-400 via-red-600 to-red-900"
-                  style={{ animation: 'planet-pulse 2s ease-in-out infinite' }}
+                <motion.div
+                  className="absolute -top-2 left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-gradient-to-br from-orange-400 via-red-500 to-red-900 shadow-[inset_-4px_-4px_8px_rgba(0,0,0,0.8)]"
+                  animate={{ boxShadow: ['0 0 15px rgba(251,146,60,0.3)', '0 0 30px rgba(251,146,60,0.6)', '0 0 15px rgba(251,146,60,0.3)'] }}
+                  transition={{ duration: 2, ease: 'easeInOut', repeat: Infinity }}
                 />
-              </div>
+              </motion.div>
 
-              {/* Orbit ring 2 */}
-              <div
+              {/* Orbit ring 2 (Earth-like) */}
+              <motion.div
                 className="absolute inset-0 border border-white/[0.04] rounded-full"
-                style={{ animation: 'orbit-spin 5s linear infinite reverse' }}
+                animate={{ rotate: -360 }}
+                transition={{ duration: 5, ease: 'linear', repeat: Infinity }}
               >
-                <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-gradient-to-br from-blue-400 to-blue-800" />
-              </div>
+                <div className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-gradient-to-br from-blue-400 to-blue-800 shadow-[0_0_15px_rgba(59,130,246,0.5)]" />
+              </motion.div>
             </div>
 
             {/* Name + Progress */}
