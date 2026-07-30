@@ -4,6 +4,7 @@
 import * as React from 'react';
 import { useFrame } from '@react-three/fiber';
 import { useStore } from '@/lib/store';
+import { useSolarSystemSimulation } from '../solar-system-store';
 import { SunCorona } from './sun-corona';
 import { SunFlares } from './sun-flares';
 import { SunGlow } from './sun-glow';
@@ -39,9 +40,9 @@ export function SunContent() {
   }, [material]);
 
   // Animate core shader uTime uniform
-  useFrame((state) => {
+  useFrame(() => {
     if (!isRenderActive) return;
-    const elapsed = state.clock.getElapsedTime();
+    const { accumulatedTime: elapsed } = useSolarSystemSimulation.getState();
     if (material.uniforms.uTime) {
       material.uniforms.uTime.value = elapsed;
     }

@@ -1,8 +1,11 @@
 'use client';
 
-import { useFrame } from '@react-three/fiber';
+/* eslint-disable react-hooks/immutability */
 import * as React from 'react';
+import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
+import { useStore } from '@/lib/store';
+import { useSolarSystemSimulation } from '../solar-system-store';
 
 const DISK_VERTEX = /* glsl */ `
   varying vec2 vUv;
@@ -173,8 +176,12 @@ export function BlackHole() {
     };
   }, [diskMaterial, innerDiskMaterial, ringMaterial, lensMaterial]);
 
-  useFrame((state) => {
-    const t = state.clock.getElapsedTime();
+  useFrame(() => {
+    const isRenderActive = useStore.getState().isRenderActive;
+    if (!isRenderActive) return;
+
+    const t = useSolarSystemSimulation.getState().accumulatedTime;
+
     if (diskMaterial.uniforms.uTime) diskMaterial.uniforms.uTime.value = t;
     if (innerDiskMaterial.uniforms.uTime) innerDiskMaterial.uniforms.uTime.value = t * 1.35;
     if (ringMaterial.uniforms.uTime) ringMaterial.uniforms.uTime.value = t;
@@ -206,7 +213,14 @@ export function BlackHole() {
 
       <mesh ref={warpRef} rotation={[Math.PI / 2.12, 0, 0]}>
         <ringGeometry args={[14, 22, 128]} />
-        <meshBasicMaterial color="#ffcc88" transparent opacity={0.04} depthWrite={false} side={THREE.DoubleSide} blending={THREE.AdditiveBlending} />
+        <meshBasicMaterial
+          color="#ffcc88"
+          transparent
+          opacity={0.04}
+          depthWrite={false}
+          side={THREE.DoubleSide}
+          blending={THREE.AdditiveBlending}
+        />
       </mesh>
 
       <mesh ref={photonRef} rotation={[Math.PI / 2.15, 0, 0]}>

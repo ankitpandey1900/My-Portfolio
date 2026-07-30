@@ -48,4 +48,12 @@ export interface PlanetManifestEntry extends PlanetConfig {
   icon: string;
   /** Catalog status tracking visibility overrides. */
   status: 'active' | 'hidden' | 'seasonal' | 'premium' | 'experimental';
+  /** Real-world astronomical physics data for scanner HUD. */
+  physics: {
+    velocity: string;
+    rotation: string;
+    tilt: string;
+    gravity: string;
+    type: string;
+  };
 }

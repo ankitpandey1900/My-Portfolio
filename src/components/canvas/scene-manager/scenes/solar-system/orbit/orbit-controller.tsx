@@ -5,6 +5,7 @@ import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import { useStore } from '@/lib/store';
 import { useSolarSystem } from '../solar-system-provider';
+import { useSolarSystemSimulation } from '../solar-system-store';
 import { calculateCircularPosition } from './orbit-math';
 import { useOrbit } from './orbit-provider';
 
@@ -35,9 +36,11 @@ export function OrbitController({ children }: OrbitControllerProps) {
   }
 
   // Position updates loop executed on every frame
-  useFrame((stateContext) => {
+  useFrame(() => {
     if (!isRenderActive || state === 'paused' || state === 'stopped') return;
-    const elapsed = stateContext.clock.getElapsedTime();
+
+    const simState = useSolarSystemSimulation.getState();
+    const elapsed = simState.accumulatedTime;
 
     if (groupRef.current) {
       // Calculate coordinates dynamically on the CPU and copy to Three group mesh

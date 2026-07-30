@@ -338,7 +338,7 @@ export const CONTACT_INFO = {
   email: 'ankit1pandey11@gmail.com',
   calUrl: '',
   linkedin: 'https://www.linkedin.com/in/ankitpandey1900/',
-  twitter: 'https://x.com/AnkitPande5641',
+  twitter: 'https://x.com/ankitpandey190',
   availability: 'Open to full-stack roles, collaborations, and interesting builds',
 };
 

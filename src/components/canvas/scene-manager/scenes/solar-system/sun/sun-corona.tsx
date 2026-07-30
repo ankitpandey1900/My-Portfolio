@@ -5,6 +5,7 @@ import * as React from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import { useStore } from '@/lib/store';
+import { useSolarSystemSimulation } from '../solar-system-store';
 import { createSunCoronaMaterial } from './sun-material';
 
 interface SunCoronaProps {
@@ -48,8 +49,8 @@ export function SunCorona({
 
   // Update time animations and align billboard mesh to camera position
   useFrame((state) => {
-    if (!isRenderActive) return;
-    const elapsed = state.clock.getElapsedTime();
+    if (!material || !isRenderActive) return;
+    const { accumulatedTime: elapsed } = useSolarSystemSimulation.getState();
     if (material.uniforms.uTime) {
       material.uniforms.uTime.value = elapsed;
     }

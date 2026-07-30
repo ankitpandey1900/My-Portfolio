@@ -1,19 +1,21 @@
 'use client';
 
+/* eslint-disable react-hooks/immutability */
 import * as React from 'react';
 import { Suspense } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
+import { DraggableObject } from '@/components/canvas/interaction/draggable-object';
 import { useStore } from '@/lib/store';
 import { PlanetRenderer } from '../generator/planet-renderer';
 import { PlanetInteraction } from '../interaction/planet-interaction';
 import { useSolarSystem } from '../solar-system-provider';
+import { useSolarSystemSimulation } from '../solar-system-store';
+import { MoonOrbit } from './moon-orbit';
 import { PlanetManager } from './planet-manager';
 import type { PlanetManifestEntry } from './planet-manifest';
 import { usePlanet } from './planet-provider';
-import { MoonOrbit } from './moon-orbit';
 import { degToRad } from './planet-utilities';
-import { DraggableObject } from '@/components/canvas/interaction/draggable-object';
 
 function createAtmosphereMaterial(color: string, opacity: number): THREE.ShaderMaterial {
   return new THREE.ShaderMaterial({
@@ -68,7 +70,11 @@ function createAtmosphereMaterial(color: string, opacity: number): THREE.ShaderM
   });
 }
 
-function createRingMaterial(color: string, innerRadius: number, outerRadius: number): THREE.ShaderMaterial {
+function createRingMaterial(
+  color: string,
+  innerRadius: number,
+  outerRadius: number
+): THREE.ShaderMaterial {
   return new THREE.ShaderMaterial({
     transparent: true,
     depthWrite: false,
@@ -237,8 +243,9 @@ function VenusCloudShell({ radius }: { radius: number }) {
 
   React.useEffect(() => () => material.dispose(), [material]);
 
-  useFrame((state) => {
-    if (material.uniforms.uTime) material.uniforms.uTime.value = state.clock.getElapsedTime();
+  useFrame(() => {
+    const simState = useSolarSystemSimulation.getState();
+    if (material.uniforms.uTime) material.uniforms.uTime.value = simState.accumulatedTime;
   });
 
   return (
@@ -287,7 +294,8 @@ export function PlanetComponent() {
     if (!isRenderActive) return;
 
     if (coreRef.current) {
-      coreRef.current.rotation.y += config.rotationSpeed * delta * timeScale;
+      const simState = useSolarSystemSimulation.getState();
+      coreRef.current.rotation.y += config.rotationSpeed * delta * timeScale * simState.timeScale;
     }
   });
 

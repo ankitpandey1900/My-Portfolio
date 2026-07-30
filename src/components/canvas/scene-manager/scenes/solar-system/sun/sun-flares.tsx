@@ -1,8 +1,10 @@
 'use client';
 
-import { useFrame } from '@react-three/fiber';
+/* eslint-disable react-hooks/immutability */
 import * as React from 'react';
+import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
+import { useSolarSystemSimulation } from '../solar-system-store';
 
 const FLARE_COUNT = 14;
 
@@ -65,9 +67,9 @@ export function SunFlares({ radius, color }: SunFlaresProps) {
     };
   }, [geometry, material]);
 
-  useFrame((state) => {
+  useFrame(() => {
     if (!groupRef.current) return;
-    const t = state.clock.getElapsedTime();
+    const { accumulatedTime: t } = useSolarSystemSimulation.getState();
     groupRef.current.rotation.y = t * 0.04;
     groupRef.current.rotation.z = Math.sin(t * 0.15) * 0.05;
     material.opacity = 0.32 + Math.sin(t * 0.8) * 0.08;

@@ -1,6 +1,5 @@
 import * as THREE from 'three';
 import type { PlanetManifestEntry } from '../planet/planet-manifest';
-import { PlanetLoader } from './planet-loader';
 import {
   createEarthMaterial,
   createGasGiantMaterial,
@@ -12,6 +11,7 @@ import {
   createRockyPlanetMaterial,
   createVenusMaterial,
 } from '../planet/planet-materials';
+import { PlanetLoader } from './planet-loader';
 
 function createSpecializedMaterial(entry: PlanetManifestEntry): THREE.Material {
   switch (entry.id) {
@@ -27,7 +27,9 @@ function createSpecializedMaterial(entry: PlanetManifestEntry): THREE.Material {
       return createGasGiantMaterial(['#6a4224', '#a87242', '#d8a868'], '#c04820');
     case 'saturn-experience':
       return createGasGiantMaterial(['#9a7848', '#c8a870', '#ead8a8'], '#d8b878');
-    case 'neptune-github':
+    case 'uranus-github':
+      return createIceGiantMaterial('#48a8c0', '#78d8e8', '#a8f8f8');
+    case 'neptune-contact':
       return createIceGiantMaterial('#142838', '#2a5878', '#6a98c0');
     case 'pluto-contact':
       return createPlutoMaterial();

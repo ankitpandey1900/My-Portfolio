@@ -6,5 +6,5 @@ tests/e2e/test-results
 playwright-report
 coverage
 *.md
-.env*
+.env*when i scrooll o
 !.env.example

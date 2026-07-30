@@ -10,8 +10,8 @@ export const NAVIGATION_CONFIG: Record<string, string> = {
   'mars-services': 'services',
   'jupiter-skills': 'skills',
   'saturn-experience': 'experience',
-  'neptune-github': 'github',
-  'pluto-contact': 'contact',
+  'uranus-github': 'github',
+  'neptune-contact': 'contact',
 };
 
 export const reverseNavigationMap = (): Record<string, string> => {

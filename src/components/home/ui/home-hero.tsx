@@ -516,7 +516,8 @@ export function HomeHero() {
   const [isLaunching, setIsLaunching] = React.useState(false);
 
   // Scroll-driven transforms
-  const { scrollYProgress } = useScroll({ container: containerRef });
+  const shouldRender = mounted && isVisible;
+  const { scrollYProgress } = useScroll(shouldRender ? { container: containerRef } : undefined);
   const heroTextY = useTransform(scrollYProgress, [0, 0.25], [0, -60]);
 
   const handleLaunch = React.useCallback(() => {
@@ -988,7 +989,7 @@ export function HomeHero() {
                   <div className="flex justify-between items-start mb-6">
                     <div className="relative w-14 h-14 shrink-0 rounded-2xl bg-white/[0.02] border border-white/[0.05] flex items-center justify-center overflow-hidden">
                       <Image
-                        src="/assets/logos/ipwala.png"
+                        src="https://ipwala.vercel.app/ip-icon.png"
                         alt="IP Wala Logo"
                         width={50}
                         height={50}
@@ -1540,7 +1541,7 @@ export function HomeHero() {
             {/* Center: Social Icons (Larger and Spaced) */}
             <div className="flex items-center justify-center gap-4">
               {[
-                { name: 'X', Icon: IconX, href: 'https://x.com/AnkitPande5641' },
+                { name: 'X', Icon: IconX, href: 'https://x.com/ankitpandey190' },
                 {
                   name: 'LinkedIn',
                   Icon: IconLinkedIn,
