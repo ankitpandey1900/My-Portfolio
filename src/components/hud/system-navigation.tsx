@@ -148,7 +148,7 @@ export function SystemNavigation() {
 
       <motion.div
         className={cn(
-          'fixed z-40 bottom-6 left-1/2 -translate-x-1/2 w-full max-w-2xl px-4',
+          'fixed z-40 bottom-6 left-1/2 -translate-x-1/2 w-full max-w-[800px] px-4',
           expanded ? 'bottom-6' : 'bottom-6',
           travelling && 'pointer-events-none opacity-50'
         )}
@@ -163,27 +163,27 @@ export function SystemNavigation() {
           <div className="flex items-center justify-between p-2 pl-6">
             <button
               type="button"
-              className="flex items-center gap-4 hover:opacity-80 transition-opacity flex-1 text-left"
+              className="flex items-center gap-4 hover:opacity-80 transition-opacity flex-1 text-left min-w-[120px]"
               aria-expanded={expanded}
               onClick={() => setExpanded((open) => !open)}
             >
               <span
                 className={cn(
-                  'w-2.5 h-2.5 rounded-full shadow-[0_0_10px_currentColor]',
+                  'w-2.5 h-2.5 rounded-full shrink-0 shadow-[0_0_10px_currentColor]',
                   !travelling && !inSection
                     ? 'bg-green-500 text-green-500 animate-pulse'
                     : 'bg-amber-500 text-amber-500'
                 )}
                 aria-hidden
               />
-              <span className="flex flex-col">
-                <span className="text-white font-semibold tracking-tight text-sm">
+              <span className="flex flex-col truncate">
+                <span className="text-white font-semibold tracking-tight text-sm truncate">
                   Mission Control
                 </span>
-                <span className="text-zinc-400 text-xs font-medium">{statusLabel}</span>
+                <span className="text-zinc-400 text-xs font-medium truncate">{statusLabel}</span>
               </span>
               <motion.span
-                className="text-zinc-500 text-xs ml-2"
+                className="text-zinc-500 text-xs ml-2 shrink-0"
                 animate={{ rotate: expanded ? 180 : 0 }}
                 transition={{ duration: 0.35, ease: [0.19, 1, 0.22, 1] }}
                 aria-hidden
@@ -193,10 +193,10 @@ export function SystemNavigation() {
             </button>
 
             {!expanded && !inSection ? (
-              <div className="flex items-center gap-3 sm:gap-5 pr-2" aria-label="Quick actions">
+              <div className="flex items-center gap-2 sm:gap-4 pr-2" aria-label="Quick actions">
                 <button
                   type="button"
-                  className="hidden sm:flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/[0.03] hover:bg-white/[0.08] transition-all border border-white/10 text-white/70 text-[11px] font-sans font-semibold tracking-wide"
+                  className="hidden sm:flex shrink-0 items-center gap-2 px-4 py-1.5 rounded-full bg-white/[0.03] hover:bg-white/[0.08] transition-all border border-white/10 text-white/70 text-[11px] font-sans font-semibold tracking-wide whitespace-nowrap"
                   onClick={() => NavigationController.viewSystemOverview()}
                   disabled={travelling}
                 >
@@ -204,7 +204,7 @@ export function SystemNavigation() {
                   <KeyCap label="0" size="sm" />
                 </button>
                 <div
-                  className="hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/[0.02] border border-white/[0.05]"
+                  className="hidden lg:flex shrink-0 items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/[0.02] border border-white/[0.05]"
                   aria-hidden
                 >
                   <KeyCap label="W" active={isPressed('w')} size="sm" />
@@ -214,7 +214,7 @@ export function SystemNavigation() {
                 </div>
                 <button
                   type="button"
-                  className="hidden sm:flex items-center gap-2 px-4 py-1.5 rounded-full bg-orange-500/[0.05] hover:bg-orange-500/[0.15] transition-all border border-orange-500/20 text-orange-400/90 text-[11px] font-sans font-semibold tracking-wide"
+                  className="hidden sm:flex shrink-0 items-center gap-2 px-4 py-1.5 rounded-full bg-orange-500/[0.05] hover:bg-orange-500/[0.15] transition-all border border-orange-500/20 text-orange-400/90 text-[11px] font-sans font-semibold tracking-wide whitespace-nowrap"
                   onClick={() => NavigationController.viewBlackHole()}
                   disabled={travelling}
                 >
@@ -223,7 +223,7 @@ export function SystemNavigation() {
                 </button>
                 <button
                   type="button"
-                  className="px-5 py-2 rounded-full bg-white text-black hover:bg-white/90 hover:scale-105 active:scale-95 transition-all text-[10px] font-sans font-bold uppercase tracking-widest shadow-[0_0_20px_rgba(255,255,255,0.15)] ml-2 sm:ml-0"
+                  className="shrink-0 px-5 py-2 rounded-full bg-white text-black hover:bg-white/90 hover:scale-105 active:scale-95 transition-all text-[10px] font-sans font-bold uppercase tracking-widest shadow-[0_0_20px_rgba(255,255,255,0.15)] ml-2 sm:ml-0 whitespace-nowrap"
                   onClick={() => {
                     setTab('destinations');
                     setExpanded(true);

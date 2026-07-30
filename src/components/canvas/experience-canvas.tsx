@@ -49,7 +49,7 @@ export function ExperienceCanvas() {
         </CameraTravelProvider>
         <EffectsPipeline />
         <RenderPipeline />
-        <Minimap />
+
         {debugHud ? <DebugPanel /> : null}
       </AssetLoaderManager>
     </CanvasProvider>

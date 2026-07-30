@@ -10,13 +10,16 @@ export class CameraPathGenerator {
    * Future expansion: CatmullRomCurve3 for multi-point cinematic sweeps.
    */
   static generateCurve(start: THREE.Vector3, end: THREE.Vector3, controlPoint?: THREE.Vector3) {
-    // Default to an upward arc if no control point is provided
+    // Exaggerated GTA-style arc: calculate height based on distance, but with a minimum
+    const distance = start.distanceTo(end);
+    const arcHeight = Math.max(distance * 0.65, 25);
+    
     const cp =
       controlPoint ||
       start
         .clone()
         .lerp(end, 0.5)
-        .add(new THREE.Vector3(0, Math.abs(start.distanceTo(end) * 0.2), 0));
+        .add(new THREE.Vector3(0, arcHeight, 0));
 
     const curve = new THREE.QuadraticBezierCurve3(start, cp, end);
 

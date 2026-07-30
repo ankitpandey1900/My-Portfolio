@@ -156,7 +156,6 @@ export const NavigationController = {
       onComplete: () => {
         useNavigationStore.getState().resetNavigation();
         useStore.getState().setCameraMode('orbit');
-        useStore.getState().setCameraPreset('galaxy');
         useCameraTravelStore.getState().setState('idle');
         NavigationEvents.emit('NavigationReset', { timestamp: Date.now() });
       },

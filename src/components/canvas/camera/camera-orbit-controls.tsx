@@ -38,8 +38,14 @@ export function CameraOrbitControls() {
     : 6;
   const maxDistance = exploringPlanet ? Math.max((focusedPlanet?.cameraDistance ?? 8) * 2.4, 48) : 220;
 
+  const previousPlanetPosRef = React.useRef(new THREE.Vector3());
+
   useFrame((state) => {
-    if (!controls || !enabled) return;
+    if (!controls || !enabled) {
+      // Reset tracking state if disabled
+      previousPlanetPosRef.current.set(0, 0, 0);
+      return;
+    }
 
     if (exploringPlanet && currentPlanetId) {
       const planetPos = CameraTargetResolver.resolvePlanetPosition(
@@ -48,12 +54,21 @@ export function CameraOrbitControls() {
         DEFAULT_SOLAR_CONFIG.timeScale,
         DEFAULT_SOLAR_CONFIG.orbitSpeedMultiplier
       );
-      planetTargetRef.current.copy(planetPos);
-      targetRef.current.lerp(planetTargetRef.current, 0.12);
-      controls.target.copy(targetRef.current);
+      
+      // If we already have a previous position, calculate how much the planet moved
+      if (previousPlanetPosRef.current.lengthSq() > 0) {
+        const delta = new THREE.Vector3().subVectors(planetPos, previousPlanetPosRef.current);
+        
+        // Move both the controls target and the camera itself by the delta 
+        // to stay locked onto the moving planet without fighting manual panning.
+        controls.target.add(delta);
+        state.camera.position.add(delta);
+      }
+      
+      previousPlanetPosRef.current.copy(planetPos);
     } else {
-      // Sync internal ref to user's manual pan, instead of forcing back to sun
-      targetRef.current.copy(controls.target);
+      // Not exploring a planet, reset the tracking ref
+      previousPlanetPosRef.current.set(0, 0, 0);
     }
 
     controls.minDistance = minDistance;

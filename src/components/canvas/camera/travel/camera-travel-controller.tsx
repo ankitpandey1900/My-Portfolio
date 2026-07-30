@@ -88,6 +88,8 @@ export function CameraTravelController() {
         startTime: state.clock.getElapsedTime(),
         duration: durationSec,
         easing: CameraAnimator.getEasingFunction(store.currentRequest.easing),
+        baseFov: camera.fov,
+        isLongDistance: camera.position.distanceTo(endPos) > 25,
       };
 
       store.setState('travelling');
@@ -106,10 +108,30 @@ export function CameraTravelController() {
 
       camera.position.copy(nextPos);
       camera.lookAt(nextLook);
+      
+      // Apply Warp Speed FOV stretching
+      if (activePathRef.current.isLongDistance) {
+        const warpAmount = Math.sin(progress * Math.PI) * 45; // stretches up to +45 degrees
+        camera.fov = activePathRef.current.baseFov + warpAmount;
+        camera.updateProjectionMatrix();
+      }
+
       store.setProgress(progress);
 
       if (progress >= 1.0) {
         store.setState('idle');
+        
+        // Restore FOV to normal
+        if (activePathRef.current.isLongDistance) {
+          camera.fov = activePathRef.current.baseFov;
+          camera.updateProjectionMatrix();
+        }
+        
+        // Sync the OrbitControls target so it doesn't snap back when re-enabled
+        if (state.controls) {
+          (state.controls as any).target.copy(nextLook);
+        }
+
         store.currentRequest?.onComplete?.();
       }
     }
