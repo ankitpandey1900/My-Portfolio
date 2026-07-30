@@ -83,6 +83,12 @@ export function SystemNavigation() {
         return;
       }
 
+      if (event.key.toLowerCase() === 'b') {
+        event.preventDefault();
+        NavigationController.viewBlackHole();
+        return;
+      }
+
       const index = Number.parseInt(event.key, 10);
       if (index >= 1 && index <= CATALOG.length) {
         event.preventDefault();
@@ -206,6 +212,15 @@ export function SystemNavigation() {
                   <KeyCap label="S" active={isPressed('s')} size="sm" />
                   <KeyCap label="D" active={isPressed('d')} size="sm" />
                 </div>
+                <button
+                  type="button"
+                  className="hidden sm:flex items-center gap-2 px-4 py-1.5 rounded-full bg-orange-500/[0.05] hover:bg-orange-500/[0.15] transition-all border border-orange-500/20 text-orange-400/90 text-[11px] font-sans font-semibold tracking-wide"
+                  onClick={() => NavigationController.viewBlackHole()}
+                  disabled={travelling}
+                >
+                  <span>Black Hole</span>
+                  <KeyCap label="B" size="sm" />
+                </button>
                 <button
                   type="button"
                   className="px-5 py-2 rounded-full bg-white text-black hover:bg-white/90 hover:scale-105 active:scale-95 transition-all text-[10px] font-sans font-bold uppercase tracking-widest shadow-[0_0_20px_rgba(255,255,255,0.15)] ml-2 sm:ml-0"

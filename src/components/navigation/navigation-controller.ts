@@ -1,8 +1,8 @@
-import { useCameraTravelStore } from '../canvas/camera/travel/camera-travel-state';
+import { useStore } from '@/lib/store';
 import { CAMERA_PRESETS } from '../canvas/camera/camera-presets';
+import { useCameraTravelStore } from '../canvas/camera/travel/camera-travel-state';
 import { useInteractionStore } from '../canvas/scene-manager/scenes/solar-system/interaction/interaction-state';
 import { PlanetRegistry } from '../canvas/scene-manager/scenes/solar-system/planet/planet-registry';
-import { useStore } from '@/lib/store';
 import { SectionLoaderController } from '../section-loader/section-loader-controller';
 import { useSectionLoaderStore } from '../section-loader/section-loader-state';
 import { NavigationEvents } from './navigation-events';
@@ -26,18 +26,11 @@ export const NavigationController = {
     const cameraStore = useCameraTravelStore.getState();
     const { durationMs = 2200, cameraDistanceScale = 1, openSection = false } = options;
 
-    if (
-      navStore.currentPlanetId === planetId &&
-      navStore.state === 'viewingSection'
-    ) {
+    if (navStore.currentPlanetId === planetId && navStore.state === 'viewingSection') {
       return;
     }
 
-    if (
-      navStore.currentPlanetId === planetId &&
-      navStore.state === 'focused' &&
-      !openSection
-    ) {
+    if (navStore.currentPlanetId === planetId && navStore.state === 'focused' && !openSection) {
       return;
     }
 
@@ -135,6 +128,35 @@ export const NavigationController = {
         useNavigationStore.getState().resetNavigation();
         useStore.getState().setCameraMode('orbit');
         useStore.getState().setCameraPreset('system');
+        useCameraTravelStore.getState().setState('idle');
+        NavigationEvents.emit('NavigationReset', { timestamp: Date.now() });
+      },
+    });
+  },
+
+  viewBlackHole: () => {
+    const navStore = useNavigationStore.getState();
+    const cameraStore = useCameraTravelStore.getState();
+
+    SectionLoaderController.cancelLoading();
+    useSectionLoaderStore.getState().reset();
+    useInteractionStore.getState().setSelected(null);
+    useInteractionStore.getState().setHovered(null);
+
+    navStore.setState('idle');
+    navStore.setSection(null);
+    useStore.getState().setCameraMode('transitioning');
+
+    cameraStore.queueTravel({
+      targetId: null,
+      targetPosition: [-65, 5, -45],
+      targetLookAt: [-82, -8, -58],
+      durationMs: 2800,
+      easing: 'ease-in-out',
+      onComplete: () => {
+        useNavigationStore.getState().resetNavigation();
+        useStore.getState().setCameraMode('orbit');
+        useStore.getState().setCameraPreset('galaxy');
         useCameraTravelStore.getState().setState('idle');
         NavigationEvents.emit('NavigationReset', { timestamp: Date.now() });
       },
