@@ -28,9 +28,10 @@ export function PlanetNav() {
         <div 
           className="absolute inset-0 rounded-full"
           style={{
-            backgroundImage: "url('https://www.solarsystemscope.com/textures/download/2k_mars.jpg')",
+            backgroundImage: "url('/assets/planet-surface.png')",
             backgroundSize: "200% 100%",
-            animation: "mars-rotate 25s linear infinite",
+            animation: "mars-rotate 20s linear infinite",
+            filter: "hue-rotate(20deg) saturate(1.5) brightness(1.2)", // Make it look more Mars-like
           }}
         />
         

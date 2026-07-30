@@ -154,7 +154,7 @@ export const RESUME_PROFILE: ResumeProfile = {
   availability:
     'Open to internships, full-stack roles, freelance builds, and high-signal collaborations.',
   metrics: [
-    { label: 'Product Hours', value: '500+' },
+    { label: 'Product Hours', value: '800+' },
     { label: 'Live Projects', value: '6' },
     { label: 'Primary Stack', value: 'TS/Next' },
     { label: 'Timeline', value: '2024-2028' },
@@ -277,14 +277,6 @@ export const SKILL_GROUPS: SkillGroup[] = [
 ];
 
 export const EXPERIENCE: TimelineEntry[] = [
-  {
-    period: 'May 2026 — Present',
-    role: 'Open Source Contributor',
-    company: 'GirlScript Summer of Code',
-    description:
-      'Contributing to open-source projects — bug fixes, features, and collaborative Git workflows.',
-    highlights: ['Open-source contributions', 'Git collaboration', 'Backend development'],
-  },
   {
     period: 'May 2026 — Present',
     role: 'Web Developer',

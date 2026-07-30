@@ -51,74 +51,86 @@ export default function ResumePage() {
         </nav>
 
         {/* Hero Section */}
-        <header className="mb-20">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-white/60 text-xs font-semibold tracking-widest uppercase mb-8">
-            <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-            Candidate Dossier
+        <header className="mb-24">
+          <div className="inline-flex items-center gap-2.5 px-3 py-1 rounded-full bg-white/[0.03] border border-white/10 text-white/60 text-[10px] font-semibold tracking-[0.2em] uppercase mb-8 shadow-[0_0_20px_rgba(255,255,255,0.03)] backdrop-blur-md">
+            <span className="w-1.5 h-1.5 rounded-full bg-orange-500/80 shadow-[0_0_8px_rgba(249,115,22,0.8)]" />
+            Curriculum Vitae
           </div>
 
-          <h1 className="text-4xl sm:text-5xl md:text-7xl font-display font-extrabold tracking-tight mb-6 bg-clip-text text-transparent bg-gradient-to-br from-white to-white/50">
+          <h1 className="text-5xl sm:text-6xl md:text-8xl font-sans font-bold tracking-tighter mb-6 text-white">
             {RESUME_PROFILE.name}
           </h1>
 
-          <p className="text-xl md:text-2xl text-white/60 font-light max-w-2xl mb-10 leading-relaxed">
+          <p className="text-xl md:text-2xl text-white/60 font-light max-w-2xl mb-12 leading-relaxed">
             {RESUME_PROFILE.headline}
           </p>
 
           {/* Contact Bar */}
-          <div className="flex flex-wrap items-center gap-3 sm:gap-4 text-sm font-medium">
+          <div className="flex flex-wrap items-center gap-6 text-sm font-medium">
             <a
               href={`mailto:${CONTACT_INFO.email}`}
-              className="lowercase inline-flex items-center gap-2.5 px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all text-white/80 hover:text-white"
+              className="group flex items-center gap-2 text-white/60 hover:text-white transition-colors"
             >
-              <Mail className="w-4 h-4 text-white/50" />
-              {CONTACT_INFO.email.toLowerCase()}
+              <Mail className="w-4 h-4 text-white/40 group-hover:text-white transition-colors" />
+              <span className="border-b border-transparent group-hover:border-white/20 pb-0.5 transition-all">
+                {CONTACT_INFO.email.toLowerCase()}
+              </span>
             </a>
+            
             <a
               href={CONTACT_INFO.linkedin}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2.5 px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all text-white/80 hover:text-white"
+              className="group flex items-center gap-2 text-white/60 hover:text-white transition-colors"
             >
-              <IconLinkedIn className="w-4 h-4 text-white/50" />
-              LinkedIn
+              <IconLinkedIn className="w-4 h-4 text-white/40 group-hover:text-white transition-colors" />
+              <span className="border-b border-transparent group-hover:border-white/20 pb-0.5 transition-all">
+                LinkedIn
+              </span>
             </a>
+            
             <a
               href={GITHUB_STATS.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2.5 px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all text-white/80 hover:text-white"
+              className="group flex items-center gap-2 text-white/60 hover:text-white transition-colors"
             >
-              <IconGitHub className="w-4 h-4 text-white/50" />
-              GitHub
+              <IconGitHub className="w-4 h-4 text-white/40 group-hover:text-white transition-colors" />
+              <span className="border-b border-transparent group-hover:border-white/20 pb-0.5 transition-all">
+                GitHub
+              </span>
             </a>
-            <div className="inline-flex items-center gap-2.5 px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white/60">
-              <MapPin className="w-4 h-4 text-white/40" />
-              {RESUME_PROFILE.location}
+            
+            <div className="flex items-center gap-2 text-white/40">
+              <MapPin className="w-4 h-4" />
+              <span>{RESUME_PROFILE.location}</span>
             </div>
           </div>
         </header>
 
         {/* Summary & Metrics */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 mb-20">
-          <div className="md:col-span-2 p-8 rounded-3xl bg-white/[0.02] border border-white/[0.05] backdrop-blur-md">
-            <h2 className="text-sm font-bold uppercase tracking-widest text-white/40 mb-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-24">
+          {/* Main Summary Card */}
+          <div className="lg:col-span-2 p-8 sm:p-12 rounded-3xl bg-white/[0.02] border border-white/[0.04] hover:bg-white/[0.03] transition-colors flex flex-col justify-center">
+            <h2 className="text-xs font-semibold tracking-[0.25em] uppercase text-white/40 mb-6">
               Profile Summary
             </h2>
-            <p className="text-white/70 leading-loose font-light text-lg">
+            <p className="text-white/80 leading-relaxed font-light text-lg sm:text-xl md:leading-[1.8]">
               {RESUME_PROFILE.summary}
             </p>
           </div>
-          <div className="grid grid-cols-3 md:grid-cols-1 md:flex md:flex-col gap-3 sm:gap-4">
+          
+          {/* 2x2 Metrics Grid */}
+          <div className="grid grid-cols-2 gap-4 h-full">
             {RESUME_PROFILE.metrics.map((metric) => (
               <div
                 key={metric.label}
-                className="p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-white/[0.02] border border-white/[0.05] backdrop-blur-md flex-1 flex flex-col justify-center items-center text-center group hover:bg-white/[0.04] transition-colors"
+                className="p-6 rounded-3xl bg-white/[0.02] border border-white/[0.04] flex flex-col justify-center items-center text-center group hover:bg-white/[0.04] transition-colors h-full min-h-[140px]"
               >
-                <span className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-white mb-1 sm:mb-2 group-hover:scale-110 transition-transform">
+                <span className="text-3xl sm:text-4xl font-sans font-medium text-white tracking-tight mb-2 group-hover:scale-105 transition-transform duration-500 ease-out">
                   {metric.value}
                 </span>
-                <span className="text-xs font-semibold uppercase tracking-widest text-white/40">
+                <span className="text-[10px] sm:text-xs font-medium uppercase tracking-[0.15em] text-white/40">
                   {metric.label}
                 </span>
               </div>
@@ -131,70 +143,74 @@ export default function ResumePage() {
           <div className="flex items-center gap-4 mb-10">
             <span className="text-white/20 font-display font-bold text-2xl">01</span>
             <h2 className="text-2xl font-bold tracking-tight">Experience</h2>
-            <div className="h-px bg-white/10 flex-1 ml-4" />
+            <div className="h-px bg-gradient-to-r from-white/10 to-transparent flex-1 ml-4" />
           </div>
 
-          <div className="space-y-6">
+          <div className="relative border-l border-white/10 ml-4 md:ml-6 space-y-12">
             {EXPERIENCE.map((entry, idx) => (
-              <div
-                key={idx}
-                className="p-8 rounded-3xl bg-white/[0.02] border border-white/[0.05] hover:bg-white/[0.04] transition-all group"
-              >
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+              <div key={idx} className="relative pl-8 md:pl-12 group">
+                {/* Timeline Dot */}
+                <div className="absolute -left-[5px] top-1.5 w-2.5 h-2.5 rounded-full bg-orange-500 shadow-[0_0_10px_rgba(249,115,22,0.6)] group-hover:scale-150 transition-transform duration-300" />
+
+                <div className="flex flex-col md:flex-row md:items-baseline justify-between gap-2 mb-4">
                   <div>
-                    <h3 className="text-xl font-bold text-white mb-1 group-hover:text-blue-400 transition-colors">
+                    <h3 className="text-2xl font-display font-bold text-white mb-1 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-orange-400 group-hover:to-amber-500 transition-all">
                       {entry.role}
                     </h3>
-                    <p className="text-white/50 font-medium">{entry.company}</p>
+                    <p className="text-white/60 font-medium text-lg">{entry.company}</p>
                   </div>
-                  <div className="inline-flex items-center px-3 py-1 rounded-full bg-white/5 text-white/40 text-xs font-semibold tracking-widest uppercase">
+                  <div className="inline-flex items-center text-orange-400/80 text-sm font-mono font-semibold tracking-widest uppercase mt-2 md:mt-0">
                     {entry.period}
                   </div>
                 </div>
-                <p className="text-white/70 mb-6 leading-relaxed font-light">{entry.description}</p>
-                <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                  {entry.highlights.map((highlight, hIdx) => (
-                    <li
-                      key={hIdx}
-                      className="flex items-start gap-3 text-sm text-white/60 leading-relaxed"
-                    >
-                      <span className="mt-1.5 w-1 h-1 rounded-full bg-blue-500/50 shrink-0" />
-                      {highlight}
-                    </li>
-                  ))}
-                </ul>
+                
+                <div className="p-6 md:p-8 rounded-3xl bg-white/[0.02] border border-white/[0.05] group-hover:bg-white/[0.04] transition-all relative overflow-hidden">
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-orange-500/5 rounded-full blur-[40px] translate-x-1/2 -translate-y-1/2 group-hover:bg-orange-500/10 transition-colors pointer-events-none" />
+                  <p className="text-white/70 mb-6 leading-relaxed font-light text-sm md:text-base">{entry.description}</p>
+                  <ul className="flex flex-col gap-3">
+                    {entry.highlights.map((highlight, hIdx) => (
+                      <li
+                        key={hIdx}
+                        className="flex items-start gap-3 text-sm md:text-base text-white/60 leading-relaxed"
+                      >
+                        <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-orange-500/50 shrink-0" />
+                        {highlight}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
             ))}
           </div>
         </section>
 
         {/* Projects Section */}
-        <section className="mb-20">
-          <div className="flex items-center gap-4 mb-10">
-            <span className="text-white/20 font-display font-bold text-2xl">02</span>
+        <section className="mb-24">
+          <div className="flex items-center gap-4 mb-12">
+            <span className="text-white/20 font-sans font-light text-2xl">02</span>
             <h2 className="text-2xl font-bold tracking-tight">Selected Projects</h2>
-            <div className="h-px bg-white/10 flex-1 ml-4" />
+            <div className="h-px bg-gradient-to-r from-white/10 to-transparent flex-1 ml-4" />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {PROJECTS.map((project) => (
               <div
                 key={project.id}
-                className="p-8 rounded-3xl bg-white/[0.02] border border-white/[0.05] hover:bg-white/[0.04] hover:-translate-y-1 transition-all group flex flex-col h-full"
+                className="p-8 rounded-3xl bg-white/[0.02] border border-white/[0.04] hover:bg-white/[0.03] hover:-translate-y-1 transition-all group flex flex-col h-full"
               >
                 <div className="flex items-center justify-between mb-4">
-                  <span className="text-xs font-bold font-mono text-white/30 tracking-wider">
+                  <span className="text-xs font-medium tracking-widest text-white/30 uppercase">
                     {project.id}
                   </span>
-                  <div className="flex gap-3">
+                  <div className="flex gap-4">
                     {project.github && (
                       <a
                         href={project.github}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-white/40 hover:text-white transition-colors"
+                        className="text-white/30 hover:text-white transition-colors"
                       >
-                        <IconGitHub className="w-5 h-5" />
+                        <IconGitHub className="w-4 h-4" />
                       </a>
                     )}
                     {project.href && (
@@ -202,14 +218,16 @@ export default function ResumePage() {
                         href={project.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-white/40 hover:text-white transition-colors"
+                        className="text-white/30 hover:text-white transition-colors"
                       >
-                        <ExternalLink className="w-5 h-5" />
+                        <ExternalLink className="w-4 h-4" />
                       </a>
                     )}
                   </div>
                 </div>
-                <h3 className="text-xl font-bold text-white mb-3">{project.name}</h3>
+                <h3 className="text-xl font-sans font-semibold text-white mb-3 group-hover:text-blue-400 transition-colors">
+                  {project.name}
+                </h3>
                 <p className="text-white/60 text-sm leading-relaxed mb-8 flex-1 font-light">
                   {project.description}
                 </p>
@@ -217,7 +235,7 @@ export default function ResumePage() {
                   {project.stack.map((tech) => (
                     <span
                       key={tech}
-                      className="px-2.5 py-1 rounded-md bg-white/5 text-white/50 text-[10px] font-semibold tracking-wider uppercase"
+                      className="px-3 py-1 rounded-full bg-white/[0.03] border border-white/[0.05] text-white/60 text-[10px] font-medium tracking-wider uppercase"
                     >
                       {tech}
                     </span>
@@ -229,27 +247,27 @@ export default function ResumePage() {
         </section>
 
         {/* Two Column: Skills & Education */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-20">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 mb-24">
           {/* Skills */}
           <section>
             <div className="flex items-center gap-4 mb-10">
-              <span className="text-white/20 font-display font-bold text-2xl">03</span>
+              <span className="text-white/20 font-sans font-light text-2xl">03</span>
               <h2 className="text-2xl font-bold tracking-tight">Technical Arsenal</h2>
             </div>
-            <div className="space-y-6">
+            <div className="space-y-4 md:space-y-5">
               {SKILL_GROUPS.map((group) => (
                 <div
                   key={group.label}
-                  className="p-6 rounded-3xl bg-white/[0.02] border border-white/[0.05]"
+                  className="p-5 md:p-6 rounded-2xl bg-white/[0.02] border border-white/[0.04]"
                 >
-                  <h3 className="text-sm font-bold uppercase tracking-widest text-white/50 mb-4">
+                  <h3 className="text-[10px] sm:text-xs font-semibold uppercase tracking-[0.15em] text-white/40 mb-4 sm:mb-5">
                     {group.label}
                   </h3>
                   <div className="flex flex-wrap gap-2">
                     {group.items.map((skill) => (
                       <span
                         key={skill}
-                        className="px-3 py-1.5 rounded-lg bg-white/5 text-white/70 text-xs font-medium"
+                        className="px-3 py-1.5 rounded-md bg-white/[0.03] border border-white/[0.05] text-white/70 text-[11px] sm:text-xs font-medium hover:bg-white/[0.06] hover:text-white transition-colors"
                       >
                         {skill}
                       </span>
@@ -260,50 +278,27 @@ export default function ResumePage() {
             </div>
           </section>
 
-          {/* Education & Sprints */}
+          {/* Education */}
           <div className="space-y-12">
             <section>
               <div className="flex items-center gap-4 mb-10">
-                <span className="text-white/20 font-display font-bold text-2xl">04</span>
+                <span className="text-white/20 font-sans font-light text-2xl">04</span>
                 <h2 className="text-2xl font-bold tracking-tight">Education</h2>
               </div>
-              <div className="space-y-4">
+              <div className="space-y-4 md:space-y-5">
                 {EDUCATION.map((edu) => (
                   <div
                     key={edu.institution}
-                    className="p-6 rounded-3xl bg-white/[0.02] border border-white/[0.05]"
+                    className="p-5 md:p-6 rounded-2xl bg-white/[0.02] border border-white/[0.04] flex flex-col gap-1"
                   >
-                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-1 sm:gap-2 mb-2">
-                      <h3 className="font-bold text-white">{edu.degree}</h3>
-                      <span className="text-xs font-semibold tracking-widest uppercase text-white/40">
+                    <div className="flex flex-col xl:flex-row xl:justify-between xl:items-start gap-2 mb-2">
+                      <h3 className="font-semibold text-white text-base sm:text-lg pr-4">{edu.degree}</h3>
+                      <span className="text-[10px] sm:text-xs font-medium tracking-[0.1em] uppercase text-white/40 shrink-0 xl:text-right xl:mt-1">
                         {edu.period}
                       </span>
                     </div>
-                    <p className="text-white/60 text-sm mb-2">{edu.institution}</p>
-                    <p className="text-white/40 text-xs">{edu.detail}</p>
-                  </div>
-                ))}
-              </div>
-            </section>
-
-            <section>
-              <div className="flex items-center gap-4 mb-10">
-                <span className="text-white/20 font-display font-bold text-2xl">05</span>
-                <h2 className="text-2xl font-bold tracking-tight">Build Sprints</h2>
-              </div>
-              <div className="space-y-4">
-                {HACKATHONS.map((hackathon) => (
-                  <div
-                    key={hackathon.name}
-                    className="p-5 sm:p-6 rounded-3xl bg-white/[0.02] border border-white/[0.05] flex flex-col sm:flex-row sm:items-center justify-between gap-3"
-                  >
-                    <div>
-                      <h3 className="font-bold text-white text-sm mb-1">{hackathon.name}</h3>
-                      <p className="text-white/50 text-xs">{hackathon.project}</p>
-                    </div>
-                    <span className="px-3 py-1 rounded-full bg-blue-500/10 text-blue-400 text-[10px] font-bold tracking-widest uppercase border border-blue-500/20">
-                      {hackathon.result}
-                    </span>
+                    <p className="text-white/60 font-medium text-sm sm:text-base">{edu.institution}</p>
+                    <p className="text-white/40 text-xs sm:text-sm font-light leading-relaxed mt-2">{edu.detail}</p>
                   </div>
                 ))}
               </div>
@@ -312,13 +307,12 @@ export default function ResumePage() {
         </div>
 
         {/* Footer CTA */}
-        <footer className="text-center p-12 rounded-3xl bg-gradient-to-b from-white/[0.02] to-transparent border border-white/[0.05] relative overflow-hidden">
-          <div className="absolute inset-0 bg-blue-500/5 blur-[100px] pointer-events-none" />
-          <h2 className="text-2xl font-bold mb-4">Ready to collaborate?</h2>
-          <p className="text-white/50 mb-8 max-w-md mx-auto">{RESUME_PROFILE.availability}</p>
+        <footer className="text-center p-12 md:p-16 rounded-3xl bg-white/[0.02] border border-white/[0.04] mt-12 flex flex-col items-center justify-center">
+          <h2 className="text-3xl font-bold mb-4 tracking-tight">Ready to collaborate?</h2>
+          <p className="text-white/60 mb-10 max-w-md mx-auto font-light leading-relaxed">{RESUME_PROFILE.availability}</p>
           <a
             href={`mailto:${CONTACT_INFO.email}`}
-            className="inline-flex items-center gap-2 bg-white text-black px-8 py-4 rounded-full font-bold uppercase tracking-widest text-xs hover:scale-105 active:scale-95 transition-all shadow-[0_0_30px_rgba(255,255,255,0.2)]"
+            className="inline-flex items-center gap-2 bg-white text-black px-8 py-4 rounded-full font-semibold tracking-wide text-sm hover:scale-105 active:scale-95 transition-transform"
           >
             Start a Conversation
           </a>
