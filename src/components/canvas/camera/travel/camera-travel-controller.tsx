@@ -25,6 +25,8 @@ export function CameraTravelController() {
     startTime: number;
     duration: number;
     easing: (t: number) => number;
+    baseFov: number;
+    isLongDistance: boolean;
   } | null>(null);
 
   const focusedTargetIdRef = React.useRef<string | null>(null);
@@ -88,7 +90,7 @@ export function CameraTravelController() {
         startTime: state.clock.getElapsedTime(),
         duration: durationSec,
         easing: CameraAnimator.getEasingFunction(store.currentRequest.easing),
-        baseFov: camera.fov,
+        baseFov: (camera as THREE.PerspectiveCamera).fov || 45,
         isLongDistance: camera.position.distanceTo(endPos) > 25,
       };
 
@@ -112,8 +114,11 @@ export function CameraTravelController() {
       // Apply Warp Speed FOV stretching
       if (activePathRef.current.isLongDistance) {
         const warpAmount = Math.sin(progress * Math.PI) * 45; // stretches up to +45 degrees
-        camera.fov = activePathRef.current.baseFov + warpAmount;
-        camera.updateProjectionMatrix();
+        const perspCamera = camera as THREE.PerspectiveCamera;
+        if (perspCamera.fov !== undefined) {
+          perspCamera.fov = activePathRef.current.baseFov + warpAmount;
+          perspCamera.updateProjectionMatrix();
+        }
       }
 
       store.setProgress(progress);
@@ -123,8 +128,11 @@ export function CameraTravelController() {
         
         // Restore FOV to normal
         if (activePathRef.current.isLongDistance) {
-          camera.fov = activePathRef.current.baseFov;
-          camera.updateProjectionMatrix();
+          const perspCamera = camera as THREE.PerspectiveCamera;
+          if (perspCamera.fov !== undefined) {
+            perspCamera.fov = activePathRef.current.baseFov;
+            perspCamera.updateProjectionMatrix();
+          }
         }
         
         // Sync the OrbitControls target so it doesn't snap back when re-enabled
