@@ -51,10 +51,12 @@ interface HeroStarfieldProps {
   intensity?: number;
   /** Scroll-based parallax offset in pixels */
   parallaxY?: number;
+  showMeteors?: boolean;
 }
 
-export function HeroStarfield({ intensity = 1, parallaxY = 0 }: HeroStarfieldProps) {
+export function HeroStarfield({ intensity = 1, parallaxY = 0, showMeteors = true }: HeroStarfieldProps) {
   const stars = React.useMemo(() => generateStars(200, 42), []);
+  const meteors = React.useMemo(() => generateMeteors(12, 1337), []);
 
   return (
     <div
@@ -128,23 +130,25 @@ export function HeroStarfield({ intensity = 1, parallaxY = 0 }: HeroStarfieldPro
       </div>
 
       {/* Layer 4: Falling Meteors */}
-      <div
-        className="absolute inset-0"
-        style={{ transform: `translateY(${parallaxY * 0.2}px)` }}
-      >
-        {React.useMemo(() => generateMeteors(12, 1337), []).map((meteor, i) => (
-          <div
-            key={`meteor-${i}`}
-            className="meteor"
-            style={{
-              top: `${meteor.top}%`,
-              left: `${meteor.left}%`,
-              animation: `meteor ${meteor.duration}s linear infinite`,
-              animationDelay: `${meteor.delay}s`,
-            }}
-          />
-        ))}
-      </div>
+      {showMeteors && (
+        <div
+          className="absolute inset-0"
+          style={{ transform: `translateY(${parallaxY * 0.2}px)` }}
+        >
+          {meteors.map((meteor, i) => (
+            <div
+              key={`meteor-${i}`}
+              className="meteor"
+              style={{
+                top: `${meteor.top}%`,
+                left: `${meteor.left}%`,
+                animation: `meteor ${meteor.duration}s linear infinite`,
+                animationDelay: `${meteor.delay}s`,
+              }}
+            />
+          ))}
+        </div>
+      )}
 
       {/* Nebula gradient overlay — intensifies with scroll */}
       <div

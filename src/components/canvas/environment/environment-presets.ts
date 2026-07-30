@@ -6,7 +6,6 @@ export const ENVIRONMENT_PRESETS: Record<EnvironmentPresetId, EnvironmentPresetC
     background: {
       mode: 'color',
       color: '#040506',
-      dreiPreset: 'night',
     },
     lighting: {
       ambientIntensity: 0.045,
@@ -34,7 +33,6 @@ export const ENVIRONMENT_PRESETS: Record<EnvironmentPresetId, EnvironmentPresetC
     background: {
       mode: 'color',
       color: '#07080a',
-      dreiPreset: 'night',
     },
     lighting: {
       ambientIntensity: 0.08,
@@ -62,7 +60,6 @@ export const ENVIRONMENT_PRESETS: Record<EnvironmentPresetId, EnvironmentPresetC
     background: {
       mode: 'color',
       color: '#050403',
-      dreiPreset: 'sunset',
     },
     lighting: {
       ambientIntensity: 0.07,
@@ -90,7 +87,6 @@ export const ENVIRONMENT_PRESETS: Record<EnvironmentPresetId, EnvironmentPresetC
     background: {
       mode: 'color',
       color: '#000000',
-      dreiPreset: 'night',
     },
     lighting: {
       ambientIntensity: 0.018,

@@ -10,7 +10,8 @@ export type SectionId =
   | 'github'
   | 'blogs'
   | 'contact'
-  | 'resume';
+  | 'resume'
+  | 'freelance';
 
 export type SectionLoaderState =
   'idle' | 'resolving' | 'loading' | 'loaded' | 'failed' | 'cancelled';

@@ -16,6 +16,7 @@ export const SECTION_CHUNK_LOADERS: Record<SectionId, () => Promise<SectionModul
   blogs: () => import('./views/blog-section').then((m) => ({ default: m.BlogSection })),
   contact: () => import('./views/contact-section').then((m) => ({ default: m.ContactSection })),
   resume: () => import('./views/resume-section').then((m) => ({ default: m.ResumeSection })),
+  freelance: () => import('./views/freelance-section').then((m) => ({ default: m.FreelanceSection })),
 };
 
 export async function preloadSectionChunk(sectionId: SectionId): Promise<ComponentType> {

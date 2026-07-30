@@ -10,3 +10,4 @@ export { ProjectsSection } from './projects-section';
 export { ResumeSection } from './resume-section';
 export { ServicesSection } from './services-section';
 export { SkillsSection } from './skills-section';
+export { FreelanceSection } from './freelance-section';

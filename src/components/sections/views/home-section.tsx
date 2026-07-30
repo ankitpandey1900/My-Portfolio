@@ -27,6 +27,32 @@ export function HomeSection() {
           />
         ))}
       </MissionGrid>
+
+      <div className="mt-6">
+        <MissionCard
+          id="FR-00"
+          status="building"
+          title="Freelance & Client Projects"
+          tagline="Independent Builds"
+          body="Delivering high-impact, scalable, and immersive web experiences for startups and agencies. Over 20+ projects delivered with 15+ happy clients across a 3+ year journey."
+        />
+        <MissionGrid>
+          <MissionCard
+            id="FR-01"
+            status="signal"
+            title="Cue Junction & Darshan Cafe"
+            tagline="SaaS Platform"
+            body="Unified management system handling operations and real-time billing, powered by Next.js 16 and PostgreSQL."
+          />
+          <MissionCard
+            id="FR-02"
+            status="signal"
+            title="Aesthetic Beauty & Hair"
+            tagline="E-Commerce"
+            body="High-conversion e-commerce platform built with Next.js and Stripe for a modern shopping experience."
+          />
+        </MissionGrid>
+      </div>
     </div>
   );
 }

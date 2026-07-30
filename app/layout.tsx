@@ -4,6 +4,7 @@ import './globals.css';
 import { AnalyticsProvider } from '@/components/analytics/analytics-provider';
 import { ServiceWorkerRegister } from '@/components/pwa/service-worker-register';
 import { CustomCursor } from '@/components/ui/custom-cursor';
+import { SplashLoader } from '@/components/ui/splash-loader';
 import { cn } from '@/lib/utils';
 
 const jakarta = Plus_Jakarta_Sans({
@@ -91,6 +92,7 @@ export default function RootLayout({
         <AnalyticsProvider>
           <ServiceWorkerRegister />
           <CustomCursor />
+          <SplashLoader />
           {children}
         </AnalyticsProvider>
       </body>

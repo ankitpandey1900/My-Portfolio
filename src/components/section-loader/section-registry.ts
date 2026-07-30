@@ -17,4 +17,5 @@ export const SECTION_REGISTRY: Record<SectionId, { id: SectionId; name: string }
   blogs: { id: 'blogs', name: 'Blogs' },
   contact: { id: 'contact', name: 'Contact' },
   resume: { id: 'resume', name: 'Resume' },
+  freelance: { id: 'freelance', name: 'Freelance' },
 };

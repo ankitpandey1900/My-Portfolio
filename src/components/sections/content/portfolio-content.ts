@@ -123,6 +123,12 @@ export const SECTION_META: Record<SectionId, SectionMeta> = {
     title: 'Full dossier',
     subtitle: 'Download or view the complete professional summary.',
   },
+  freelance: {
+    id: 'freelance',
+    eyebrow: 'Freelance',
+    title: 'Client Projects',
+    subtitle: 'Professional engagements and independent builds.',
+  },
 };
 
 export const ABOUT_CONTENT = {

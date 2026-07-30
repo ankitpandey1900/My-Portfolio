@@ -78,7 +78,8 @@ export interface PlanetConfig {
     | 'github'
     | 'blogs'
     | 'contact'
-    | 'resume';
+    | 'resume'
+    | 'freelance';
   /** Preset theme. */
   theme: 'realistic' | 'cinematic' | 'minimalist';
   /** Detail preset target. */

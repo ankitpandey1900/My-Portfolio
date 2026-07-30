@@ -2,12 +2,15 @@
 
 import * as React from 'react';
 import Image from 'next/image';
-import { motion, useInView, useScroll, useTransform } from 'framer-motion';
+import Link from 'next/link';
+import { motion, useInView, useScroll, useTransform, useMotionValue, useSpring } from 'framer-motion';
 import { ExternalLink, Mail, Utensils } from 'lucide-react';
 import { HOME_PLANET_CONFIG } from '../home-planet-config';
 import { HomePlanetController } from '../home-planet-controller';
 import { useHomePlanetStore } from '../home-planet-state';
 import { HeroStarfield } from './hero-starfield';
+import { PlanetNav } from './planet-nav';
+import { TechDust } from './tech-dust';
 
 const IconX = ({ className }: { className?: string }) => (
   <svg className={className} viewBox="0 0 24 24" fill="currentColor">
@@ -59,13 +62,19 @@ function AnimatedCounter({
 
     const timeout = setTimeout(() => {
       let frame: number;
-      const duration = 6000; // Slower count up for dramatic effect
+      // Scale duration based on the magnitude of the number
+      // Small numbers (6, 12) count slower per-digit, big numbers (800) count faster per-digit
+      const duration = numericPart <= 20 ? 2200 : numericPart <= 100 ? 2800 : 3400;
       const start = performance.now();
 
       const animate = (now: number) => {
         const elapsed = now - start;
         const progress = Math.min(elapsed / duration, 1);
-        const eased = 1 - Math.pow(1 - progress, 5); // Quintic ease for very smooth tail
+        // Smooth cubic ease-in-out: slow start → accelerate → slow finish
+        const eased =
+          progress < 0.5
+            ? 4 * progress * progress * progress
+            : 1 - Math.pow(-2 * progress + 2, 3) / 2;
         setCount(Math.round(eased * numericPart));
 
         if (progress < 1) {
@@ -520,6 +529,23 @@ export function HomeHero() {
   const { scrollYProgress } = useScroll(shouldRender ? { container: containerRef } : undefined);
   const heroTextY = useTransform(scrollYProgress, [0, 0.25], [0, -60]);
 
+  // ─── Mouse Parallax ───────────────────────────────────────────────
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const springConfig = { stiffness: 50, damping: 30, mass: 1 };
+  const parallaxStarX = useSpring(useTransform(mouseX, [-0.5, 0.5], [15, -15]), springConfig);
+  const parallaxStarY = useSpring(useTransform(mouseY, [-0.5, 0.5], [15, -15]), springConfig);
+  const parallaxTextX = useSpring(useTransform(mouseX, [-0.5, 0.5], [-6, 6]), springConfig);
+
+  React.useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      mouseX.set((e.clientX / window.innerWidth) - 0.5);
+      mouseY.set((e.clientY / window.innerHeight) - 0.5);
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, [mouseX, mouseY]);
+
   const handleLaunch = React.useCallback(() => {
     setIsLaunching(true);
     setTimeout(() => HomePlanetController.beginJourney(), 1000);
@@ -574,21 +600,30 @@ export function HomeHero() {
             className="object-cover opacity-60"
             aria-hidden
           />
-          <HeroStarfield intensity={1} parallaxY={0} />
+          <motion.div className="absolute inset-0" style={{ x: parallaxStarX, y: parallaxStarY }}>
+            <HeroStarfield intensity={0.4} parallaxY={0} />
+          </motion.div>
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#030305]/60 to-[#030305]/95" />
+          <TechDust />
         </motion.div>
 
         {/* ════════════════════════════════════════════════════════════════════
             SECTION 1 — HERO
         ════════════════════════════════════════════════════════════════════ */}
         <section className="relative min-h-screen flex flex-col">
-          <header className="relative z-10 flex items-center justify-center md:justify-end px-5 md:px-16 pt-8">
-            <nav className="flex items-center justify-center flex-wrap gap-3 sm:gap-5 md:gap-8 w-full md:w-auto">
-              {['About', 'Projects', 'Skills', 'Contact', 'Resume'].map((item, i) => (
+          <header className="relative z-50 flex items-center justify-end px-5 md:px-16 pt-8 w-full">
+            {/* Mobile Planet Nav */}
+            <div className="md:hidden">
+              <PlanetNav />
+            </div>
+
+            {/* Desktop Nav */}
+            <nav className="hidden md:flex items-center justify-center flex-wrap gap-5 lg:gap-8 w-auto">
+              {['About', 'Projects', 'Skills', 'Resume', 'Freelance', 'Contact'].map((item, i) => (
                 <motion.a
                   key={item}
-                  href={item === 'Resume' ? '/resume' : `#${item.toLowerCase()}`}
-                  className="text-[10px] md:text-xs font-sans font-semibold uppercase tracking-widest text-white/50 hover:text-white transition-colors cursor-pointer"
+                  href={item === 'Resume' ? '/resume' : item === 'Freelance' ? '/freelance' : `#${item.toLowerCase()}`}
+                  className="text-xs font-sans font-semibold uppercase tracking-widest text-white/50 hover:text-white transition-colors cursor-pointer"
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.4 + i * 0.08, duration: 0.6, ease }}
@@ -601,12 +636,12 @@ export function HomeHero() {
 
           <motion.div
             className="relative z-10 flex-1 flex flex-col justify-center pt-10 pb-20 md:justify-end md:pt-0 md:pb-24 px-5 md:px-16"
-            style={{ y: heroTextY }}
+            style={{ y: heroTextY, x: parallaxTextX }}
           >
             <div className="flex flex-col mb-10 md:mb-12 relative z-10 items-center md:items-start w-full">
-              <div className="overflow-hidden">
+              <div className="overflow-hidden w-full max-w-full flex justify-center md:justify-start">
                 <motion.h1
-                  className="text-[clamp(2.5rem,11vw,9rem)] font-display font-extrabold text-white leading-[0.9] tracking-[-0.04em] max-w-5xl"
+                  className="text-[clamp(3rem,13.5vw,9rem)] font-display font-extrabold text-white leading-[0.85] tracking-[-0.04em] whitespace-nowrap"
                   initial={{ y: '100%' }}
                   animate={{ y: 0 }}
                   transition={{ delay: 0.3, duration: 1.2, ease }}
@@ -614,9 +649,9 @@ export function HomeHero() {
                   ANKIT
                 </motion.h1>
               </div>
-              <div className="overflow-hidden mt-0 md:mt-2">
+              <div className="overflow-hidden mt-2 md:mt-4 w-full max-w-full flex justify-center md:justify-start">
                 <motion.h1
-                  className="text-[clamp(2.5rem,11vw,9rem)] font-display font-extrabold text-white leading-[0.9] tracking-[-0.04em] max-w-5xl text-transparent bg-clip-text bg-gradient-to-br from-white to-white/60"
+                  className="text-[clamp(3rem,13.5vw,9rem)] font-display font-extrabold text-white leading-[0.85] tracking-[-0.04em] text-transparent bg-clip-text bg-gradient-to-br from-white to-white/60 whitespace-nowrap"
                   initial={{ y: '100%' }}
                   animate={{ y: 0 }}
                   transition={{ delay: 0.5, duration: 1.2, ease }}
@@ -628,7 +663,7 @@ export function HomeHero() {
 
             {/* Apple/Tesla Typography applied to these specific numbers */}
             <motion.div
-              className="grid grid-cols-3 md:flex items-start md:items-end gap-2 sm:gap-3 md:gap-20 mb-8 md:mb-10 w-full max-w-lg"
+              className="flex flex-col sm:flex-row items-center md:items-end gap-8 sm:gap-6 md:gap-20 mb-10 md:mb-12 w-full max-w-lg"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 1.4, duration: 0.8 }}
@@ -637,12 +672,12 @@ export function HomeHero() {
                 <motion.div
                   key={stat.label}
                   className="flex flex-col items-center md:items-start select-none"
-                  initial={{ opacity: 0, y: 40 }}
+                  initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 1.5 + i * 0.15, duration: 0.8, ease }}
+                  transition={{ delay: 1.5 + i * 0.2, duration: 0.8, ease }}
                 >
                   <span className="text-2xl sm:text-3xl md:text-5xl font-sans font-light text-white tracking-tighter">
-                    <AnimatedCounter target={stat.value} delay={1.5 + i * 0.15} />
+                    {stat.value}
                   </span>
                   <span className="text-[9px] sm:text-[10px] md:text-[11px] font-sans font-semibold uppercase tracking-widest text-white/50 mt-1 md:mt-2 leading-relaxed">
                     {stat.label}
@@ -653,18 +688,32 @@ export function HomeHero() {
 
             <motion.p
               className="text-sm md:text-lg text-white/60 max-w-lg leading-relaxed font-normal text-center md:text-left px-4 md:px-0 mx-auto md:mx-0"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 2, duration: 1.2 }}
+              initial="hidden"
+              animate="visible"
+              variants={{
+                hidden: {},
+                visible: { transition: { staggerChildren: 0.04, delayChildren: 2 } },
+              }}
             >
-              {identity.tagline}
+              {identity.tagline.split(' ').map((word, i) => (
+                <motion.span
+                  key={`${word}-${i}`}
+                  className="inline-block mr-[0.3em]"
+                  variants={{
+                    hidden: { opacity: 0, y: 12, filter: 'blur(4px)' },
+                    visible: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 0.5, ease: 'easeOut' as const } },
+                  }}
+                >
+                  {word}
+                </motion.span>
+              ))}
             </motion.p>
 
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 2.2, duration: 1.2 }}
-              className="mt-8 md:mt-10 flex flex-wrap items-center justify-center md:justify-start gap-4"
+              className="mt-12 md:mt-10 flex flex-col sm:flex-row items-stretch sm:items-center justify-center md:justify-start gap-4 w-full sm:w-auto px-4 sm:px-0"
             >
               <button
                 onClick={handleLaunch}
@@ -758,18 +807,18 @@ export function HomeHero() {
           </div>
 
           {/* Freelance Spotlight */}
-          <div className="mt-16 md:mt-24 max-w-7xl mx-auto p-6 md:p-12 rounded-[2.5rem] bg-gradient-to-br from-white/[0.03] to-transparent border border-white/[0.08] relative overflow-hidden group flex flex-col md:flex-row items-center justify-between gap-8">
+          <Link href="/freelance" className="mt-16 md:mt-24 max-w-7xl mx-auto p-6 md:p-12 rounded-[2.5rem] bg-gradient-to-br from-white/[0.03] to-transparent border border-white/[0.08] hover:border-white/[0.2] hover:bg-white/[0.02] cursor-pointer relative overflow-hidden group flex flex-col md:flex-row items-center justify-between gap-8 transition-all">
             <div className="absolute -inset-20 bg-gradient-to-r from-amber-500/10 to-transparent blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
 
             <div className="relative z-10 max-w-2xl">
               <Reveal delay={0.1}>
                 <h3 className="text-2xl md:text-3xl font-display font-bold text-white mb-4 tracking-tight">
-                  Independent Engineer & Freelance Developer
+                  Freelance Software Engineer
                 </h3>
               </Reveal>
               <Reveal delay={0.2}>
                 <p className="text-white/50 text-base md:text-lg leading-relaxed font-light mb-6">
-                  Crafting tailored web solutions and scalable architectures.
+                  I build full-stack SaaS applications, bespoke e-commerce platforms, and internal tools. Focused on Next.js, TypeScript, and PostgreSQL.
                 </p>
                 <div className="flex flex-col gap-4">
                   <div className="flex items-center gap-4">
@@ -781,7 +830,7 @@ export function HomeHero() {
                   <div className="flex items-center gap-4">
                     <div className="h-px w-8 bg-white/20 shrink-0"></div>
                     <span className="text-white/70 text-base md:text-lg font-light tracking-wide">
-                      Built 3 complete full-stack systems from the ground up
+                      Built 2 complete full-stack SaaS systems from the ground up
                     </span>
                   </div>
                 </div>
@@ -789,14 +838,11 @@ export function HomeHero() {
             </div>
 
             <Reveal delay={0.3} className="relative z-10 shrink-0 w-full md:w-auto">
-              <a
-                href="#contact"
-                className="flex items-center justify-center gap-3 px-8 py-4 rounded-full bg-white text-black text-xs font-sans font-bold tracking-widest uppercase hover:scale-105 transition-transform w-full md:w-auto shadow-[0_0_40px_rgba(255,255,255,0.2)]"
-              >
+              <div className="flex items-center justify-center gap-3 px-8 py-4 rounded-full bg-white text-black text-xs font-sans font-bold tracking-widest uppercase group-hover:scale-105 transition-transform w-full md:w-auto shadow-[0_0_40px_rgba(255,255,255,0.2)]">
                 Start a Project
-              </a>
+              </div>
             </Reveal>
-          </div>
+          </Link>
         </section>
 
         {/* ════════════════════════════════════════════════════════════════════
