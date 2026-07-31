@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion, Variants } from 'framer-motion';
 import { ArrowRight, Download, Mail, MapPin, Briefcase, GraduationCap } from 'lucide-react';
 import {
   CONTACT_INFO,
@@ -14,7 +14,7 @@ export function ResumeSection() {
   const latestExperience = EXPERIENCE[0];
   const primarySkills = SKILL_GROUPS.flatMap((group) => group.items).slice(0, 10);
 
-  const containerVariants = {
+  const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
@@ -22,7 +22,7 @@ export function ResumeSection() {
     },
   };
 
-  const itemVariants = {
+  const itemVariants: Variants = {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.19, 1, 0.22, 1] } },
   };
