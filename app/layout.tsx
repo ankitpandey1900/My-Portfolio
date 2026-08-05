@@ -41,11 +41,11 @@ export const metadata: Metadata = {
     template: '%s | Ankit Pandey',
   },
   description:
-    'A cinematic solar-system portfolio for software engineering, product craft, and immersive web experiences.',
+    'Software engineering student and full-stack developer building product systems, immersive web interfaces, and AI-assisted workflows.',
   openGraph: {
     title: 'Ankit Pandey | Full Stack Developer',
     description:
-      'A cinematic solar-system portfolio for software engineering, product craft, and immersive web experiences.',
+      'Software engineering student and full-stack developer building product systems, immersive web interfaces, and AI-assisted workflows.',
     url: '/',
     siteName: 'Ankit Pandey Portfolio',
     locale: 'en_US',
@@ -63,7 +63,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Ankit Pandey | Full Stack Developer',
     description:
-      'A cinematic solar-system portfolio for software engineering, product craft, and immersive web experiences.',
+      'Software engineering student and full-stack developer building product systems, immersive web interfaces, and AI-assisted workflows.',
     images: ['/twitter-image'],
   },
   robots: {
