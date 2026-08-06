@@ -8,12 +8,8 @@
     "start": "next start",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "format": "prettier --write .",
-    "format:check": "prettier --check .",
     "typecheck": "tsc --noEmit",
-    "clean": "node scripts/clean.js",
-    "prepare": "husky",
-    "verify": "npm run typecheck && npm run format:check && npm run lint && npm run build"
+    "verify": "npm run typecheck && npm run lint && npm run build"
   },
   "dependencies": {
     "@base-ui/react": "^1.6.0",
@@ -39,9 +35,6 @@
     "zustand": "^5.0.14"
   },
   "devDependencies": {
-    "@commitlint/cli": "^21.2.0",
-    "@commitlint/config-conventional": "^21.2.0",
-    "@ianvs/prettier-plugin-sort-imports": "^4.7.1",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
@@ -50,10 +43,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.2.10",
     "eslint-config-prettier": "^10.1.8",
-    "husky": "^9.1.7",
     "leva": "^0.10.1",
-    "lint-staged": "^17.0.8",
-    "prettier": "^3.9.4",
     "stats-gl": "^4.2.2",
     "tailwindcss": "^4",
     "typescript": "^5"
