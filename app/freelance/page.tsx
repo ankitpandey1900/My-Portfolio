@@ -158,9 +158,9 @@ export default function FreelancePage() {
 
 function StatBlock({ value, label }: { value: string, label: string }) {
   return (
-    <motion.div variants={fadeUp} className="p-8 md:p-10 bg-black/60 relative z-10 flex flex-col justify-center text-center">
-      <h3 className="text-4xl font-display font-bold tracking-tight text-white mb-2">{value}</h3>
-      <p className="text-[10px] font-sans font-bold tracking-widest uppercase text-white/40">{label}</p>
+    <motion.div variants={fadeUp} className="p-4 sm:p-6 md:p-10 bg-black/60 relative z-10 flex flex-col justify-center text-center">
+      <h3 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold tracking-tight text-white mb-1 md:mb-2">{value}</h3>
+      <p className="text-[9px] sm:text-[10px] font-sans font-bold tracking-widest uppercase text-white/40">{label}</p>
     </motion.div>
   );
 }
@@ -171,7 +171,7 @@ function ProjectRow({ title, type, description, tags, index }: { title: string, 
 
   return (
     <motion.div 
-      className="p-8 md:p-10 rounded-[2rem] border border-white/[0.05] bg-black/80 backdrop-blur-xl hover:bg-white/[0.04] transition-colors relative group overflow-hidden sticky"
+      className="p-5 sm:p-6 md:p-10 rounded-2xl md:rounded-[2rem] border border-white/[0.05] bg-black/80 backdrop-blur-xl hover:bg-white/[0.04] transition-colors relative group overflow-hidden sticky"
       style={{ top: `${topOffset}px`, zIndex: 10 + index }}
       variants={fadeUp}
       initial="hidden"

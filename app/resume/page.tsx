@@ -57,7 +57,7 @@ export default function ResumePage() {
             Curriculum Vitae
           </div>
 
-          <h1 className="text-5xl sm:text-6xl md:text-8xl font-sans font-bold tracking-tighter mb-6 text-white">
+          <h1 className="text-4xl sm:text-5xl md:text-8xl font-sans font-bold tracking-tighter mb-6 text-white text-balance">
             {RESUME_PROFILE.name}
           </h1>
 
@@ -111,7 +111,7 @@ export default function ResumePage() {
         {/* Summary & Metrics */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-24">
           {/* Main Summary Card */}
-          <div className="lg:col-span-2 p-8 sm:p-12 rounded-3xl bg-white/[0.02] border border-white/[0.04] hover:bg-white/[0.03] transition-colors flex flex-col justify-center">
+          <div className="lg:col-span-2 p-6 sm:p-12 rounded-3xl bg-white/[0.02] border border-white/[0.04] hover:bg-white/[0.03] transition-colors flex flex-col justify-center">
             <h2 className="text-xs font-semibold tracking-[0.25em] uppercase text-white/40 mb-6">
               Profile Summary
             </h2>
@@ -125,7 +125,7 @@ export default function ResumePage() {
             {RESUME_PROFILE.metrics.map((metric) => (
               <div
                 key={metric.label}
-                className="p-6 rounded-3xl bg-white/[0.02] border border-white/[0.04] flex flex-col justify-center items-center text-center group hover:bg-white/[0.04] transition-colors h-full min-h-[140px]"
+                className="p-4 sm:p-6 rounded-3xl bg-white/[0.02] border border-white/[0.04] flex flex-col justify-center items-center text-center group hover:bg-white/[0.04] transition-colors h-full min-h-[120px] sm:min-h-[140px]"
               >
                 <span className="text-3xl sm:text-4xl font-sans font-medium text-white tracking-tight mb-2 group-hover:scale-105 transition-transform duration-500 ease-out">
                   {metric.value}
@@ -196,7 +196,7 @@ export default function ResumePage() {
             {PROJECTS.map((project) => (
               <div
                 key={project.id}
-                className="p-8 rounded-3xl bg-white/[0.02] border border-white/[0.04] hover:bg-white/[0.03] hover:-translate-y-1 transition-all group flex flex-col h-full"
+                className="p-6 sm:p-8 rounded-3xl bg-white/[0.02] border border-white/[0.04] hover:bg-white/[0.03] hover:-translate-y-1 transition-all group flex flex-col h-full"
               >
                 <div className="flex items-center justify-between mb-4">
                   <span className="text-xs font-medium tracking-widest text-white/30 uppercase">
