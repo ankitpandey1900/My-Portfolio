@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import { Inter, JetBrains_Mono, Plus_Jakarta_Sans, Syne } from 'next/font/google';
 import './globals.css';
-import { AnalyticsProvider } from '@/components/analytics/analytics-provider';
 import { ServiceWorkerRegister } from '@/components/pwa/service-worker-register';
 import { CustomCursor } from '@/components/ui/custom-cursor';
 import { SplashLoader } from '@/components/ui/splash-loader';
@@ -83,12 +82,10 @@ export default function RootLayout({
       )}
     >
       <body className="min-h-full flex flex-col bg-space-black text-foreground selection:bg-gold-soft/25 selection:text-white">
-        <AnalyticsProvider>
-          <ServiceWorkerRegister />
-          <CustomCursor />
-          <SplashLoader />
-          {children}
-        </AnalyticsProvider>
+        <ServiceWorkerRegister />
+        <CustomCursor />
+        <SplashLoader />
+        {children}
       </body>
     </html>
   );

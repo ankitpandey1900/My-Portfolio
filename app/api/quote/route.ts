@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { createServerSupabaseClient, isSupabaseConfigured } from '@/lib/supabase/server';
+import { Resend } from 'resend';
 import { quoteSchema } from '@/lib/validation/schemas';
 
 export async function POST(request: Request) {
@@ -13,22 +13,18 @@ export async function POST(request: Request) {
 
     const { name, email, services, notes, priceEstimate } = parsed.data;
 
-    if (!isSupabaseConfigured()) {
-      return NextResponse.json({ error: 'Backend not configured' }, { status: 503 });
-    }
+    const resendKey = process.env.RESEND_API_KEY;
+    const recipient = process.env.NOTIFICATION_EMAIL_RECIPIENT;
 
-    const supabase = createServerSupabaseClient();
-    const { error } = await supabase!.from('quotes').insert({
-      name,
-      email,
-      services_selected: services,
-      price_estimate: priceEstimate ?? 0,
-      notes: notes ?? null,
-    });
-
-    if (error) {
-      console.error('[quote] Supabase insert failed:', error.message);
-      return NextResponse.json({ error: 'Failed to save quote request' }, { status: 500 });
+    if (resendKey && recipient) {
+      const resend = new Resend(resendKey);
+      await resend.emails.send({
+        from: 'Portfolio <onboarding@resend.dev>',
+        to: recipient,
+        replyTo: email,
+        subject: `New Project Quote from ${name}`,
+        text: `Name: ${name}\nEmail: ${email}\n\nServices Requested: ${services.join(', ')}\nEstimated Budget: $${priceEstimate}\n\nProject Notes:\n${notes ?? 'None provided'}`,
+      });
     }
 
     return NextResponse.json({ success: true });

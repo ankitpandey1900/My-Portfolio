@@ -1,7 +1,6 @@
 'use client';
 
 import * as React from 'react';
-import { trackEvent } from '@/components/analytics/analytics-provider';
 
 interface ContactFormProps {
   className?: string;
@@ -27,7 +26,6 @@ export function ContactForm({ className }: ContactFormProps) {
       if (!response.ok) throw new Error('Failed');
 
       setStatus('success');
-      trackEvent('contact_submit', { email });
       setName('');
       setEmail('');
       setMessage('');

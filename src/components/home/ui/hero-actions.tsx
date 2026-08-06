@@ -1,7 +1,6 @@
 'use client';
 
 import * as React from 'react';
-import { trackEvent } from '@/components/analytics/analytics-provider';
 import { HomePlanetController } from '../home-planet-controller';
 import type { HeroCTA, HomePlanetPhase } from '../home-planet-types';
 
@@ -28,7 +27,6 @@ export function HeroActions({ primaryCTA, secondaryCTA, phase }: HeroActionsProp
   const handleSecondary = (_event: React.MouseEvent<HTMLAnchorElement>) => {
     if (secondaryCTA?.variant === 'secondary') {
       HomePlanetController.downloadResume();
-      trackEvent('resume_download');
     }
   };
 

@@ -1,7 +1,6 @@
 'use client';
 
 import * as React from 'react';
-import { trackEvent } from '@/components/analytics/analytics-provider';
 
 const SERVICE_OPTIONS = [
   'Full-Stack Product Development',
@@ -42,7 +41,6 @@ export function QuoteForm({ className }: QuoteFormProps) {
       if (!response.ok) throw new Error('Failed');
 
       setStatus('success');
-      trackEvent('quote_request', { services });
       setName('');
       setEmail('');
       setNotes('');
