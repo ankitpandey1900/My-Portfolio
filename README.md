@@ -1,34 +1,46 @@
-# Ankit Pandey | Personal Portfolio 🚀
+<div align="center">
+  <h1>🌌 Ankit Pandey | 3D Interactive Portfolio</h1>
+  <p>A cinematic, fully interactive 3D web experience built to showcase my work as a full-stack developer and software engineering student.</p>
 
-Welcome to the source code of my personal portfolio! This is an interactive, cinematic 3D web experience built to showcase my work as a full-stack developer and software engineering student.
+  <a href="https://ankitpandey19.vercel.app"><strong>View Live Site »</strong></a>
+  
+  <br />
+  <br />
 
-You can check out the live site here: **[ankitpandey19.vercel.app](https://ankitpandey19.vercel.app)**
+  ![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white)
+  ![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
+  ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+  ![Three.js](https://img.shields.io/badge/Three.js-black?style=for-the-badge&logo=three.js&logoColor=white)
+</div>
 
 ---
 
-## 🛠️ Tech Stack
+## ✨ What makes this special?
 
-I kept the stack modern, fast, and completely focused on the frontend experience:
-- **Framework:** Next.js (App Router)
+This isn't just a standard scrolling website. It's built to be an **experience**. 
+
+- 🪐 **Interactive 3D Solar System:** The home page features a fully navigable, WebGL-powered 3D galaxy where planets and orbits are dynamically rendered.
+- 📱 **Apple-Inspired Bento Grids:** The `/resume` and `/freelance` pages use a beautifully minimalist, ultra-clean bento box layout that feels highly premium.
+- ⚡ **Lightning Fast & Static:** I stripped out heavy backend databases. The site is 100% statically generated and lightning fast. 
+- 📬 **Serverless Emails:** The contact forms and quote estimators use Resend to deliver messages directly to my inbox instantly without a database.
+
+---
+
+## 🛠️ The Tech Stack
+
+I kept the stack modern and completely focused on delivering a buttery-smooth frontend experience:
+
+- **Core:** Next.js (App Router) & React
 - **Language:** TypeScript
-- **Styling:** Tailwind CSS v4 & Framer Motion (for smooth UI animations)
-- **3D Graphics:** React Three Fiber & Three.js (for the interactive solar system)
-- **Emails:** Resend (for handling contact forms and quote requests without needing a database)
+- **Styling:** Tailwind CSS v4 & Framer Motion (for those smooth layout transitions)
+- **3D Graphics:** React Three Fiber (R3F) & Drei
+- **Infrastructure:** Hosted on Vercel, Emails by Resend
 
 ---
 
-## ✨ Features
+## 💻 Run it locally
 
-- **Interactive 3D Solar System:** A fully navigable 3D galaxy on the home page.
-- **Minimalist Resume:** A clean, Apple-inspired bento-box layout for my professional experience.
-- **Serverless Contact Forms:** Visitors can send me emails or project quote requests directly from the site.
-- **100% Static & Lightweight:** Completely stripped of heavy backend databases or docker containers for maximum performance on Vercel.
-
----
-
-## 💻 How to Run Locally
-
-If you want to clone this and run it on your own machine, it's super simple. 
+Want to run this on your own machine? It's super simple. 
 
 1. **Clone the repository:**
    ```bash
@@ -42,7 +54,7 @@ If you want to clone this and run it on your own machine, it's super simple.
    ```
 
 3. **Set up environment variables:**
-   Create a `.env.local` file in the root directory and add your Resend API key if you want the contact forms to work:
+   Create a `.env.local` file in the root directory and add your Resend API key (if you want the contact forms to work):
    ```env
    RESEND_API_KEY=your_api_key_here
    NOTIFICATION_EMAIL_RECIPIENT=your_email@example.com
@@ -53,11 +65,10 @@ If you want to clone this and run it on your own machine, it's super simple.
    npm run dev
    ```
 
-5. **Open it up:**
-   Visit [http://localhost:3000](http://localhost:3000) in your browser to see the site in action!
+Visit `http://localhost:3000` in your browser to see the 3D canvas spin up!
 
 ---
 
 ## 📜 License
 
-Feel free to take inspiration from the UI or code structure, but please don't straight-up copy my personal information or projects.
+Feel free to draw inspiration from the UI, animations, or 3D code structure! However, please do not directly copy my personal information, projects, or branding.
