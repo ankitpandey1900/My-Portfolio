@@ -42,8 +42,8 @@ export function validatePlanetManifest(entries: PlanetManifestEntry[]): Validati
     if (typeof entry.order !== 'number') {
       errors.push(`${planetRef} order must be a valid number.`);
     } else {
-      if (entry.order < 1 || entry.order > 8) {
-        errors.push(`${planetRef} order "${entry.order}" is invalid. Must be between 1 and 8.`);
+      if (entry.order < 1 || entry.order > 99) {
+        errors.push(`${planetRef} order "${entry.order}" is invalid. Must be between 1 and 99.`);
       }
       if (orders.has(entry.order)) {
         errors.push(

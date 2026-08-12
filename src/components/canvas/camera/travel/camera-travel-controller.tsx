@@ -11,6 +11,7 @@ import { CameraAnimator } from './camera-animator';
 import { CameraPathGenerator } from './camera-path-generator';
 import { CameraTargetResolver } from './camera-target-resolver';
 import { useCameraTravelStore } from './camera-travel-state';
+import { useSolarSystemSimulation } from '../../scene-manager/scenes/solar-system/solar-system-store';
 
 /**
  * CameraTravelController
@@ -43,9 +44,10 @@ export function CameraTravelController() {
       if (store.currentRequest.targetId) {
         const planetEntry = PlanetRegistry.get(store.currentRequest.targetId);
         const planetRadius = planetEntry?.radius ?? 2;
+        const simState = useSolarSystemSimulation.getState();
         const planetPos = CameraTargetResolver.resolvePlanetPosition(
           store.currentRequest.targetId,
-          state.clock.getElapsedTime() + durationSec * 0.85
+          simState.accumulatedTime + durationSec * 0.85
         );
         endPos = CameraTargetResolver.resolveViewingPosition(
           planetPos,
@@ -157,7 +159,8 @@ export function CameraTravelController() {
 
       const planetEntry = PlanetRegistry.get(focusedTargetIdRef.current);
       if (planetEntry) {
-        const elapsed = state.clock.getElapsedTime();
+        const simState = useSolarSystemSimulation.getState();
+        const elapsed = simState.accumulatedTime;
         const planetPos = CameraTargetResolver.resolvePlanetPosition(
           focusedTargetIdRef.current,
           elapsed,
