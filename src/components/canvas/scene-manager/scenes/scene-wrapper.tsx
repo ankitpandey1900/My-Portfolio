@@ -87,3 +87,4 @@ export function SceneWrapper({ name, children, onDestroy }: SceneWrapperProps) {
 }
 
 export default SceneWrapper;
+

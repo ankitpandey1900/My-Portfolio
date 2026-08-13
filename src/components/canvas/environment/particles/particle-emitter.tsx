@@ -85,3 +85,4 @@ export function ParticleEmitter({ config, pool }: ParticleEmitterProps) {
 
   return null;
 }
+

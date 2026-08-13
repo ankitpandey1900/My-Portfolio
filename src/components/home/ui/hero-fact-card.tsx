@@ -33,3 +33,4 @@ export function HeroFactCard({ phase, snippet }: HeroFactCardProps) {
     </AnimatePresence>
   );
 }
+

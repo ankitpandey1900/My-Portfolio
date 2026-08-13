@@ -23,3 +23,4 @@ export function InteractionProvider({ children }: InteractionProviderProps) {
     </group>
   );
 }
+

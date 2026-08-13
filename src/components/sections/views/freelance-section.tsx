@@ -80,3 +80,4 @@ function ProjectCard({ title, client, description, tech }: { title: string; clie
     </div>
   );
 }
+

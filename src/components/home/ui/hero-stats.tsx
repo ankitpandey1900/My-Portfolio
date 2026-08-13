@@ -51,3 +51,4 @@ export function HeroStats({ stats, phase }: HeroStatsProps) {
     </footer>
   );
 }
+

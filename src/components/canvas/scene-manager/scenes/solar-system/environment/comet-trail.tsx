@@ -26,7 +26,7 @@ function Comet({ spec }: { spec: CometSpec }) {
   const coreRef = React.useRef<THREE.Mesh>(null);
 
   useFrame((state, delta) => {
-    const t = state.clock.getElapsedTime() * spec.speed + spec.phase;
+    const t = state.clock.elapsedTime * spec.speed + spec.phase;
     if (!groupRef.current) return;
 
     groupRef.current.position.set(
@@ -66,3 +66,4 @@ export function CometTrail() {
 }
 
 export default CometTrail;
+

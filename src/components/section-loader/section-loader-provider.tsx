@@ -19,3 +19,4 @@ export function SectionLoaderProvider({ children }: SectionLoaderProviderProps) 
     </>
   );
 }
+

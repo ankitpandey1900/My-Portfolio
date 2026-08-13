@@ -22,3 +22,4 @@ export interface ExtendedPlanetMetadata {
   localization: LocalizedDescription;
   tags: string[];
 }
+

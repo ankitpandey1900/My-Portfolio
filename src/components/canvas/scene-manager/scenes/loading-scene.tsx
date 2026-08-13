@@ -10,7 +10,7 @@ function OrbitalLoader() {
   const dotRef = React.useRef<THREE.Mesh>(null);
 
   useFrame((state) => {
-    const t = state.clock.getElapsedTime();
+    const t = state.clock.elapsedTime;
     if (ringRef.current) {
       ringRef.current.rotation.z = t * 0.4;
     }
@@ -43,3 +43,4 @@ export function LoadingScene() {
 }
 
 export default LoadingScene;
+

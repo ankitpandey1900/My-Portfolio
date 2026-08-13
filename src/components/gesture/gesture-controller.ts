@@ -25,3 +25,4 @@ export const GestureController = {
     GestureRecognizer.cancelAll();
   },
 };
+

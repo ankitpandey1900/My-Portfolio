@@ -123,3 +123,4 @@ export function HeroVoyagePanel({ phase, markers }: HeroVoyagePanelProps) {
     </AnimatePresence>
   );
 }
+

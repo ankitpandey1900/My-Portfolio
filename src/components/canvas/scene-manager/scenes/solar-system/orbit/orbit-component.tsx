@@ -29,14 +29,13 @@ function OrbitPath() {
       points={points}
       color="#ffffff"
       transparent
-      opacity={0.12}
-      lineWidth={1.5}
-      dashed={true}
-      dashScale={Math.max(10, config.radius * 2)}
-      dashSize={1}
-      gapSize={1}
+      opacity={0.08}
+      lineWidth={1}
+      dashed={false}
       blending={THREE.AdditiveBlending}
       depthWrite={false}
+      depthTest={true}
+      renderOrder={0}
       name={`orbit-path-${config.id}`}
     />
   );
@@ -57,3 +56,4 @@ export function OrbitComponent({ children }: OrbitComponentProps) {
   );
 }
 export default OrbitComponent;
+

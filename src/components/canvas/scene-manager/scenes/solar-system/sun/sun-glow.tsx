@@ -40,3 +40,4 @@ export function SunGlow({ radius, glowColor, glowScale, glowOpacity }: SunGlowPr
   );
 }
 export default SunGlow;
+

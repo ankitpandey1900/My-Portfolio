@@ -152,3 +152,4 @@ export function MoonOrbit({ moon, timeScale = 1 }: MoonOrbitProps) {
     </group>
   );
 }
+

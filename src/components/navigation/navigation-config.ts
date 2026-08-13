@@ -21,3 +21,4 @@ export const reverseNavigationMap = (): Record<string, string> => {
   }
   return reversed;
 };
+

@@ -33,3 +33,4 @@ export function calculateCircularPosition(
   return new THREE.Vector3(rotatedX, rotatedY, rotatedZ);
 }
 export default calculateCircularPosition;
+

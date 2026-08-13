@@ -22,12 +22,13 @@ export function EffectsPipeline() {
     <ComposerElement disableNormalPass multisampling={0}>
       <BloomElement
         mipmapBlur
-        intensity={0.2}
-        luminanceThreshold={0.92}
-        luminanceSmoothing={0.18}
+        intensity={0.3} // Gentle bloom
+        luminanceThreshold={0.9}
+        luminanceSmoothing={0.2}
       />
       <VignetteElement eskil={false} offset={0.28} darkness={0.55} />
     </ComposerElement>
   );
 }
 export default EffectsPipeline;
+

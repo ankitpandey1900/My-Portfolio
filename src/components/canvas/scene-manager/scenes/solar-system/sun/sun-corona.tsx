@@ -70,3 +70,4 @@ export function SunCorona({
   );
 }
 export default SunCorona;
+

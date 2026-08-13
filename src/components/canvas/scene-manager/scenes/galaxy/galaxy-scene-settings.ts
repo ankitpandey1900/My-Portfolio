@@ -11,3 +11,4 @@ export const GALAXY_SCENE_SETTINGS: GalaxySceneSettings = {
   fogColor: '#020205',
   fogDensity: 0.0015,
 };
+

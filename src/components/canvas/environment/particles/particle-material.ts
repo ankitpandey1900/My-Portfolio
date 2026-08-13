@@ -164,3 +164,4 @@ export function createParticleMaterial(dprScale: number = 1): THREE.ShaderMateri
     depthTest: true,
   });
 }
+

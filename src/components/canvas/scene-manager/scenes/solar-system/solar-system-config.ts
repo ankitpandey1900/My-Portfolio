@@ -7,3 +7,4 @@ export const DEFAULT_SOLAR_CONFIG: SolarSystemConfig = {
   theme: 'cinematic',
   difficulty: 'normal',
 };
+

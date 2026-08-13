@@ -55,3 +55,4 @@ export function HeroBrief({ phase }: HeroBriefProps) {
     </AnimatePresence>
   );
 }
+

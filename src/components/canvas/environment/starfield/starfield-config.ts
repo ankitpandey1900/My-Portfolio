@@ -24,3 +24,4 @@ export const STARFIELD_CONFIG = {
     maxTwinkleSpeed: 10.0,
   },
 };
+

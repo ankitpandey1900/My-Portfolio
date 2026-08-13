@@ -6,3 +6,4 @@ export { generateStarLayer } from './star-generator';
 export { STARFIELD_PRESETS } from './starfield-presets';
 export type { StarLayerConfig, StarfieldPresetId } from './starfield-types';
 export type { StarLayerData } from './star-generator';
+

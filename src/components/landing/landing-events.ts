@@ -22,3 +22,4 @@ export const LandingEvents = {
     return sceneEventEmitter.on(`landing:${event}`, (data) => callback(data as LandingPayload));
   },
 };
+

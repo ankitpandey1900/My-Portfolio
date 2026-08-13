@@ -28,3 +28,4 @@ export function PlanetFactory({ id, fallbackEntry }: PlanetFactoryProps) {
   );
 }
 export default PlanetFactory;
+

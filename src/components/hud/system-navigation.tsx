@@ -113,38 +113,7 @@ export function SystemNavigation() {
 
   return (
     <>
-      {inSection || exploring ? (
-        <div className="fixed top-24 left-4 md:left-8 z-50 flex flex-col items-start gap-3">
-          <button
-            type="button"
-            className="px-6 py-2.5 bg-black/60 backdrop-blur-xl border border-white/10 rounded-full text-white text-sm font-medium tracking-wide shadow-2xl hover:bg-black/80 transition-colors"
-            onClick={() => NavigationController.goHome()}
-          >
-            Return to orbit
-          </button>
-
-          {currentPlanetId && (
-            <button
-              type="button"
-              className="px-6 py-2.5 bg-blue-600/40 backdrop-blur-xl border border-blue-400/30 rounded-full text-white text-sm font-medium tracking-wide shadow-2xl hover:bg-blue-600/70 transition-colors flex items-center justify-center gap-2"
-              onClick={() => {
-                if (inSection) {
-                  NavigationController.explorePlanet(currentPlanetId);
-                } else if (currentSection) {
-                  NavigationController.navigateToSection(currentSection);
-                } else {
-                  const planetDef = CATALOG.find((p) => p.id === currentPlanetId);
-                  if (planetDef?.portfolioSection) {
-                    NavigationController.navigateToSection(planetDef.portfolioSection);
-                  }
-                }
-              }}
-            >
-              {inSection ? 'Explore 360°' : 'Read Details'}
-            </button>
-          )}
-        </div>
-      ) : null}
+      {/* Top left redundant buttons removed for cleaner UI */}
 
       <motion.div
         className={cn(
@@ -380,3 +349,4 @@ export function SystemNavigation() {
 }
 
 export default SystemNavigation;
+

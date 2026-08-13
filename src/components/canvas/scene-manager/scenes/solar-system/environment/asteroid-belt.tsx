@@ -46,3 +46,4 @@ export function AsteroidBelt() {
 }
 
 export default AsteroidBelt;
+

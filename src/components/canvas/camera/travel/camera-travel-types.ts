@@ -30,3 +30,4 @@ export interface TravelPath {
   midPointOffset?: THREE.Vector3; // Used for arc sweeping
   progress: number;
 }
+

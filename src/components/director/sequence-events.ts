@@ -33,3 +33,4 @@ export const SequenceEvents = {
     return sceneEventEmitter.on(`director:${event}`, (data) => callback(data as T));
   },
 };
+

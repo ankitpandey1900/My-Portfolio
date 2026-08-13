@@ -82,3 +82,4 @@ export class WebGLErrorBoundary extends React.Component<ErrorBoundaryProps, Erro
   }
 }
 export default WebGLErrorBoundary;
+

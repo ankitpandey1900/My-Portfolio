@@ -193,7 +193,7 @@ export function BlackHole() {
   });
 
   return (
-    <group name="black-hole" position={[-82, -8, -58]} rotation={[0.35, -0.55, 0.12]}>
+    <group name="black-hole" position={[-250, -20, -200]} rotation={[0.35, -0.55, 0.12]}>
       <pointLight color="#ff9838" intensity={65} distance={160} decay={2} />
 
       <mesh name="black-hole-core">
@@ -242,3 +242,4 @@ export function BlackHole() {
 }
 
 export default BlackHole;
+

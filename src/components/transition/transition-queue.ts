@@ -43,3 +43,4 @@ export const TransitionQueue = {
     TransitionEvents.emit('QueueUpdated', { queueLength: 0, timestamp: Date.now() });
   },
 };
+

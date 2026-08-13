@@ -30,3 +30,4 @@ export const TransitionEvents = {
     return sceneEventEmitter.on(`transition:${event}`, (data) => callback(data as T));
   },
 };
+

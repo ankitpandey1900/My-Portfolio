@@ -134,3 +134,4 @@ export function DebugPanel() {
   return <Stats className="absolute top-16 left-4 z-50" />;
 }
 export default DebugPanel;
+

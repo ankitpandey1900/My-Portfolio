@@ -11,6 +11,7 @@ import { PlanetRegistry } from '@/components/canvas/scene-manager/scenes/solar-s
 import { DEFAULT_SOLAR_CONFIG } from '@/components/canvas/scene-manager/scenes/solar-system/solar-system-config';
 import { CameraTargetResolver } from './travel/camera-target-resolver';
 import { useCameraTravelStore } from './travel/camera-travel-state';
+import { useSolarSystemSimulation } from '../scene-manager/scenes/solar-system/solar-system-store';
 
 /**
  * Manual orbit controls — full 360° when exploring a focused planet.
@@ -36,7 +37,7 @@ export function CameraOrbitControls() {
   const minDistance = exploringPlanet
     ? Math.max((focusedPlanet?.radius ?? 1) * 1.65, 2.5)
     : 6;
-  const maxDistance = exploringPlanet ? Math.max((focusedPlanet?.cameraDistance ?? 8) * 2.4, 48) : 220;
+  const maxDistance = exploringPlanet ? Math.max((focusedPlanet?.cameraDistance ?? 8) * 1.4, 18) : 220;
 
   const previousPlanetPosRef = React.useRef(new THREE.Vector3());
 
@@ -48,9 +49,10 @@ export function CameraOrbitControls() {
     }
 
     if (exploringPlanet && currentPlanetId) {
+      const simState = useSolarSystemSimulation.getState();
       const planetPos = CameraTargetResolver.resolvePlanetPosition(
         currentPlanetId,
-        state.clock.getElapsedTime(),
+        simState.accumulatedTime,
         DEFAULT_SOLAR_CONFIG.timeScale,
         DEFAULT_SOLAR_CONFIG.orbitSpeedMultiplier
       );
@@ -59,12 +61,15 @@ export function CameraOrbitControls() {
       if (previousPlanetPosRef.current.lengthSq() > 0) {
         const delta = new THREE.Vector3().subVectors(planetPos, previousPlanetPosRef.current);
         
-        // Move both the controls target and the camera itself by the delta 
-        // to stay locked onto the moving planet without fighting manual panning.
+        // Track moving planet by applying the exact delta position
         controls.target.add(delta);
         state.camera.position.add(delta);
+      } else {
+        // First frame of tracking: lock target exactly to planet
+        controls.target.copy(planetPos);
       }
       
+      // Save current position for next frame
       previousPlanetPosRef.current.copy(planetPos);
     } else {
       // Not exploring a planet, reset the tracking ref
@@ -87,13 +92,12 @@ export function CameraOrbitControls() {
       enableDamping
       dampingFactor={0.08}
       rotateSpeed={exploringPlanet ? 0.72 : 0.55}
-      zoomSpeed={0.85}
+      zoomSpeed={exploringPlanet ? 0.35 : 0.85}
       panSpeed={0.65}
       minDistance={minDistance}
       maxDistance={maxDistance}
       maxPolarAngle={Math.PI} // Full 360 exploration
       minPolarAngle={0.01}
-      target={[0, 0, 0]}
       mouseButtons={{
         LEFT: THREE.MOUSE.ROTATE,
         MIDDLE: THREE.MOUSE.DOLLY,
@@ -104,3 +108,4 @@ export function CameraOrbitControls() {
 }
 
 export default CameraOrbitControls;
+

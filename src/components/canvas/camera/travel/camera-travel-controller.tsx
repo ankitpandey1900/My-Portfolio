@@ -59,18 +59,7 @@ export function CameraTravelController() {
         // Base look target is the planet
         endLook = planetPos.clone();
         
-        // UI Framing Offset: 
-        // Calculate the 'right' vector relative to the camera's final viewing angle.
-        // We shift the camera's focus slightly to the right so the planet naturally sits 
-        // on the left side of the screen, leaving perfect room for the UI panel on desktop.
-        const isDesktop = typeof window !== 'undefined' && window.innerWidth > 768;
-        if (isDesktop) {
-          const viewDir = planetPos.clone().sub(endPos).normalize();
-          const rightDir = viewDir.cross(new THREE.Vector3(0, 1, 0)).normalize();
-          // Scale offset by planet radius so large planets get more breathing room
-          endLook.add(rightDir.multiplyScalar(planetRadius * 1.25));
-        }
-        
+        // We keep the planet perfectly centered since there is UI on both sides.
         focusedTargetIdRef.current = store.currentRequest.targetId;
       } else {
         endPos = new THREE.Vector3(
@@ -89,7 +78,7 @@ export function CameraTravelController() {
       activePathRef.current = {
         posFn: CameraPathGenerator.generateCurve(camera.position.clone(), endPos),
         lookFn: CameraPathGenerator.generateLookAtPath(currentLookAt, endLook),
-        startTime: state.clock.getElapsedTime(),
+        startTime: state.clock.elapsedTime,
         duration: durationSec,
         easing: CameraAnimator.getEasingFunction(store.currentRequest.easing),
         baseFov: (camera as THREE.PerspectiveCamera).fov || 45,
@@ -100,7 +89,7 @@ export function CameraTravelController() {
     }
 
     if (store.state === 'travelling' && activePathRef.current) {
-      const elapsed = state.clock.getElapsedTime() - activePathRef.current.startTime;
+      const elapsed = state.clock.elapsedTime - activePathRef.current.startTime;
       const progress = CameraAnimator.calculateProgress(
         elapsed * 1000,
         activePathRef.current.duration * 1000
@@ -112,30 +101,11 @@ export function CameraTravelController() {
 
       camera.position.copy(nextPos);
       camera.lookAt(nextLook);
-      
-      // Apply Warp Speed FOV stretching
-      if (activePathRef.current.isLongDistance) {
-        const warpAmount = Math.sin(progress * Math.PI) * 45; // stretches up to +45 degrees
-        const perspCamera = camera as THREE.PerspectiveCamera;
-        if (perspCamera.fov !== undefined) {
-          perspCamera.fov = activePathRef.current.baseFov + warpAmount;
-          perspCamera.updateProjectionMatrix();
-        }
-      }
 
       store.setProgress(progress);
 
       if (progress >= 1.0) {
         store.setState('idle');
-        
-        // Restore FOV to normal
-        if (activePathRef.current.isLongDistance) {
-          const perspCamera = camera as THREE.PerspectiveCamera;
-          if (perspCamera.fov !== undefined) {
-            perspCamera.fov = activePathRef.current.baseFov;
-            perspCamera.updateProjectionMatrix();
-          }
-        }
         
         // Sync the OrbitControls target so it doesn't snap back when re-enabled
         if (state.controls) {
@@ -183,3 +153,4 @@ export function CameraTravelController() {
 
   return null;
 }
+

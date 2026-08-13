@@ -22,3 +22,4 @@ export const NEBULA_CONFIG = {
     maxSpeed: 5.0,
   },
 };
+

@@ -35,3 +35,4 @@ export const useSolarSystemSimulation = create<SolarSystemSimulationState>((set)
       accumulatedTime: 0,
     }),
 }));
+

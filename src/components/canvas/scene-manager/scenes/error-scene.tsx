@@ -10,7 +10,7 @@ function GlitchOrb() {
 
   useFrame((state) => {
     if (!meshRef.current) return;
-    const t = state.clock.getElapsedTime();
+    const t = state.clock.elapsedTime;
     meshRef.current.rotation.y = t * 0.3;
     const pulse = 0.85 + Math.sin(t * 4) * 0.08;
     meshRef.current.scale.setScalar(pulse);
@@ -35,3 +35,4 @@ export function ErrorScene() {
 }
 
 export default ErrorScene;
+

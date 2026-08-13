@@ -19,3 +19,4 @@ export function FlatModeShell({ reason }: FlatModeShellProps) {
     </NavigationProvider>
   );
 }
+

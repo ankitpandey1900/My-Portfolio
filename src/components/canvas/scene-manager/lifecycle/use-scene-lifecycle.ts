@@ -73,3 +73,4 @@ export function useSceneLifecycle({
   }, [isActive, name]);
 }
 export default useSceneLifecycle;
+

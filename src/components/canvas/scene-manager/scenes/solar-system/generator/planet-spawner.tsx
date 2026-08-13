@@ -21,3 +21,4 @@ export function PlanetSpawner({ entry, children }: PlanetSpawnerProps) {
   return <>{children}</>;
 }
 export default PlanetSpawner;
+

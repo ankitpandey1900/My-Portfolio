@@ -80,3 +80,4 @@ export interface SolarSystemConfig {
   /** Navigation detail level. */
   difficulty: 'normal' | 'sandbox' | 'explorer';
 }
+

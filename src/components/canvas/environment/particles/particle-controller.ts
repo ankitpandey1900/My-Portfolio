@@ -14,3 +14,4 @@ export const ParticleController = {
     useParticleStore.getState().updateConfig(partialConfig);
   },
 };
+

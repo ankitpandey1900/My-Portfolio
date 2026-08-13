@@ -145,3 +145,4 @@ export function HeroContent({ identity, mission, phase }: HeroContentProps) {
     </>
   );
 }
+

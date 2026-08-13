@@ -78,19 +78,26 @@ function createRingMaterial(
   return new THREE.ShaderMaterial({
     transparent: true,
     depthWrite: false,
+    depthTest: true,
     side: THREE.DoubleSide,
-    blending: THREE.AdditiveBlending,
+    blending: THREE.NormalBlending,
     uniforms: {
       uColor: { value: new THREE.Color(color) },
       uInner: { value: innerRadius },
       uOuter: { value: outerRadius },
       uTime: { value: 0 },
+      uSunDirection: { value: new THREE.Vector3(0.55, 0.18, 0.82).normalize() },
     },
     vertexShader: /* glsl */ `
       varying vec3 vLocalPosition;
+      varying vec3 vWorldPosition;
+      varying vec3 vNormal;
       void main() {
         vLocalPosition = position;
-        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        vec4 worldPos = modelMatrix * vec4(position, 1.0);
+        vWorldPosition = worldPos.xyz;
+        vNormal = normalize(normalMatrix * normal);
+        gl_Position = projectionMatrix * viewMatrix * worldPos;
       }
     `,
     fragmentShader: /* glsl */ `
@@ -98,9 +105,12 @@ function createRingMaterial(
       uniform float uInner;
       uniform float uOuter;
       uniform float uTime;
-      varying vec3 vLocalPosition;
+      uniform vec3 uSunDirection;
       
-      // Pseudo-random noise function
+      varying vec3 vLocalPosition;
+      varying vec3 vWorldPosition;
+      varying vec3 vNormal;
+      
       float rand(vec2 n) { 
         return fract(sin(dot(n, vec2(12.9898, 4.1414))) * 43758.5453);
       }
@@ -109,7 +119,6 @@ function createRingMaterial(
         vec2 ip = floor(p);
         vec2 u = fract(p);
         u = u*u*(3.0-2.0*u);
-        
         float res = mix(
           mix(rand(ip),rand(ip+vec2(1.0,0.0)),u.x),
           mix(rand(ip+vec2(0.0,1.0)),rand(ip+vec2(1.0,1.0)),u.x),u.y);
@@ -122,30 +131,44 @@ function createRingMaterial(
         
         float t = (dist - uInner) / (uOuter - uInner);
         
-        // Procedural high-detail multi-band rings
-        float n1 = noise(vec2(t * 150.0, 0.0));
-        float n2 = noise(vec2(t * 300.0, 0.0));
+        // Fine procedural rings
+        float n1 = noise(vec2(t * 250.0, 0.0));
+        float n2 = noise(vec2(t * 800.0, 0.0));
         float n3 = noise(vec2(t * 50.0, 0.0));
         
-        // Deep gaps
-        float gap1 = smoothstep(0.48, 0.5, t) * (1.0 - smoothstep(0.5, 0.54, t));
-        float gap2 = smoothstep(0.72, 0.74, t) * (1.0 - smoothstep(0.74, 0.78, t));
-        float gap3 = smoothstep(0.2, 0.22, t) * (1.0 - smoothstep(0.22, 0.25, t));
+        // Realistic gaps (Cassini division, Encke gap, etc.)
+        float cassini = smoothstep(0.60, 0.62, t) * (1.0 - smoothstep(0.66, 0.68, t));
+        float encke = smoothstep(0.85, 0.86, t) * (1.0 - smoothstep(0.87, 0.88, t));
+        float innerGap = smoothstep(0.15, 0.16, t) * (1.0 - smoothstep(0.18, 0.19, t));
         
-        float totalGap = max(gap1, max(gap2, gap3));
+        float totalGap = max(cassini * 0.95, max(encke * 0.8, innerGap * 0.6));
         
-        // Combine noise frequencies for rich texture
-        float density = (n1 * 0.5 + n2 * 0.3 + n3 * 0.8) * (1.0 - totalGap * 1.5);
+        // Density calculation
+        float density = (n1 * 0.4 + n2 * 0.2 + n3 * 0.4);
+        density = smoothstep(0.2, 0.8, density); // increase contrast
+        density *= (1.0 - totalGap);
         
-        // Smooth inner and outer edges
-        float edge = smoothstep(0.0, 0.02, t) * (1.0 - smoothstep(0.95, 1.0, t));
+        // Smooth edges
+        float edge = smoothstep(0.0, 0.05, t) * (1.0 - smoothstep(0.95, 1.0, t));
         density *= edge;
         
-        if (density < 0.02) discard;
+        if (density < 0.01) discard;
         
-        // Add a slight bloom/glow to the rings
-        vec3 finalColor = uColor * (0.5 + density * 1.5);
-        gl_FragColor = vec4(finalColor, density * 0.85);
+        // Lighting
+        vec3 n = normalize(vNormal);
+        // Rings are flat, so they catch light based on the sun's angle to the plane
+        // We use absolute dot product because the ring is DoubleSide
+        float ndl = max(abs(dot(n, normalize(uSunDirection))), 0.1); 
+        
+        vec3 baseColor = mix(uColor * 0.7, uColor * 1.3, n1); // vary color by band
+        vec3 lit = baseColor * (ndl * 0.8 + 0.2); // diffuse
+        
+        // Add a bit of rim scatter or translucency
+        vec3 viewDir = normalize(cameraPosition - vWorldPosition);
+        float scatter = pow(max(dot(viewDir, normalize(uSunDirection)), 0.0), 4.0) * 0.5;
+        lit += baseColor * scatter * density;
+        
+        gl_FragColor = vec4(lit, density * 0.7);
       }
     `,
   });
@@ -198,13 +221,29 @@ function PlanetRing({ config }: { config: PlanetManifestEntry }) {
     [config.ring.color, inner, outer]
   );
 
+  const sunDirection = React.useMemo(() => new THREE.Vector3(), []);
+  const meshRef = React.useRef<THREE.Mesh>(null);
+  const worldPos = React.useMemo(() => new THREE.Vector3(), []);
+
   React.useEffect(() => () => material.dispose(), [material]);
+
+  useFrame(() => {
+    if (!meshRef.current) return;
+    meshRef.current.getWorldPosition(worldPos);
+    sunDirection.copy(worldPos).negate().normalize();
+    if (sunDirection.lengthSq() < 0.001) {
+      sunDirection.set(0.55, 0.18, 0.82).normalize();
+    }
+    if (material.uniforms.uSunDirection?.value) {
+      material.uniforms.uSunDirection.value.copy(sunDirection);
+    }
+  });
 
   if (!config.ring.hasRing) return null;
 
   return (
-    <mesh rotation={[Math.PI / 2.35, 0, 0]} name={`planet-ring-${config.id}`}>
-      <ringGeometry args={[inner, outer, 128]} />
+    <mesh ref={meshRef} rotation={[Math.PI / 2.35, 0, 0]} name={`planet-ring-${config.id}`} castShadow receiveShadow>
+      <ringGeometry args={[inner, outer, 256]} />
       <primitive object={material} attach="material" />
     </mesh>
   );
@@ -319,3 +358,4 @@ export function PlanetComponent() {
   );
 }
 export default PlanetComponent;
+

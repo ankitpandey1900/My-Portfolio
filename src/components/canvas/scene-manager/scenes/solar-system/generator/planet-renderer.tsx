@@ -135,7 +135,7 @@ function TexturedPlanetReady({
     if (meshRef.current) meshRef.current.rotation.y += entry.rotationSpeed * 0.0015;
     if (cloudRef.current) cloudRef.current.rotation.y += entry.rotationSpeed * 0.0022;
     if (surfaceMaterial.emissiveMap) {
-      const t = state.clock.getElapsedTime();
+      const t = state.clock.elapsedTime;
       surfaceMaterial.emissiveIntensity =
         (textureSet.emissiveIntensity ?? 0.45) * (0.85 + Math.sin(t * 0.4) * 0.08);
     }
@@ -273,3 +273,4 @@ function PlanetRendererInner(
 export const PlanetRenderer = React.forwardRef(PlanetRendererInner);
 PlanetRenderer.displayName = 'PlanetRenderer';
 export default PlanetRenderer;
+

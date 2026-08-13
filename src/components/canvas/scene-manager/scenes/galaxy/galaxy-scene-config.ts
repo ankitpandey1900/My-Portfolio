@@ -21,3 +21,4 @@ export const GALAXY_SCENE_CONFIG: GalaxySceneConfig = {
   nebulaPreset: 'deep-space',
   toneMapping: 'ACESFilmic',
 };
+

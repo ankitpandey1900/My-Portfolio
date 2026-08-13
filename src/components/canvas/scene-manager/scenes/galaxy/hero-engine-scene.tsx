@@ -58,7 +58,7 @@ export function HeroEngineScene() {
 
   useFrame((state, delta) => {
     if (!isRenderActive) return;
-    const t = state.clock.getElapsedTime();
+    const t = state.clock.elapsedTime;
     if (groupRef.current) groupRef.current.rotation.y += delta * 0.035;
     if (glowRef.current) {
       const pulse = 0.92 + Math.sin(t * 2.4) * 0.08;
@@ -134,3 +134,4 @@ export function HeroEngineScene() {
 }
 
 export default HeroEngineScene;
+

@@ -19,3 +19,4 @@ export function LandingProvider({ children }: LandingProviderProps) {
     </>
   );
 }
+

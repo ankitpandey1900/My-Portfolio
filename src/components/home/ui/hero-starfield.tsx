@@ -57,6 +57,13 @@ interface HeroStarfieldProps {
 export function HeroStarfield({ intensity = 1, parallaxY = 0, showMeteors = true }: HeroStarfieldProps) {
   const stars = React.useMemo(() => generateStars(200, 42), []);
   const meteors = React.useMemo(() => generateMeteors(12, 1337), []);
+  const [isMounted, setIsMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted) return null;
 
   return (
     <div
@@ -164,3 +171,4 @@ export function HeroStarfield({ intensity = 1, parallaxY = 0, showMeteors = true
     </div>
   );
 }
+

@@ -17,3 +17,4 @@ export interface TransitionContext {
   targetId?: string | undefined; // e.g. 'earth' or 'projects'
   priority: number;
 }
+

@@ -55,3 +55,4 @@ export function validateAgainstSchema(config: unknown): config is PlanetManifest
   return hasStringKeys && hasNumericKeys && hasArrayKeys;
 }
 export default validateAgainstSchema;
+

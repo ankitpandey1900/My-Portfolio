@@ -20,3 +20,4 @@ export interface SectionLoaderContext {
   currentSection: SectionId | null;
   startTimestamp: number | null;
 }
+

@@ -18,3 +18,4 @@ export interface InteractionPayload {
   device?: InputDevice;
   timestamp: number;
 }
+

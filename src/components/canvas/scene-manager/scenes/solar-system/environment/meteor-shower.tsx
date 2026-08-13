@@ -57,7 +57,7 @@ export function MeteorShower() {
   }, [geometry, material]);
 
   useFrame((state) => {
-    const elapsed = state.clock.getElapsedTime();
+    const elapsed = state.clock.elapsedTime;
 
     for (let i = 0; i < METEOR_COUNT; i += 1) {
       const meteor = meteors[i]!;
@@ -87,3 +87,4 @@ export function MeteorShower() {
 }
 
 export default MeteorShower;
+

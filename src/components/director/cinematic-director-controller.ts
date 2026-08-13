@@ -50,3 +50,4 @@ export const CinematicDirectorController = {
     return useSequenceStore.getState().currentSequenceId;
   },
 };
+

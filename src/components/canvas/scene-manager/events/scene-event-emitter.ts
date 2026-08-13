@@ -33,3 +33,4 @@ class SceneEventEmitter {
 
 export const sceneEventEmitter = new SceneEventEmitter();
 export default sceneEventEmitter;
+

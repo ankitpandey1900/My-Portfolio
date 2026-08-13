@@ -102,3 +102,4 @@ export interface SequenceState {
   clearQueue: () => void;
   dequeue: () => SequenceId | undefined;
 }
+

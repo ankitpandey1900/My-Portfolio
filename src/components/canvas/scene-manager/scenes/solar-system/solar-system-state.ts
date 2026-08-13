@@ -21,3 +21,4 @@ export interface SolarSystemState {
   updateConfig: (updater: Partial<SolarSystemConfig>) => void;
 }
 export default SolarSystemState;
+

@@ -5,3 +5,4 @@ export const TRANSITION_CONFIG = {
   // Brief delay allowing React rendering cycles to settle before grabbing next queued item
   QUEUE_POLL_DELAY_MS: 50,
 };
+

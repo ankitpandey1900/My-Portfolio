@@ -32,3 +32,4 @@ export interface SunPresetConfig {
   octaves: number;
 }
 export default SunPresetConfig;
+

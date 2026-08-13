@@ -97,3 +97,4 @@ export function ParticleRenderer({ pool }: ParticleRendererProps) {
     </instancedMesh>
   );
 }
+

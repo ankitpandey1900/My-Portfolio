@@ -161,3 +161,4 @@ export function createNebulaMaterial(): THREE.ShaderMaterial {
     side: THREE.BackSide, // Render inside the sphere shell
   });
 }
+

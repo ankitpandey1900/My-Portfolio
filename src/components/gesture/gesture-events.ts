@@ -14,3 +14,4 @@ export const GestureEvents = {
     return sceneEventEmitter.on(`gesture:${type}`, (data) => callback(data as GesturePayload));
   },
 };
+

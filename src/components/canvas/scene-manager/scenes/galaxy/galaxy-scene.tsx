@@ -30,3 +30,4 @@ export function GalaxyScene() {
   );
 }
 export default GalaxyScene;
+

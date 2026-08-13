@@ -32,3 +32,4 @@ export const useLandingStore = create<LandingStore>((set) => ({
       startTimestamp: null,
     }),
 }));
+

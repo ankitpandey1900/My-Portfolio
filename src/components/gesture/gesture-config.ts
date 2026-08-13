@@ -17,3 +17,4 @@ export const GESTURE_CONFIG = {
   // Maximum time a tap can take to be considered a tap (not a drag or hold)
   MAX_TAP_DURATION_MS: 250,
 };
+

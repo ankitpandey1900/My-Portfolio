@@ -15,3 +15,4 @@ export const SOLAR_SYSTEM_SCENE_CONFIG: SolarSystemSceneConfig = {
   nebulaPreset: 'minimal-space',
   particlePreset: 'SpaceDust',
 };
+

@@ -79,3 +79,4 @@ export function useAdaptiveQuality() {
   }, [setQualityTier, setPostProcessing, setQuality, setDpr]);
 }
 export default useAdaptiveQuality;
+

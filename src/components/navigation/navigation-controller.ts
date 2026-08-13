@@ -149,8 +149,8 @@ export const NavigationController = {
 
     cameraStore.queueTravel({
       targetId: null,
-      targetPosition: [-65, 5, -45],
-      targetLookAt: [-82, -8, -58],
+      targetPosition: [-235, -8, -188],
+      targetLookAt: [-250, -20, -200],
       durationMs: 2800,
       easing: 'ease-in-out',
       onComplete: () => {
@@ -187,3 +187,4 @@ export const NavigationController = {
     NavigationController.viewSystemOverview();
   },
 };
+

@@ -69,7 +69,7 @@ export function StarLayer({
   useFrame((state) => {
     if (!isRenderActive) return;
 
-    const elapsed = state.clock.getElapsedTime();
+    const elapsed = state.clock.elapsedTime;
     if (material.uniforms.uTime) {
       // eslint-disable-next-line react-hooks/immutability
       material.uniforms.uTime.value = elapsed;
@@ -95,3 +95,4 @@ export function StarLayer({
   );
 }
 export default StarLayer;
+

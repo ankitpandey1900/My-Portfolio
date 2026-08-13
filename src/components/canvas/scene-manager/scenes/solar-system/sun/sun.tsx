@@ -124,3 +124,4 @@ export function Sun() {
   );
 }
 export default Sun;
+

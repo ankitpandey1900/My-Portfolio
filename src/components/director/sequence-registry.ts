@@ -156,3 +156,4 @@ export const SEQUENCE_REGISTRY: Record<SequenceId, SequenceDefinition> = {
   FutureDemoMode: { id: 'FutureDemoMode', steps: [] },
   FutureIdleSequence: { id: 'FutureIdleSequence', steps: [] },
 };
+

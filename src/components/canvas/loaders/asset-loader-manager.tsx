@@ -39,3 +39,4 @@ export function AssetLoaderManager({ children }: LoaderProps) {
   );
 }
 export default AssetLoaderManager;
+

@@ -19,3 +19,4 @@ export function HackathonsSection() {
     </MissionGrid>
   );
 }
+

@@ -17,3 +17,4 @@ export const useInteractionStore = create<InteractionState>((set) => ({
   setSelected: (id) => set({ selectedPlanetId: id }),
   setDisabled: (ids) => set({ disabledPlanets: ids }),
 }));
+

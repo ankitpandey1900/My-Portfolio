@@ -68,3 +68,4 @@ export function useAsyncTextures(urls: string[]): THREE.Texture[] | null {
 
   return textures;
 }
+

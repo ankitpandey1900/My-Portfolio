@@ -202,36 +202,6 @@ export const PROJECTS: ProjectEntry[] = [
     github: 'https://github.com/ankitpandey1900/ipwala',
     status: 'live',
   },
-  {
-    id: 'MSN-004',
-    name: 'Mess Tracker',
-    tagline: 'Thali management system',
-    description:
-      'Smart mess subscription tracker with analytics, streaks, heatmaps, and clean glassmorphic UI.',
-    stack: ['JavaScript', 'HTML', 'CSS', 'localStorage'],
-    href: 'https://mess-tracker.netlify.app/',
-    github: 'https://github.com/ankitpandey1900/Mess-Tracker',
-    status: 'live',
-  },
-  {
-    id: 'MSN-005',
-    name: 'Solar Portfolio',
-    tagline: 'This experience',
-    description:
-      'Cinematic 3D portfolio with planet travel, sector briefing UI, and modular scene architecture — the system you are inside right now.',
-    stack: ['Next.js', 'R3F', 'Three.js', 'Zustand', 'Tailwind'],
-    github: 'https://github.com/ankitpandey1900',
-    status: 'building',
-  },
-  {
-    id: 'MSN-006',
-    name: 'Fitness Tracker',
-    tagline: 'Cricket academy routines',
-    description: 'Daily fitness, weight, and habit tracker designed for cricket academy athletes.',
-    stack: ['Web', 'Tracking', 'Analytics'],
-    github: 'https://github.com/ankitpandey1900/fitness_tracker',
-    status: 'live',
-  },
 ];
 
 export const SERVICES: ServiceOffering[] = [
@@ -328,7 +298,7 @@ export const HACKATHONS = [
 export const GITHUB_STATS = {
   username: 'ankitpandey1900',
   contributions: 'Active',
-  pinnedRepos: ['AllTracker', 'tallymate', 'ipwala', 'Mess-Tracker', 'fitness_tracker'],
+  pinnedRepos: ['AllTracker', 'tallymate', 'ipwala'],
   url: 'https://github.com/ankitpandey1900',
 };
 
@@ -346,3 +316,4 @@ export const TESTIMONIALS = [
     author: 'GitHub profile',
   },
 ];
+

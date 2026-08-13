@@ -256,3 +256,4 @@ export function createSunCoronaMaterial(): THREE.ShaderMaterial {
     side: THREE.DoubleSide,
   });
 }
+

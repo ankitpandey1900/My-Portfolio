@@ -162,3 +162,4 @@ export function generateStarLayer(config: StarLayerConfig): StarLayerData {
 
   return { positions, sizes, brightnesses, colors, phaseOffsets };
 }
+

@@ -41,3 +41,4 @@ export function NavigationManager() {
 
   return null;
 }
+

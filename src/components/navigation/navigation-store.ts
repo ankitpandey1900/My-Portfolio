@@ -38,3 +38,4 @@ export const useNavigationStore = create<NavigationStore>((set) => ({
       previousSectionId: null,
     }),
 }));
+

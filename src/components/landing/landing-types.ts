@@ -13,3 +13,4 @@ export interface LandingContext {
   targetSectionId: string | null;
   startTimestamp: number | null;
 }
+

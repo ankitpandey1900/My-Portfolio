@@ -23,3 +23,4 @@ export function CameraTravelProvider({ children }: CameraTravelProviderProps) {
     </group>
   );
 }
+

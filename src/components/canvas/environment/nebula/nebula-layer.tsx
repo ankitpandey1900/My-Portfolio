@@ -76,7 +76,7 @@ export function NebulaLayer({
   // Animate noise translation via time ticks in useFrame
   useFrame((state) => {
     if (!isRenderActive) return;
-    const elapsed = state.clock.getElapsedTime();
+    const elapsed = state.clock.elapsedTime;
     if (material.uniforms.uTime) {
       // eslint-disable-next-line react-hooks/immutability
       material.uniforms.uTime.value = elapsed;
@@ -93,3 +93,4 @@ export function NebulaLayer({
   );
 }
 export default NebulaLayer;
+

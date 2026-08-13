@@ -29,3 +29,4 @@ export const analyticsEventSchema = z.object({
 
 export type ContactInput = z.infer<typeof contactSchema>;
 export type QuoteInput = z.infer<typeof quoteSchema>;
+

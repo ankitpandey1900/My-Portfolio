@@ -8,3 +8,4 @@ export const SECTION_LOADER_CONFIG = {
   // Number of retries before permanently failing
   MAX_RETRIES: 2,
 };
+

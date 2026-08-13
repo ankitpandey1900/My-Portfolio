@@ -28,3 +28,4 @@ export function GestureNavigationBridge() {
 
   return null;
 }
+

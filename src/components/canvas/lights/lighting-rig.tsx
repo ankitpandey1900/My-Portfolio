@@ -9,3 +9,4 @@ export function LightingRig() {
   );
 }
 export default LightingRig;
+

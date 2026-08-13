@@ -35,3 +35,4 @@ export const CAMERA_CONSTRAINTS = {
   minFov: 25,
   maxFov: 75,
 } as const;
+

@@ -53,7 +53,7 @@ export function HeroCelestialScene() {
   useFrame((state, delta) => {
     if (!isRenderActive) return;
 
-    const t = state.clock.getElapsedTime();
+    const t = state.clock.elapsedTime;
     if (planetRef.current) planetRef.current.rotation.y += delta * 0.012;
 
     if (planetMaterial.uniforms.uTime) planetMaterial.uniforms.uTime.value = t;
@@ -132,3 +132,4 @@ export function HeroCelestialScene() {
     </group>
   );
 }
+

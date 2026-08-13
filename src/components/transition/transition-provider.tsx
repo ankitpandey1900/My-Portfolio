@@ -19,3 +19,4 @@ export function TransitionProvider({ children }: TransitionProviderProps) {
     </>
   );
 }
+

@@ -19,3 +19,4 @@ export interface SpawnLog {
   status: 'success' | 'failed';
   error?: string;
 }
+

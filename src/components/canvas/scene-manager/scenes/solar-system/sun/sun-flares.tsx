@@ -83,3 +83,4 @@ export function SunFlares({ radius, color }: SunFlaresProps) {
 }
 
 export default SunFlares;
+

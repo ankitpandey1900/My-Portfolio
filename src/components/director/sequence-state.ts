@@ -36,3 +36,4 @@ export const useSequenceStore = create<SequenceState>((set, get) => ({
     return next;
   },
 }));
+

@@ -15,3 +15,4 @@ export const LANDING_CONFIG = {
    */
   LANDING_TIMEOUT: 5000,
 };
+

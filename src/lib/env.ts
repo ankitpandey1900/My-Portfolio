@@ -45,3 +45,4 @@ export const env = {
   notificationRecipient: process.env.NOTIFICATION_EMAIL_RECIPIENT ?? '',
   githubToken: process.env.GITHUB_PERSONAL_ACCESS_TOKEN ?? '',
 } as const;
+

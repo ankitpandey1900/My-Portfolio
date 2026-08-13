@@ -23,3 +23,4 @@ export function HeroOverlay({ phase }: HeroOverlayProps) {
     </div>
   );
 }
+

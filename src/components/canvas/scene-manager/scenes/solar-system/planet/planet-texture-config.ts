@@ -27,3 +27,4 @@ export const MOON_TEXTURE = '/textures/planets/moon_1024.jpg';
 export function getPlanetTextureSet(planetId: string): PlanetTextureSet | null {
   return PLANET_TEXTURES[planetId] ?? null;
 }
+

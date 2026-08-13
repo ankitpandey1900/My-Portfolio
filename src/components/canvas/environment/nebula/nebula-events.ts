@@ -22,3 +22,4 @@ export const NebulaEvents = {
     return sceneEventEmitter.on(event, callback as (data?: unknown) => void);
   },
 };
+

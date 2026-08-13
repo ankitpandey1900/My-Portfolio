@@ -28,3 +28,4 @@ export const NebulaController = {
     useNebulaStore.getState().updateConfig(partialConfig);
   },
 };
+

@@ -56,13 +56,13 @@ export function SupernovaRemnant() {
   }, [coreMaterial, haloMaterial, ringMaterial]);
 
   useFrame((state) => {
-    const pulse = 0.85 + Math.sin(state.clock.getElapsedTime() * 0.55) * 0.15;
+    const pulse = 0.85 + Math.sin(state.clock.elapsedTime * 0.55) * 0.15;
 
     if (coreRef.current) {
       coreRef.current.scale.setScalar(pulse);
     }
     if (haloRef.current) {
-      haloRef.current.scale.setScalar(1.05 + Math.sin(state.clock.getElapsedTime() * 0.35) * 0.08);
+      haloRef.current.scale.setScalar(1.05 + Math.sin(state.clock.elapsedTime * 0.35) * 0.08);
     }
     if (ringRef.current) {
       ringRef.current.rotation.z += 0.0015;
@@ -90,3 +90,4 @@ export function SupernovaRemnant() {
 }
 
 export default SupernovaRemnant;
+

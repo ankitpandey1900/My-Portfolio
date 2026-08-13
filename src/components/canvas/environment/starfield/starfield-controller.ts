@@ -37,3 +37,4 @@ export const StarfieldController = {
     StarfieldController.updateConfig({ opacityBase: opacity });
   },
 };
+

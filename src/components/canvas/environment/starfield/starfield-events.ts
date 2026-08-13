@@ -21,3 +21,4 @@ export const StarfieldEvents = {
     return sceneEventEmitter.on(event, callback as (data?: unknown) => void);
   },
 };
+

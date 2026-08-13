@@ -15,3 +15,4 @@ export const PARTICLE_CONFIG = {
     maxTotalParticles: 100_000,
   },
 };
+

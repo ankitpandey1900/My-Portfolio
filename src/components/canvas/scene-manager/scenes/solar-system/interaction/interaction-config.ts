@@ -9,3 +9,4 @@ export const INTERACTION_CONFIG = {
     transitionDurationMs: 300,
   },
 } as const;
+

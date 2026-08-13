@@ -20,3 +20,4 @@ export function resolvePlanetFromSection(sectionId: SectionId): string | null {
   const planet = PlanetRegistry.getBySection(sectionId);
   return planet?.id ?? null;
 }
+

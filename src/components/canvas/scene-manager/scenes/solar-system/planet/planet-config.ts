@@ -24,3 +24,4 @@ export const FALLBACK_PLANET_CONFIG: PlanetConfig = {
   futureMetadata: {},
 };
 export default FALLBACK_PLANET_CONFIG;
+

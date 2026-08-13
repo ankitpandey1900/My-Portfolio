@@ -2789,69 +2789,96 @@ body {
   }
 
   .planet-label__card {
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 1rem;
-    padding: 1rem 1.1rem;
-    background: rgba(8, 11, 15, 0.62);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    position: relative;
+    border-radius: 1.25rem;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, rgba(15, 17, 21, 0.75) 0%, rgba(5, 7, 10, 0.85) 100%);
+    backdrop-filter: blur(32px);
+    -webkit-backdrop-filter: blur(32px);
     box-shadow:
-      0 20px 50px rgba(0, 0, 0, 0.35),
-      inset 0 1px 0 rgba(255, 255, 255, 0.04);
-    border-left: 2px solid var(--planet-accent, #d8a24a);
+      0 30px 60px rgba(0, 0, 0, 0.6),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1),
+      inset 0 0 20px rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    overflow: hidden;
+  }
+
+  .planet-label__card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--planet-accent, #d8a24a), transparent);
+    opacity: 0.85;
   }
 
   .planet-label__eyebrow {
     display: block;
-    margin-bottom: 0.35rem;
-    color: rgba(168, 172, 182, 0.82);
+    margin-bottom: 0.5rem;
+    color: var(--planet-accent, #d8a24a);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    font-weight: 700;
+    opacity: 0.9;
   }
 
   .planet-label__name {
     display: block;
-    font-size: clamp(1.35rem, 2.2vw, 1.75rem);
-    line-height: 1.05;
-    color: rgba(248, 246, 242, 0.96);
+    font-size: clamp(1.75rem, 2.5vw, 2.25rem);
+    line-height: 1.1;
+    font-weight: 400;
+    letter-spacing: -0.03em;
+    color: #ffffff;
+    background: linear-gradient(180deg, #ffffff 0%, rgba(255, 255, 255, 0.6) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 0.75rem;
   }
 
   .planet-label__desc {
     display: block;
-    margin-top: 0.45rem;
-    max-width: 26ch;
-    font-size: 0.88rem;
-    color: rgba(168, 172, 182, 0.9);
+    max-width: 28ch;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.6);
   }
 
   .planet-label__hint {
     display: block;
-    margin-top: 0.65rem;
-    color: rgba(138, 141, 152, 0.72);
+    margin-top: 1.25rem;
+    color: rgba(255, 255, 255, 0.3);
+    font-size: 0.75rem;
+    letter-spacing: 0.02em;
   }
 
   .planet-label__enter {
     display: inline-flex;
     align-items: center;
-    margin-top: 0.75rem;
-    padding: 0.5rem 0.95rem;
-    border: 1px solid rgba(216, 162, 74, 0.35);
-    border-radius: 999px;
-    background: rgba(216, 162, 74, 0.12);
-    color: rgba(248, 232, 210, 0.96);
+    gap: 0.5rem;
+    margin-top: 1.25rem;
+    padding: 0.6rem 1.25rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 0.75rem;
+    background: rgba(255, 255, 255, 0.04);
+    color: rgba(255, 255, 255, 0.9);
     font-family: var(--font-ui);
-    font-size: 0.8125rem;
-    font-weight: 600;
-    letter-spacing: 0.02em;
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.01em;
     cursor: pointer;
-    transition:
-      background 250ms var(--ease-space),
-      border-color 250ms var(--ease-space),
-      transform 250ms var(--ease-space);
+    transition: all 300ms cubic-bezier(0.19, 1, 0.22, 1);
   }
 
   .planet-label__enter:hover {
-    background: rgba(216, 162, 74, 0.2);
-    border-color: rgba(216, 162, 74, 0.5);
-    transform: translateY(-1px);
+    background: var(--planet-accent, #d8a24a);
+    color: #000000;
+    border-color: var(--planet-accent, #d8a24a);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
   }
 
   .planet-catalog {

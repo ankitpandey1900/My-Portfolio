@@ -21,3 +21,4 @@ export function NavigationProvider({ children }: NavigationProviderProps) {
     </>
   );
 }
+

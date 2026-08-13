@@ -98,3 +98,4 @@ export class ParticlePool {
     return this.dirtyStart !== -1;
   }
 }
+

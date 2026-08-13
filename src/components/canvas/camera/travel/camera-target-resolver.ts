@@ -46,3 +46,4 @@ export class CameraTargetResolver {
     return planetPosition.clone().add(elevated.multiplyScalar(distance));
   }
 }
+

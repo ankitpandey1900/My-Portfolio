@@ -39,3 +39,4 @@ export const EnvironmentController = {
     useEnvironmentStore.getState().updateConfig(partialConfig);
   },
 };
+

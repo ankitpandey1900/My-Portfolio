@@ -21,3 +21,4 @@ export const TRANSITION_REGISTRY: Record<TransitionId, TransitionMetadata> = {
     interruptible: true,
   },
 };
+

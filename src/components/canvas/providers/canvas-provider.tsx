@@ -43,7 +43,6 @@ export function CanvasProvider({ children }: CanvasProviderProps) {
       >
         <Canvas
           key={canvasKey}
-          shadows
           dpr={dpr}
           frameloop={isRenderActive ? 'always' : 'never'}
           camera={{
@@ -76,3 +75,4 @@ export function CanvasProvider({ children }: CanvasProviderProps) {
   );
 }
 export default CanvasProvider;
+

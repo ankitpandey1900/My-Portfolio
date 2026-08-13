@@ -37,3 +37,4 @@ export const useGestureStore = create<GestureStore>((set) => ({
       return { history: newHistory };
     }),
 }));
+

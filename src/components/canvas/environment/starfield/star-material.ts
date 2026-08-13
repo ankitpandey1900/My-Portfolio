@@ -106,3 +106,4 @@ export function createStarMaterial(dprScale: number = 1): THREE.ShaderMaterial {
     depthTest: true,
   });
 }
+

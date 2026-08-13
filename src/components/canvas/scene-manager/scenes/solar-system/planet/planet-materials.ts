@@ -508,3 +508,4 @@ export function isShaderPlanetMaterial(
 ): material is THREE.ShaderMaterial {
   return material instanceof THREE.ShaderMaterial && 'uSunDirection' in material.uniforms;
 }
+

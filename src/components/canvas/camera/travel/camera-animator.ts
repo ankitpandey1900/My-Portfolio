@@ -37,3 +37,4 @@ export class CameraAnimator {
     return Math.min(Math.max(elapsedMs / durationMs, 0.0), 1.0);
   }
 }
+

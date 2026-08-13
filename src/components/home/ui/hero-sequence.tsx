@@ -55,3 +55,4 @@ export function HeroSequence({ phase }: HeroSequenceProps) {
     </motion.div>
   );
 }
+

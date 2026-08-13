@@ -75,3 +75,4 @@ const Modal = React.forwardRef<HTMLDialogElement, ModalProps>(
 Modal.displayName = 'Modal';
 
 export { Modal };
+

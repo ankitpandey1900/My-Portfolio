@@ -97,3 +97,4 @@ export function HeroCoordinates() {
     </section>
   );
 }
+

@@ -111,3 +111,4 @@ export const TransitionController = {
     return useTransitionStore.getState().currentTransition;
   },
 };
+

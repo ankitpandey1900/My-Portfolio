@@ -119,3 +119,4 @@ export interface HomePlanetStore {
   setInteracted: () => void;
   reset: () => void;
 }
+

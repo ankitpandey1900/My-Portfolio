@@ -33,3 +33,4 @@ export function HeroScrollRail({ phase }: HeroScrollRailProps) {
     </aside>
   );
 }
+

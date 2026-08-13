@@ -13,3 +13,4 @@ export const SEQUENCE_CONFIG = {
   // Failsafe timeouts
   maxParallelTimeoutMs: 30000,
 };
+

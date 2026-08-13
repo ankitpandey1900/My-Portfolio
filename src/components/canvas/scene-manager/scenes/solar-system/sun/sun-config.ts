@@ -20,9 +20,9 @@ export const SUN_PRESETS: Record<QualityTier, SunPresetConfig> = {
   },
   high: {
     radius: 5.15,
-    coreColor: '#ff6000',
-    glowColor: '#ffb838',
-    flareColor: '#ff8020',
+    coreColor: '#ff5800',
+    glowColor: '#ffc040',
+    flareColor: '#ff8820',
     emissiveIntensity: 0.88,
     glowScale: 1.14,
     glowOpacity: 0.22,
@@ -36,9 +36,9 @@ export const SUN_PRESETS: Record<QualityTier, SunPresetConfig> = {
   },
   medium: {
     radius: 4.9,
-    coreColor: '#ff6800',
-    glowColor: '#ff9820',
-    flareColor: '#ff8020',
+    coreColor: '#ff5800',
+    glowColor: '#ffc040',
+    flareColor: '#ff8820',
     emissiveIntensity: 0.78,
     glowScale: 1.08,
     glowOpacity: 0.2,
@@ -52,8 +52,8 @@ export const SUN_PRESETS: Record<QualityTier, SunPresetConfig> = {
   },
   low: {
     radius: 4.5,
-    coreColor: '#ff8200',
-    glowColor: '#ffa020',
+    coreColor: '#ff5800',
+    glowColor: '#ffc040',
     flareColor: '#ff8820',
     emissiveIntensity: 0.85,
     glowScale: 1.1,
@@ -68,3 +68,4 @@ export const SUN_PRESETS: Record<QualityTier, SunPresetConfig> = {
   },
 };
 export default SUN_PRESETS;
+

@@ -85,3 +85,4 @@ export function SectionShell({ sectionId, isOpen, onClose, children }: SectionSh
     </AnimatePresence>
   );
 }
+

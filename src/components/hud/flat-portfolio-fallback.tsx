@@ -51,3 +51,4 @@ export function FlatPortfolioFallback({ reason }: FlatPortfolioFallbackProps) {
     </div>
   );
 }
+
