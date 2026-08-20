@@ -5,7 +5,7 @@ export const ENVIRONMENT_PRESETS: Record<EnvironmentPresetId, EnvironmentPresetC
     id: 'deep-space',
     background: {
       mode: 'color',
-      color: '#040506',
+      color: '#010203', // Deeper black for true space feel
     },
     lighting: {
       ambientIntensity: 0.045,
@@ -15,11 +15,11 @@ export const ENVIRONMENT_PRESETS: Record<EnvironmentPresetId, EnvironmentPresetC
       environmentIntensity: 0.35,
     },
     post: {
-      exposure: 0.95,
+      exposure: 1.05,
       toneMapping: 'ACESFilmic',
       brightness: 0.98,
-      contrast: 1.18,
-      saturation: 0.86,
+      contrast: 1.25, // Higher contrast
+      saturation: 0.92, // Slightly more vibrant
     },
     fog: {
       enabled: true,

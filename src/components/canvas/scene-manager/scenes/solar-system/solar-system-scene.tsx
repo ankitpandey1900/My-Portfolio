@@ -2,10 +2,9 @@
 
 import * as React from 'react';
 import { useFrame } from '@react-three/fiber';
-import { Bloom, EffectComposer } from '@react-three/postprocessing';
 import { SceneWrapper } from '../scene-wrapper';
 import { AsteroidBelt } from './environment/asteroid-belt';
-import { BlackHole } from './environment/black-hole';
+
 import { CometTrail } from './environment/comet-trail';
 import { MeteorShower } from './environment/meteor-shower';
 import { SupernovaRemnant } from './environment/supernova-remnant';
@@ -37,7 +36,7 @@ function SolarSystemSceneContent() {
       <PlanetRegistryManager />
       {/* Sun rendering center of solar system */}
       <Sun />
-      <BlackHole />
+      {/* Stars Removed for Stability */}
       <SupernovaRemnant />
       <AsteroidBelt />
       <MeteorShower />
@@ -47,10 +46,6 @@ function SolarSystemSceneContent() {
         <PlanetGenerator />
       </InteractionProvider>
 
-      {/* Cinematic Post-Processing */}
-      <EffectComposer multisampling={4}>
-        <Bloom luminanceThreshold={0.4} luminanceSmoothing={0.9} intensity={1.5} mipmapBlur />
-      </EffectComposer>
     </group>
   );
 }

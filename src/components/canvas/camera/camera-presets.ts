@@ -13,14 +13,14 @@ export const CAMERA_PRESETS: Record<CameraPresetType, CameraPreset> = {
     fov: 34,
   },
   system: {
-    position: [-20, 32, 98],
+    position: [-30, 45, 120],
     lookAt: [0, 0, 0],
-    fov: 40,
+    fov: 35,
   },
   planet: {
     position: [0, 4, 14],
     lookAt: [0, 0, 0],
-    fov: 30,
+    fov: 28, // Telephoto cinematic feel
   },
   cockpit: {
     position: [0, 1.2, 3.5],

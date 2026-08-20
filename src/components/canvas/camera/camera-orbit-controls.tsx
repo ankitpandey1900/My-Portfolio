@@ -37,7 +37,7 @@ export function CameraOrbitControls() {
   const minDistance = exploringPlanet
     ? Math.max((focusedPlanet?.radius ?? 1) * 1.65, 2.5)
     : 6;
-  const maxDistance = exploringPlanet ? Math.max((focusedPlanet?.cameraDistance ?? 8) * 1.4, 18) : 220;
+  const maxDistance = exploringPlanet ? Math.max((focusedPlanet?.cameraDistance ?? 8) * 1.4, 18) : 600;
 
   const previousPlanetPosRef = React.useRef(new THREE.Vector3());
 
@@ -90,9 +90,9 @@ export function CameraOrbitControls() {
       enablePan
       enableZoom
       enableDamping
-      dampingFactor={0.08}
-      rotateSpeed={exploringPlanet ? 0.72 : 0.55}
-      zoomSpeed={exploringPlanet ? 0.35 : 0.85}
+      dampingFactor={0.04} // Lower for smoother, longer glide
+      rotateSpeed={exploringPlanet ? 0.6 : 0.45} // Heavier feel
+      zoomSpeed={exploringPlanet ? 0.25 : 0.7}
       panSpeed={0.65}
       minDistance={minDistance}
       maxDistance={maxDistance}

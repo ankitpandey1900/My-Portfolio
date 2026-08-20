@@ -12,6 +12,8 @@
     "verify": "npm run typecheck && npm run lint && npm run build"
   },
   "dependencies": {
+    "@ai-sdk/google": "^4.0.47",
+    "@ai-sdk/react": "^4.0.73",
     "@base-ui/react": "^1.6.0",
     "@react-spring/three": "^10.1.2",
     "@react-three/drei": "^10.7.7",
@@ -19,6 +21,7 @@
     "@react-three/postprocessing": "^3.0.4",
     "@tailwindcss/typography": "^0.5.20",
     "@use-gesture/react": "^10.3.1",
+    "ai": "^7.0.70",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "framer-motion": "^12.42.2",

@@ -19,7 +19,7 @@ export function EffectsPipeline() {
   }
 
   return (
-    <ComposerElement disableNormalPass multisampling={0}>
+    <ComposerElement multisampling={0}>
       <BloomElement
         mipmapBlur
         intensity={0.3} // Gentle bloom

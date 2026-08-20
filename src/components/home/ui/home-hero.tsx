@@ -5,9 +5,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { motion, useInView, useScroll, useTransform, useMotionValue, useSpring } from 'framer-motion';
 import { ExternalLink, Mail, Utensils } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { HOME_PLANET_CONFIG } from '../home-planet-config';
-import { HomePlanetController } from '../home-planet-controller';
-import { useHomePlanetStore } from '../home-planet-state';
 import { HeroStarfield } from './hero-starfield';
 import { PlanetNav } from './planet-nav';
 import { TechDust } from './tech-dust';
@@ -459,8 +458,7 @@ const TechIcons = {
 // ─── Main component ──────────────────────────────────────────────────────────
 
 export function HomeHero() {
-  const phase = useHomePlanetStore((s) => s.phase);
-  const isVisible = useHomePlanetStore((s) => s.isVisible);
+  const router = useRouter();
   const { identity, stats } = HOME_PLANET_CONFIG;
 
   const containerRef = React.useRef<HTMLDivElement>(null);
@@ -468,8 +466,7 @@ export function HomeHero() {
   const [isLaunching, setIsLaunching] = React.useState(false);
 
   // Scroll-driven transforms
-  const shouldRender = mounted && isVisible;
-  const { scrollYProgress } = useScroll(shouldRender ? { container: containerRef } : undefined);
+  const { scrollYProgress } = useScroll({ container: containerRef });
   const heroTextY = useTransform(scrollYProgress, [0, 0.25], [0, -60]);
 
   // ─── Mouse Parallax ───────────────────────────────────────────────
@@ -491,28 +488,22 @@ export function HomeHero() {
 
   const handleLaunch = React.useCallback(() => {
     setIsLaunching(true);
-    setTimeout(() => HomePlanetController.beginJourney(), 1000);
-  }, []);
-
-  React.useEffect(() => {
-    if (phase === 'dismissed') {
-      const t = setTimeout(() => setMounted(false), 1400);
-      return () => clearTimeout(t);
-    }
-  }, [phase]);
+    setTimeout(() => {
+      router.push('/solar-system');
+    }, 1000);
+  }, [router]);
 
   React.useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key !== 'Enter' || e.repeat || phase !== 'ready') return;
+      if (e.key !== 'Enter' || e.repeat) return;
       if (e.target instanceof HTMLElement && e.target.closest('input, textarea, button, a')) return;
       handleLaunch();
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [handleLaunch, phase]);
+  }, [handleLaunch]);
 
-  if (!mounted || !isVisible) return null;
-  const isDismissed = phase === 'dismissed';
+  if (!mounted) return null;
 
   return (
     <>
@@ -530,7 +521,7 @@ export function HomeHero() {
         ref={containerRef}
         className="fixed inset-0 z-20 overflow-y-auto overflow-x-hidden"
         style={{ background: '#030305' }}
-        animate={{ opacity: isDismissed ? 0 : 1 }}
+        animate={{ opacity: 1 }}
         transition={{ duration: 1 }}
       >
         {/* Fixed Background Image across ALL sections */}

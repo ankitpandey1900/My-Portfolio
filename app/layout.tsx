@@ -65,6 +65,8 @@ export const metadata: Metadata = {
   },
 };
 
+import { Chatbot } from '@/components/ui/chatbot';
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -86,6 +88,7 @@ export default function RootLayout({
         <CustomCursor />
         <SplashLoader />
         {children}
+        <Chatbot />
       </body>
     </html>
   );

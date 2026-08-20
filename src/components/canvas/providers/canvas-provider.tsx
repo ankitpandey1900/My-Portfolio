@@ -53,7 +53,7 @@ export function CanvasProvider({ children }: CanvasProviderProps) {
           }}
           gl={{
             antialias: true,
-            alpha: false,
+            alpha: true,
             powerPreference: 'high-performance',
             toneMapping: THREE.ACESFilmicToneMapping,
             outputColorSpace: THREE.SRGBColorSpace,

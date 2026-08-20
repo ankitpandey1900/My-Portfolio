@@ -6,7 +6,6 @@
 const requiredServerEnv = {
   RESEND_API_KEY: process.env.RESEND_API_KEY,
   NOTIFICATION_EMAIL_RECIPIENT: process.env.NOTIFICATION_EMAIL_RECIPIENT,
-  GITHUB_PERSONAL_ACCESS_TOKEN: process.env.GITHUB_PERSONAL_ACCESS_TOKEN,
 };
 
 const requiredPublicEnv = {
@@ -43,6 +42,4 @@ export const env = {
   url: process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000',
   resendApiKey: process.env.RESEND_API_KEY ?? '',
   notificationRecipient: process.env.NOTIFICATION_EMAIL_RECIPIENT ?? '',
-  githubToken: process.env.GITHUB_PERSONAL_ACCESS_TOKEN ?? '',
 } as const;
-

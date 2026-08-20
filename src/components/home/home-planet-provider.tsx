@@ -7,7 +7,6 @@
 // ─────────────────────────────────────────────────────────────────────────────
 import * as React from 'react';
 import { HomePlanetManager } from './home-planet-manager';
-import { HomeHero } from './ui/home-hero';
 
 interface HomePlanetProviderProps {
   children: React.ReactNode;
@@ -18,8 +17,6 @@ export function HomePlanetProvider({ children }: HomePlanetProviderProps) {
     <>
       {/* Headless lifecycle manager */}
       <HomePlanetManager />
-      {/* Cinematic hero overlay — rendered above the 3D canvas */}
-      <HomeHero />
       {/* Rest of the application tree */}
       {children}
     </>

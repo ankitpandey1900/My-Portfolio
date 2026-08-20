@@ -4,7 +4,7 @@ import { useFrame } from '@react-three/fiber';
 import * as React from 'react';
 import * as THREE from 'three';
 
-const ASTEROID_COUNT = 220;
+const ASTEROID_COUNT = 1500;
 
 function createAsteroidPositions(count: number, innerRadius: number, outerRadius: number) {
   const positions = new Float32Array(count * 3);
