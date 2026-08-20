@@ -10,11 +10,11 @@ export function PlanetNav() {
 
   return (
     <>
-      {/* Keyframes for Mars texture rotation */}
+      {/* Keyframes for Mars texture panning to hide the seam */}
       <style jsx global>{`
         @keyframes mars-rotate {
-          from { background-position-x: 0%; }
-          to { background-position-x: 200%; }
+          from { background-position: 0% center; }
+          to { background-position: 100% center; }
         }
       `}</style>
 
@@ -29,8 +29,8 @@ export function PlanetNav() {
           className="absolute inset-0 rounded-full"
           style={{
             backgroundImage: "url('/assets/planet-surface.png')",
-            backgroundSize: "200% 100%",
-            animation: "mars-rotate 20s linear infinite",
+            backgroundSize: "250% 100%",
+            animation: "mars-rotate 12s ease-in-out infinite alternate",
             filter: "hue-rotate(20deg) saturate(1.5) brightness(1.2)", // Make it look more Mars-like
           }}
         />

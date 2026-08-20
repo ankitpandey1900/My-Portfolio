@@ -554,10 +554,16 @@ export function HomeHero() {
             SECTION 1 — HERO
         ════════════════════════════════════════════════════════════════════ */}
         <section className="relative min-h-screen flex flex-col">
-          <header className="relative z-50 flex items-center justify-end px-5 md:px-16 pt-8 w-full">
-            {/* Mobile Planet Nav */}
-            <div className="md:hidden">
-              <PlanetNav />
+          <header className="relative z-50 flex items-center justify-between md:justify-end px-5 md:px-16 pt-8 w-full">
+            {/* Mobile Top Bar */}
+            <div className="flex md:hidden items-center justify-between w-full">
+              <div className="flex flex-col">
+                <span className="text-white font-sans font-bold text-[15px]">Namaste 🙏</span>
+                <span className="text-white/50 font-sans text-[10px] mt-0.5 tracking-wide">Building scalable systems & web apps.</span>
+              </div>
+              <div>
+                <PlanetNav />
+              </div>
             </div>
 
             {/* Desktop Nav */}
@@ -604,8 +610,22 @@ export function HomeHero() {
               </div>
             </div>
 
+            {/* Mobile Star Divider */}
+            <motion.div 
+              className="md:hidden flex items-center justify-center w-full mb-8 gap-4 opacity-50"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.5 }}
+              transition={{ delay: 1.0, duration: 1.2 }}
+            >
+              <div className="h-px bg-white/30 w-16" />
+              <svg className="w-4 h-4 text-white" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 0l2.5 9.5L24 12l-9.5 2.5L12 24l-2.5-9.5L0 12l9.5-2.5z" />
+              </svg>
+              <div className="h-px bg-white/30 w-16" />
+            </motion.div>
+
             <motion.div
-              className="flex flex-row items-start justify-center md:justify-start gap-8 md:gap-20 mb-10 md:mb-12 w-full"
+              className="flex flex-row items-start justify-center md:justify-start gap-4 sm:gap-8 md:gap-20 mb-8 md:mb-12 w-full divide-x divide-white/20"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 1.4, duration: 0.8 }}
@@ -613,15 +633,15 @@ export function HomeHero() {
               {stats.map((stat, i) => (
                 <motion.div
                   key={stat.label}
-                  className="flex flex-col items-center md:items-start select-none"
+                  className="flex flex-col items-center md:items-start select-none px-4 sm:px-6 first:pl-0 last:pr-0"
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 1.5 + i * 0.2, duration: 0.8, ease }}
                 >
-                  <span className="text-3xl md:text-5xl lg:text-6xl font-sans font-light text-white tracking-tighter leading-none mb-2 md:mb-3">
+                  <span className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-sans font-light text-white tracking-tighter leading-none mb-2 md:mb-3">
                     {stat.value}
                   </span>
-                  <span className="text-[9px] md:text-[11px] font-sans font-semibold uppercase tracking-[0.15em] text-white/50 leading-relaxed text-center md:text-left max-w-[80px] md:max-w-none md:whitespace-nowrap">
+                  <span className="text-[8px] sm:text-[9px] md:text-[11px] font-sans font-semibold uppercase tracking-[0.15em] text-white/50 leading-relaxed text-center md:text-left max-w-[80px] md:max-w-none md:whitespace-nowrap">
                     {stat.label}
                   </span>
                 </motion.div>
@@ -659,38 +679,43 @@ export function HomeHero() {
             >
               <button
                 onClick={handleLaunch}
-                className="inline-flex justify-center items-center gap-3 px-6 py-3 md:py-3.5 rounded-full bg-white text-black text-sm font-sans font-bold shadow-[0_0_20px_rgba(255,255,255,0.2)] hover:shadow-[0_0_30px_rgba(255,255,255,0.4)] hover:scale-105 transition-all cursor-pointer"
+                className="inline-flex justify-center items-center gap-3 px-6 py-4 md:py-3.5 rounded-full bg-white text-black text-sm font-sans font-bold shadow-[0_0_20px_rgba(255,255,255,0.2)] hover:shadow-[0_0_30px_rgba(255,255,255,0.4)] hover:scale-105 transition-all cursor-pointer w-full sm:w-auto"
               >
-                Launch Solar System
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M13 10V3L4 14h7v7l9-11h-7z"
-                  />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+                Launch Solar System
+                <svg className="w-4 h-4 ml-auto sm:ml-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                 </svg>
               </button>
 
               <a
                 href="#projects"
-                className="inline-flex justify-center items-center gap-3 px-6 py-3 md:py-3.5 rounded-full bg-white/[0.05] hover:bg-white/[0.1] border border-white/[0.1] text-white text-sm font-sans font-medium transition-colors"
+                className="inline-flex justify-center items-center gap-3 px-6 py-4 md:py-3.5 rounded-full bg-transparent border border-white/20 text-white text-sm font-sans font-medium hover:bg-white/[0.05] transition-colors w-full sm:w-auto"
               >
                 Explore My Work
-                <svg
-                  className="w-4 h-4 text-white/50"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M14 5l7 7m0 0l-7 7m7-7H3"
-                  />
+                <svg className="w-4 h-4 text-white/50 ml-auto sm:ml-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                 </svg>
               </a>
+            </motion.div>
+
+            {/* Mobile Scroll Indicator */}
+            <motion.div
+              className="md:hidden absolute bottom-8 left-0 right-0 flex flex-col items-center justify-center opacity-50"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.5 }}
+              transition={{ delay: 2.5, duration: 1 }}
+            >
+              <div className="flex items-center gap-4 mb-2">
+                <div className="h-px bg-white/20 w-8" />
+                <span className="text-[9px] font-mono tracking-[0.2em] uppercase text-white/70">Scroll to Explore</span>
+                <div className="h-px bg-white/20 w-8" />
+              </div>
+              <svg className="w-5 h-5 text-white/50 animate-bounce" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+              </svg>
             </motion.div>
           </motion.div>
         </section>
