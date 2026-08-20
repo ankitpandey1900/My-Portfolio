@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/immutability */
 'use client';
 
 import * as React from 'react';
@@ -90,13 +91,12 @@ function TexturedPlanetReady({
   const emissiveMap = textures[3];
   const clouds = textures[4];
 
-  if (!map) return null;
-
   [map, normalMap, specularMap, emissiveMap, clouds].forEach((texture) => {
     if (texture) texture.colorSpace = THREE.SRGBColorSpace;
   });
 
   const surfaceMaterial = React.useMemo(() => {
+    if (!map) return null;
     return new THREE.MeshStandardMaterial({
       map,
       normalMap: normalMap ?? null,
@@ -125,7 +125,7 @@ function TexturedPlanetReady({
 
   React.useEffect(
     () => () => {
-      surfaceMaterial.dispose();
+      surfaceMaterial?.dispose();
       cloudMaterial?.dispose();
     },
     [cloudMaterial, surfaceMaterial]
@@ -134,12 +134,14 @@ function TexturedPlanetReady({
   useFrame((state) => {
     if (meshRef.current) meshRef.current.rotation.y += entry.rotationSpeed * 0.0015;
     if (cloudRef.current) cloudRef.current.rotation.y += entry.rotationSpeed * 0.0022;
-    if (surfaceMaterial.emissiveMap) {
+    if (surfaceMaterial?.emissiveMap) {
       const t = state.clock.elapsedTime;
       surfaceMaterial.emissiveIntensity =
         (textureSet.emissiveIntensity ?? 0.45) * (0.85 + Math.sin(t * 0.4) * 0.08);
     }
   });
+
+  if (!map || !surfaceMaterial) return null;
 
   return (
     <>

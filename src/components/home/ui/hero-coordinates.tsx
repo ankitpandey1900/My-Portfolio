@@ -2,7 +2,6 @@
 
 import * as React from 'react';
 import { motion, useInView } from 'framer-motion';
-import { HOME_PLANET_CONFIG } from '../home-planet-config';
 
 const FEATURED_PROJECT = {
   name: 'AllTracker',

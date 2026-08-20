@@ -21,14 +21,14 @@ export function Chatbot() {
   ];
 
   const handleChipClick = (question: string) => {
-    // @ts-ignore
+    // @ts-expect-error - Expected because frontend SDK types might clash with manual object format
     sendMessage({ role: 'user', content: question });
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!input.trim() || isLoading) return;
-    // @ts-ignore - The backend strictly expects 'content', bypassing SDK frontend types
+    // @ts-expect-error - The backend strictly expects 'content', bypassing SDK frontend types
     sendMessage({ role: 'user', content: input });
     setInput('');
   };
@@ -94,7 +94,7 @@ export function Chatbot() {
                     <Bot className="w-6 h-6 text-emerald-500" />
                   </div>
                   <div className="space-y-2 max-w-[280px]">
-                    <h3 className="text-sm font-sans font-medium text-white">Ankit's AI Assistant</h3>
+                    <h3 className="text-sm font-sans font-medium text-white">Ankit&apos;s AI Assistant</h3>
                     <p className="text-xs font-sans text-white/40 leading-relaxed">
                       I know his tech stack, his projects, and his secrets. What do you want to know?
                     </p>
@@ -135,14 +135,14 @@ export function Chatbot() {
                         : 'bg-white/[0.05] text-white/90 border border-white/[0.05] rounded-tl-sm'
                     }`}
                   >
-                    {/* @ts-ignore - Fallback to content if parts is missing for user messages */}
-                    {(m as any).content ? (
+                    {/* @ts-expect-error - Fallback to content if parts is missing for user messages */}
+                    {(m as Record<string, unknown>).content ? (
                       <div className={`prose prose-sm max-w-none ${m.role === 'user' ? 'prose-invert text-black' : 'prose-invert text-white/90'}`}>
                         {m.role === 'user' ? (
-                          <p className="m-0">{(m as any).content}</p>
+                          <p className="m-0">{(m as { content?: string }).content}</p>
                         ) : (
                           <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                            {(m as any).content}
+                            {(m as { content?: string }).content!}
                           </ReactMarkdown>
                         )}
                       </div>

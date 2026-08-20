@@ -4,7 +4,7 @@ import * as React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion, useInView, useScroll, useTransform, useMotionValue, useSpring } from 'framer-motion';
-import { ExternalLink, Mail, Utensils } from 'lucide-react';
+import { ExternalLink, Mail } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { HOME_PLANET_CONFIG } from '../home-planet-config';
 import { HeroStarfield } from './hero-starfield';
@@ -462,7 +462,7 @@ export function HomeHero() {
   const { identity, stats } = HOME_PLANET_CONFIG;
 
   const containerRef = React.useRef<HTMLDivElement>(null);
-  const [mounted, setMounted] = React.useState(true);
+  const [mounted] = React.useState(true);
   const [isLaunching, setIsLaunching] = React.useState(false);
 
   // Scroll-driven transforms

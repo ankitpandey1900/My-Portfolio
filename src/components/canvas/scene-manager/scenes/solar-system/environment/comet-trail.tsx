@@ -4,7 +4,6 @@ import { useFrame } from '@react-three/fiber';
 import * as React from 'react';
 import * as THREE from 'three';
 
-const COMET_COUNT = 3;
 
 interface CometSpec {
   orbitRadius: number;

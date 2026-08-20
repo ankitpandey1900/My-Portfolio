@@ -1,7 +1,7 @@
 'use client';
 
 import { motion, Variants } from 'framer-motion';
-import { ArrowRight, Download, Mail, MapPin, Briefcase, GraduationCap } from 'lucide-react';
+import { ArrowRight, Download, Mail, MapPin, Briefcase } from 'lucide-react';
 import {
   CONTACT_INFO,
   EXPERIENCE,

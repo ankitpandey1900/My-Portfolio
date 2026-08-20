@@ -135,7 +135,7 @@ export default async function ProjectPage({ params }: Props) {
                   Under Construction
                 </h3>
                 <p className="text-white/50 text-lg md:text-xl font-light max-w-lg leading-relaxed">
-                  I'm currently writing the full case study for this project. Check back soon for the complete technical deep dive and architecture breakdown!
+                  I&apos;m currently writing the full case study for this project. Check back soon for the complete technical deep dive and architecture breakdown!
                 </p>
               </div>
             </div>
@@ -143,7 +143,7 @@ export default async function ProjectPage({ params }: Props) {
             <ReactMarkdown 
               remarkPlugins={[remarkGfm]}
               components={{
-                code({node, inline, className, children, ...props}: any) {
+                code({ inline, className, children, ...props }: React.HTMLAttributes<HTMLElement> & { inline?: boolean }) {
                   return inline ? (
                     <code className="bg-white/5 text-emerald-400 px-2 py-1 rounded-md font-mono text-sm border border-emerald-500/20 mx-0.5 whitespace-nowrap" {...props}>
                       {children}
@@ -175,6 +175,7 @@ export default async function ProjectPage({ params }: Props) {
                       <span className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity z-10 pointer-events-none flex items-center justify-center">
                          <span className="bg-black/50 backdrop-blur-md text-white text-xs px-4 py-2 rounded-full font-mono uppercase tracking-widest border border-white/20">Zoom/Expand Image</span>
                       </span>
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img src={src} alt={alt} className="w-full h-auto !m-0 transition-transform duration-700 group-hover:scale-[1.02] block" />
                     </span>
                   )

@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { motion, useMotionValue, useSpring } from 'framer-motion';
+import { motion, useMotionValue } from 'framer-motion';
 
 export function CustomCursor() {
   const [isHovering, setIsHovering] = useState(false);
@@ -15,9 +15,12 @@ export function CustomCursor() {
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
-    if (window.matchMedia('(pointer: fine)').matches) {
-      setIsVisible(true);
-    }
+    let mounted = true;
+    requestAnimationFrame(() => {
+      if (mounted && window.matchMedia('(pointer: fine)').matches) {
+        setIsVisible(true);
+      }
+    });
 
     const updateMousePosition = (e: MouseEvent) => {
       cursorX.set(e.clientX);
@@ -49,6 +52,7 @@ export function CustomCursor() {
     document.documentElement.addEventListener('mouseenter', handleMouseEnter);
 
     return () => {
+      mounted = false;
       window.removeEventListener('mousemove', updateMousePosition);
       window.removeEventListener('mouseover', handleMouseOver);
       window.removeEventListener('mousedown', handleMouseDown);

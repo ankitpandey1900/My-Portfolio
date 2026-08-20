@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/immutability */
 'use client';
 
 import { OrbitControls } from '@react-three/drei';
@@ -23,9 +24,7 @@ export function CameraOrbitControls() {
   const travelState = useCameraTravelStore((s) => s.state);
   const { controls } = useThree() as { controls: OrbitControlsImpl | null };
 
-  const targetRef = React.useRef(new THREE.Vector3(0, 0, 0));
-  const planetTargetRef = React.useRef(new THREE.Vector3(0, 0, 0));
-  const originRef = React.useRef(new THREE.Vector3(0, 0, 0));
+
 
   const inSystem = heroPhase === 'dismissed' || heroPhase === 'idle';
   const travelling = travelState === 'preparing' || travelState === 'travelling';

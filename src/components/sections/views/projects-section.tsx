@@ -1,10 +1,9 @@
 'use client';
 
 import React from 'react';
-import { motion, useMotionTemplate, useMotionValue, useSpring } from 'framer-motion';
 import { PROJECTS } from '../content/portfolio-content';
 
-function ProjectCard({ project }: { project: any }) {
+function ProjectCard({ project }: { project: typeof PROJECTS[0] }) {
   return (
     <div
       className="relative flex flex-col w-full min-h-[300px] p-6 md:p-8 rounded-xl overflow-hidden group bg-black/40 backdrop-blur-md border border-blue-900/30 hover:border-blue-500/50 transition-all duration-500 shadow-[0_0_15px_rgba(0,0,0,0.5)] hover:shadow-[0_0_30px_rgba(59,130,246,0.15)]"

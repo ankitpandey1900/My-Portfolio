@@ -60,7 +60,13 @@ export function HeroStarfield({ intensity = 1, parallaxY = 0, showMeteors = true
   const [isMounted, setIsMounted] = React.useState(false);
 
   React.useEffect(() => {
-    setIsMounted(true);
+    let mounted = true;
+    requestAnimationFrame(() => {
+      if (mounted) setIsMounted(true);
+    });
+    return () => {
+      mounted = false;
+    };
   }, []);
 
   if (!isMounted) return null;

@@ -54,7 +54,7 @@ export function StarLayer({
     const mat = createStarMaterial(dpr);
 
     return { geometry: geo, material: mat };
-  }, [config.count, config.seed, config.radiusInner, config.radiusOuter, gl]);
+  }, [config, gl]);
 
   // Imperative uniform syncing to bypass WebGL recompilations
   React.useEffect(() => {

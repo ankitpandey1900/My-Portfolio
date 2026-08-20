@@ -6,9 +6,10 @@ import { motion, AnimatePresence } from 'framer-motion';
 export function SplashLoader() {
   const [isLoading, setIsLoading] = React.useState(true);
   const [progress, setProgress] = React.useState(0);
-  const mountTime = React.useRef(performance.now());
+  const mountTime = React.useRef(0);
 
   React.useEffect(() => {
+    mountTime.current = performance.now();
     // Simulate progress while the page loads assets in background
     const interval = setInterval(() => {
       setProgress((prev) => {

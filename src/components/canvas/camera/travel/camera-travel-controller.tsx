@@ -109,7 +109,7 @@ export function CameraTravelController() {
         
         // Sync the OrbitControls target so it doesn't snap back when re-enabled
         if (state.controls) {
-          (state.controls as any).target.copy(nextLook);
+          (state.controls as unknown as { target: THREE.Vector3 }).target.copy(nextLook);
         }
 
         store.currentRequest?.onComplete?.();

@@ -46,14 +46,16 @@ export function useAsyncTextures(urls: string[]): THREE.Texture[] | null {
   });
 
   React.useEffect(() => {
-    if (urls.length === 0) {
-      setTextures([]);
+    const currentUrls = key ? key.split('\0') : [];
+    
+    if (currentUrls.length === 0) {
+      queueMicrotask(() => setTextures([]));
       return;
     }
 
     let cancelled = false;
 
-    Promise.all(urls.map(loadTexture))
+    Promise.all(currentUrls.map(loadTexture))
       .then((loaded) => {
         if (!cancelled) setTextures(loaded);
       })

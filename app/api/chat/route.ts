@@ -41,9 +41,9 @@ Key Information about Ankit Pandey:
 
   // Ensure all messages are properly mapped to CoreMessage format (content string)
   // as the frontend AI SDK might send 'parts' or other UI-specific fields on subsequent requests.
-  const coreMessages = messages.map((m: any) => ({
+  const coreMessages = messages.map((m: { role: string; content?: string; parts?: Array<{ text: string }> }) => ({
     role: m.role,
-    content: m.content || (m.parts ? m.parts.map((p: any) => p.text).join('') : ''),
+    content: m.content || (m.parts ? m.parts.map((p: { text: string }) => p.text).join('') : ''),
   }));
 
   const result = streamText({

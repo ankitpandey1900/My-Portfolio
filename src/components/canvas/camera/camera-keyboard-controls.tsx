@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/immutability */
 'use client';
 
 import * as React from 'react';
@@ -58,8 +59,9 @@ export function CameraKeyboardControls() {
   const enabled = inSystem && !travelling && !inSection;
 
   React.useEffect(() => {
+    const keys = keysRef.current;
     if (!enabled) {
-      keysRef.current.clear();
+      keys.clear();
       return;
     }
 
@@ -85,7 +87,7 @@ export function CameraKeyboardControls() {
       window.removeEventListener('keydown', onKeyDown, true);
       window.removeEventListener('keyup', onKeyUp, true);
       window.removeEventListener('blur', onBlur);
-      keysRef.current.clear();
+      keys.clear();
     };
   }, [enabled]);
 

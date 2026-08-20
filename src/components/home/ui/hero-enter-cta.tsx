@@ -15,7 +15,7 @@ interface HeroEnterCtaProps {
  * Section 5: THE LAUNCH
  * Dramatic CTA with pulsing amber glow and warp-speed transition.
  */
-export function HeroEnterCta({ phase, primary, secondary }: HeroEnterCtaProps) {
+export function HeroEnterCta({ phase: _phase, primary, secondary }: HeroEnterCtaProps) {
   const ref = React.useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, amount: 0.5 });
   const [isLaunching, setIsLaunching] = React.useState(false);

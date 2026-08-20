@@ -14,7 +14,7 @@ interface HeroContentProps {
  * Section 1: THE VOID — Name emerges from darkness
  * Section 2: THE SIGNAL — Identity & mission broadcast
  */
-export function HeroContent({ identity, mission, phase }: HeroContentProps) {
+export function HeroContent({ identity, mission, phase: _phase }: HeroContentProps) {
   const sectionTwoRef = React.useRef<HTMLDivElement>(null);
   const isSection2InView = useInView(sectionTwoRef, { once: true, amount: 0.5 });
 

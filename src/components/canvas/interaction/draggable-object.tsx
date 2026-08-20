@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef } from 'react';
+import React from 'react';
 import { useThree } from '@react-three/fiber';
 import { useDrag } from '@use-gesture/react';
 import { a, useSpring } from '@react-spring/three';
@@ -29,7 +29,7 @@ export function DraggableObject({
   }));
 
   const bind = useDrag(
-    ({ active, movement: [x, y], event, first, last }) => {
+    ({ movement: [x, y], event, first, last }) => {
       if (disableDrag) return;
       if (first) {
         if (onDragStart) onDragStart();
@@ -56,7 +56,7 @@ export function DraggableObject({
   );
 
   return (
-    // @ts-ignore
+    // @ts-expect-error React-spring type definitions for three.js group elements are incomplete
     <a.group {...bind()} position={position}>
       {children}
     </a.group>

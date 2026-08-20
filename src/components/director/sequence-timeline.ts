@@ -102,7 +102,6 @@ export class SequenceTimeline {
 
   private async executeAction(action: SequenceAction): Promise<void> {
     if (SEQUENCE_CONFIG.debugTimeline) {
-      // eslint-disable-next-line no-console
       // console.log(`[Director] Executing: ${action.type}`, action.id || '');
     }
 

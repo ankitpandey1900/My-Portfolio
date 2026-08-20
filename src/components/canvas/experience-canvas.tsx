@@ -18,7 +18,6 @@ import { LightingRig } from './lights/lighting-rig';
 import { AssetLoaderManager } from './loaders/asset-loader-manager';
 import { CanvasProvider } from './providers/canvas-provider';
 import { SceneManagerCore } from './scene-manager/scene-manager-core';
-import { Minimap } from '@/components/hud/minimap';
 
 const DebugPanel = dynamic(() => import('./debug/debug-panel').then((mod) => mod.DebugPanel), {
   ssr: false,

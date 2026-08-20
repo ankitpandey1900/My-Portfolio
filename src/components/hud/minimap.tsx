@@ -4,7 +4,6 @@ import React, { useRef } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import { Html } from '@react-three/drei';
 import * as THREE from 'three';
-import { useSolarSystem } from '@/components/canvas/scene-manager/scenes/solar-system/solar-system-provider';
 
 export function Minimap() {
   const { camera } = useThree();

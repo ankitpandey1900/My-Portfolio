@@ -71,10 +71,11 @@ export function SceneWrapper({ name, children, onDestroy }: SceneWrapperProps) {
   });
 
   React.useEffect(() => {
+    const group = groupRef.current;
     return () => {
       onDestroyRef.current?.();
-      if (groupRef.current) {
-        disposeSceneGroup(groupRef.current);
+      if (group) {
+        disposeSceneGroup(group);
       }
     };
   }, []);

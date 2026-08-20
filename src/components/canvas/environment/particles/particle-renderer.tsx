@@ -48,7 +48,6 @@ export function ParticleRenderer({ pool }: ParticleRendererProps) {
   /* eslint-disable react-hooks/immutability */
   useFrame((state) => {
     if (material.uniforms.uTime) {
-      // eslint-disable-next-line react-hooks/immutability
       material.uniforms.uTime.value = state.clock.elapsedTime;
     }
 

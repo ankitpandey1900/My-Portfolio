@@ -17,7 +17,7 @@ export function useKeyboardKeys(enabled = true) {
 
   React.useEffect(() => {
     if (!enabled) {
-      setPressed(new Set());
+      queueMicrotask(() => setPressed(new Set()));
       return;
     }
 
