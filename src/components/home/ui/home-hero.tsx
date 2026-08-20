@@ -605,7 +605,7 @@ export function HomeHero() {
             </div>
 
             <motion.div
-              className="flex flex-col sm:flex-row items-center md:items-end gap-8 sm:gap-6 md:gap-20 mb-10 md:mb-12 w-full max-w-lg"
+              className="flex flex-row items-start justify-center md:justify-start gap-8 md:gap-20 mb-10 md:mb-12 w-full"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 1.4, duration: 0.8 }}
@@ -618,10 +618,10 @@ export function HomeHero() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 1.5 + i * 0.2, duration: 0.8, ease }}
                 >
-                  <span className="text-2xl sm:text-3xl md:text-5xl font-sans font-light text-white tracking-tighter">
+                  <span className="text-3xl md:text-5xl lg:text-6xl font-sans font-light text-white tracking-tighter leading-none mb-2 md:mb-3">
                     {stat.value}
                   </span>
-                  <span className="text-[9px] sm:text-[10px] md:text-[11px] font-sans font-semibold uppercase tracking-widest text-white/50 mt-1 md:mt-2 leading-relaxed">
+                  <span className="text-[9px] md:text-[11px] font-sans font-semibold uppercase tracking-[0.15em] text-white/50 leading-relaxed text-center md:text-left max-w-[80px] md:max-w-none md:whitespace-nowrap">
                     {stat.label}
                   </span>
                 </motion.div>
@@ -629,7 +629,7 @@ export function HomeHero() {
             </motion.div>
 
             <motion.p
-              className="text-sm md:text-lg text-white/60 max-w-lg leading-relaxed font-normal text-center md:text-left px-4 md:px-0 mx-auto md:mx-0"
+              className="text-sm md:text-lg lg:text-xl text-white/60 max-w-2xl leading-relaxed font-light text-center md:text-left px-4 md:px-0 mx-auto md:mx-0"
               initial="hidden"
               animate="visible"
               variants={{
@@ -854,14 +854,12 @@ export function HomeHero() {
                       Productivity & study control system
                     </span>
                     <h3 className="text-2xl md:text-4xl font-display font-bold text-white/90 tracking-tight mb-3 group-hover:text-white transition-colors pointer-events-auto w-fit">
-                      <a
-                        href="https://www.alltracker.online/"
-                        target="_blank"
-                        rel="noreferrer"
+                      <Link
+                        href="/projects/alltracker"
                         className="before:absolute before:inset-0 before:z-10"
                       >
                         AllTracker
-                      </a>
+                      </Link>
                     </h3>
                     <p className="text-sm md:text-base text-white/60 font-light leading-relaxed max-w-xl mb-6">
                       Full-stack productivity platform with gamified tracking, real-time global
@@ -931,14 +929,12 @@ export function HomeHero() {
                       Personal finance center
                     </span>
                     <h3 className="text-xl md:text-2xl font-display font-bold text-white/90 tracking-tight mb-3 group-hover:text-white transition-colors pointer-events-auto w-fit">
-                      <a
-                        href="https://tallymate.alltracker.online/"
-                        target="_blank"
-                        rel="noreferrer"
+                      <Link
+                        href="/projects/tallymate"
                         className="before:absolute before:inset-0 before:z-10"
                       >
                         Tallymate
-                      </a>
+                      </Link>
                     </h3>
                     <p className="text-xs md:text-sm text-white/50 font-light leading-relaxed mb-6 flex-1">
                       Full-Stack Expense Tracker. A sleek mix of personal finance manager and
@@ -1008,14 +1004,12 @@ export function HomeHero() {
                       DNS & network toolkit
                     </span>
                     <h3 className="text-xl md:text-2xl font-display font-bold text-white/90 tracking-tight mb-3 group-hover:text-white transition-colors pointer-events-auto w-fit">
-                      <a
-                        href="https://ipwala.vercel.app/"
-                        target="_blank"
-                        rel="noreferrer"
+                      <Link
+                        href="/projects/ipwala"
                         className="before:absolute before:inset-0 before:z-10"
                       >
                         IPWala
-                      </a>
+                      </Link>
                     </h3>
                     <p className="text-xs md:text-sm text-white/50 font-light leading-relaxed mb-6 flex-1">
                       Modern DNS and network analysis toolkit with a terminal-first interface.
@@ -1034,247 +1028,38 @@ export function HomeHero() {
                 </motion.div>
               </Reveal>
 
-              {/* Project 04: Bank Niti */}
-              <Reveal delay={0.2} className="h-full">
-                <motion.div
-                  className="group relative flex flex-col h-full p-6 md:p-8 rounded-3xl bg-white/[0.01] backdrop-blur-md border border-white/[0.04] hover:border-white/[0.12] hover:bg-white/[0.03] transition-all duration-300 overflow-hidden"
-                  whileHover={{ y: -2 }}
-                >
-                  <div className="flex justify-between items-start mb-6">
-                    <div className="relative w-14 h-14 shrink-0 rounded-2xl bg-white/[0.02] border border-white/[0.05] flex items-center justify-center overflow-hidden">
-                      <Image
-                        src="/assets/logos/bankniti.png"
-                        alt="Bank Niti Logo"
-                        width={50}
-                        height={50}
-                        className="w-10 h-10 object-contain group-hover:scale-105 transition-transform duration-500"
-                      />
-                    </div>
-                    <div className="flex items-center gap-1.5 relative z-20">
-                      <a
-                        href="https://github.com/ankitpandey1900/bankniti"
-                        target="_blank"
-                        rel="noreferrer"
-                        className="p-2 rounded-full bg-white/[0.03] border border-white/[0.05] text-white/30 hover:text-white hover:bg-white/[0.1] transition-all"
-                      >
-                        <IconGitHub className="w-3.5 h-3.5" />
-                      </a>
-                      <a
-                        href="https://bankniti.vercel.app/"
-                        target="_blank"
-                        rel="noreferrer"
-                        className="p-2 rounded-full bg-white/[0.03] border border-white/[0.05] text-white/30 hover:text-white hover:bg-white/[0.1] transition-all"
-                      >
-                        <ExternalLink className="w-3.5 h-3.5" />
-                      </a>
-                    </div>
-                  </div>
-                  <div className="flex flex-col flex-1 relative z-10 pointer-events-none">
-                    <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-white/40 mb-2 line-clamp-1">
-                      Financial Platform
-                    </span>
-                    <h3 className="text-xl md:text-2xl font-display font-bold text-white/90 tracking-tight mb-3 group-hover:text-white transition-colors pointer-events-auto w-fit">
-                      <a
-                        href="https://bankniti.vercel.app/"
-                        target="_blank"
-                        rel="noreferrer"
-                        className="before:absolute before:inset-0 before:z-10"
-                      >
-                        Bank Niti
-                      </a>
-                    </h3>
-                    <p className="text-xs md:text-sm text-white/50 font-light leading-relaxed mb-6 flex-1">
-                      Premium financial utilities, data lookups, and banking tools.
-                    </p>
-                    <div className="flex gap-1.5 flex-wrap mt-auto pointer-events-auto">
-                      {['Next.js 16', 'Tailwind 4'].map((tag) => (
-                        <span
-                          key={tag}
-                          className="text-[9px] text-white/30 font-mono uppercase tracking-wide bg-white/[0.03] border border-white/[0.05] px-2 py-1 rounded"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </motion.div>
-              </Reveal>
-
-              {/* Project 05: Fitness Tracker */}
-              <Reveal delay={0.3} className="h-full">
-                <motion.div
-                  className="group relative flex flex-col h-full p-6 md:p-8 rounded-3xl bg-white/[0.01] backdrop-blur-md border border-white/[0.04] hover:border-white/[0.12] hover:bg-white/[0.03] transition-all duration-300 overflow-hidden"
-                  whileHover={{ y: -2 }}
-                >
-                  <div className="flex justify-between items-start mb-6">
-                    <div className="relative w-14 h-14 shrink-0 rounded-2xl bg-white/[0.02] border border-white/[0.05] flex items-center justify-center overflow-hidden">
-                      <div className="text-xl font-display font-bold text-white/40 group-hover:text-white/60 transition-colors">
-                        FT
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-1.5 relative z-20">
-                      <a
-                        href="https://github.com/ankitpandey1900/fitness_tracker"
-                        target="_blank"
-                        rel="noreferrer"
-                        className="p-2 rounded-full bg-white/[0.03] border border-white/[0.05] text-white/30 hover:text-white hover:bg-white/[0.1] transition-all"
-                      >
-                        <IconGitHub className="w-3.5 h-3.5" />
-                      </a>
-                    </div>
-                  </div>
-                  <div className="flex flex-col flex-1 relative z-10 pointer-events-none">
-                    <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-white/40 mb-2 line-clamp-1">
-                      Cricket academy routines
-                    </span>
-                    <h3 className="text-xl md:text-2xl font-display font-bold text-white/90 tracking-tight mb-3 group-hover:text-white transition-colors pointer-events-auto w-fit">
-                      <a
-                        href="https://github.com/ankitpandey1900/fitness_tracker"
-                        target="_blank"
-                        rel="noreferrer"
-                        className="before:absolute before:inset-0 before:z-10"
-                      >
-                        Fitness Tracker
-                      </a>
-                    </h3>
-                    <p className="text-xs md:text-sm text-white/50 font-light leading-relaxed mb-6 flex-1">
-                      Daily fitness, weight, and habit tracker designed for athletes.
-                    </p>
-                    <div className="flex gap-1.5 flex-wrap mt-auto pointer-events-auto">
-                      {['Web', 'Tracking', 'Analytics'].map((tag) => (
-                        <span
-                          key={tag}
-                          className="text-[9px] text-white/30 font-mono uppercase tracking-wide bg-white/[0.03] border border-white/[0.05] px-2 py-1 rounded"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </motion.div>
-              </Reveal>
-
-              {/* Row 3: 1-2 */}
-              {/* Project 06: Mess Tracker (Square Bento) */}
-              <Reveal delay={0.1} className="h-full">
-                <motion.div
-                  className="group relative flex flex-col h-full p-6 md:p-8 rounded-3xl bg-white/[0.01] backdrop-blur-md border border-white/[0.04] hover:border-white/[0.12] hover:bg-white/[0.03] transition-all duration-300 overflow-hidden"
-                  whileHover={{ y: -2 }}
-                >
-                  <div className="flex justify-between items-start mb-6">
-                    <div className="relative w-14 h-14 shrink-0 rounded-2xl bg-[#0a100d] border border-white/[0.05] flex items-center justify-center overflow-hidden">
-                      <Utensils
-                        className="w-6 h-6 text-[#00ff88] group-hover:scale-110 transition-transform duration-500"
-                        strokeWidth={2.5}
-                      />
-                    </div>
-                    <div className="flex items-center gap-1.5 relative z-20">
-                      <a
-                        href="https://github.com/ankitpandey1900/Mess-Tracker"
-                        target="_blank"
-                        rel="noreferrer"
-                        className="p-2 rounded-full bg-white/[0.03] border border-white/[0.05] text-white/30 hover:text-white hover:bg-white/[0.1] transition-all"
-                      >
-                        <IconGitHub className="w-3.5 h-3.5" />
-                      </a>
-                      <a
-                        href="https://mess-tracker.netlify.app/"
-                        target="_blank"
-                        rel="noreferrer"
-                        className="p-2 rounded-full bg-white/[0.03] border border-white/[0.05] text-white/30 hover:text-white hover:bg-white/[0.1] transition-all"
-                      >
-                        <ExternalLink className="w-3.5 h-3.5" />
-                      </a>
-                    </div>
-                  </div>
-                  <div className="flex flex-col flex-1 relative z-10 pointer-events-none">
-                    <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-white/40 mb-2 line-clamp-1">
-                      Thali management
-                    </span>
-                    <h3 className="text-xl md:text-2xl font-display font-bold text-white/90 tracking-tight mb-3 group-hover:text-white transition-colors pointer-events-auto w-fit">
-                      <a
-                        href="https://mess-tracker.netlify.app/"
-                        target="_blank"
-                        rel="noreferrer"
-                        className="before:absolute before:inset-0 before:z-10"
-                      >
-                        Mess Tracker
-                      </a>
-                    </h3>
-                    <p className="text-xs md:text-sm text-white/50 font-light leading-relaxed mb-6 flex-1">
-                      Smart mess subscription tracker with analytics, streaks, and heatmaps.
-                    </p>
-                    <div className="flex gap-1.5 flex-wrap mt-auto pointer-events-auto">
-                      <span className="text-[9px] text-white/30 font-mono uppercase tracking-wide bg-white/[0.03] border border-white/[0.05] px-2 py-1 rounded">
-                        JS / HTML / CSS
-                      </span>
-                    </div>
-                  </div>
-                </motion.div>
-              </Reveal>
-
-              {/* Project 07: Solar Portfolio (Wide Bento) */}
+              {/* View More / Archive Card (Wide Bento) */}
               <Reveal delay={0.2} className="md:col-span-2 h-full">
-                <motion.div
-                  className="group relative flex flex-col h-full p-8 md:p-10 rounded-3xl bg-white/[0.01] backdrop-blur-md border border-white/[0.04] hover:border-white/[0.12] hover:bg-white/[0.03] transition-all duration-300 overflow-hidden"
+                <motion.a
+                  href="https://github.com/ankitpandey1900?tab=repositories"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="group relative flex flex-col sm:flex-row h-full p-8 md:p-10 rounded-3xl bg-gradient-to-tl from-white/[0.03] via-white/[0.01] to-white/[0.02] backdrop-blur-md border border-white/[0.06] border-dashed hover:border-white/[0.2] hover:bg-white/[0.04] transition-all duration-500 shadow-[0_0_0_1px_rgba(255,255,255,0.02)] hover:shadow-[0_0_40px_rgba(255,255,255,0.05)] overflow-hidden items-center justify-center sm:justify-start gap-8 text-center sm:text-left"
                   whileHover={{ y: -2 }}
                 >
-                  <div className="flex justify-between items-start sm:items-center mb-8 gap-4">
-                    <div className="relative w-16 h-16 md:w-20 md:h-20 shrink-0 rounded-2xl bg-black/40 border border-white/[0.05] flex items-center justify-center overflow-hidden">
-                      <Image
-                        src="/icon.svg"
-                        alt="Portfolio Icon"
-                        width={50}
-                        height={50}
-                        className="w-10 h-10 md:w-12 md:h-12 object-contain group-hover:scale-110 transition-transform duration-500"
-                      />
-                    </div>
-                    <div className="flex items-center gap-2 relative z-20">
-                      <a
-                        href="https://github.com/ankitpandey1900"
-                        target="_blank"
-                        rel="noreferrer"
-                        className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-white/[0.03] border border-white/[0.05] text-white/30 hover:text-white hover:bg-white/[0.1] transition-all backdrop-blur-sm"
-                        title="View Source"
-                      >
-                        <span className="text-[10px] font-mono font-bold uppercase tracking-widest hidden sm:block">
-                          View Source
-                        </span>
-                        <IconGitHub className="w-4 h-4" />
-                      </a>
-                    </div>
+                  <div className="absolute top-0 right-0 -mt-20 -mr-20 w-64 h-64 bg-white/5 blur-[80px] rounded-full pointer-events-none group-hover:bg-white/10 transition-colors duration-700" />
+
+                  <div className="relative w-20 h-20 md:w-24 md:h-24 shrink-0 rounded-full bg-white/[0.03] border border-white/[0.08] flex items-center justify-center group-hover:scale-110 group-hover:bg-white/[0.1] transition-all duration-700 shadow-inner">
+                    <IconGitHub className="w-10 h-10 md:w-12 md:h-12 text-white/50 group-hover:text-white transition-colors" />
                   </div>
 
-                  <div className="flex flex-col flex-1 justify-end relative z-10 pointer-events-none">
-                    <span className="text-[10px] md:text-xs font-mono uppercase tracking-[0.2em] text-orange-400/80 mb-2">
-                      This experience
+                  <div className="flex flex-col relative z-10 flex-1">
+                    <span className="text-[10px] md:text-xs font-mono uppercase tracking-[0.2em] text-white/40 mb-2 block">
+                      Open Source & Scripts
                     </span>
-                    <h3 className="text-2xl md:text-4xl font-display font-bold text-white/90 tracking-tight mb-3 group-hover:text-white transition-colors pointer-events-auto w-fit">
-                      <a
-                        href="https://github.com/ankitpandey1900"
-                        target="_blank"
-                        rel="noreferrer"
-                        className="before:absolute before:inset-0 before:z-10"
-                      >
-                        Solar Portfolio
-                      </a>
+                    <h3 className="text-2xl md:text-4xl font-display font-bold text-white/90 tracking-tight mb-3 group-hover:text-white transition-colors">
+                      Explore the Archive
                     </h3>
-                    <p className="text-sm md:text-base text-white/60 font-light leading-relaxed max-w-xl mb-6">
-                      Cinematic 3D portfolio with planet travel, sector briefing UI, and modular
-                      scene architecture — the system you are inside right now.
+                    <p className="text-sm md:text-base text-white/50 font-light leading-relaxed max-w-lg mb-6 sm:mb-8 mx-auto sm:mx-0">
+                      View all 10+ projects, UI experiments, and open-source contributions over on my GitHub profile.
                     </p>
-                    <div className="flex gap-2 flex-wrap mt-auto pointer-events-auto">
-                      {['Next.js', 'R3F', 'Three.js', 'Zustand', 'Tailwind'].map((tag) => (
-                        <span
-                          key={tag}
-                          className="text-[10px] md:text-xs text-white/40 font-mono uppercase tracking-wide bg-white/[0.03] border border-white/[0.05] px-3 py-1.5 rounded-md"
-                        >
-                          {tag}
-                        </span>
-                      ))}
+
+                    <div className="flex items-center gap-3 sm:gap-4 justify-center sm:justify-start text-xs font-mono font-bold uppercase tracking-widest text-white/50 group-hover:text-white transition-colors mt-auto">
+                      <div className="hidden sm:block h-px w-8 bg-white/20 group-hover:w-12 group-hover:bg-white/50 transition-all duration-500" />
+                      View on GitHub <ExternalLink className="w-4 h-4" />
                     </div>
                   </div>
-                </motion.div>
+                </motion.a>
               </Reveal>
             </div>
           </div>
@@ -1300,31 +1085,31 @@ export function HomeHero() {
             </div>
 
             <div className="md:col-span-8">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
                 {/* Frontend (Col 1 & 2) */}
                 <Reveal delay={0.1} className="lg:col-span-2">
-                  <div className="h-full p-6 md:p-8 rounded-3xl bg-gradient-to-br from-blue-500/[0.02] to-transparent backdrop-blur-md border border-white/[0.04] hover:border-blue-500/[0.15] hover:bg-white/[0.02] transition-all duration-500 cursor-default relative overflow-hidden group">
-                    <div className="absolute inset-0 bg-blue-500/[0.02] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  <div className="h-full p-6 md:p-8 rounded-3xl bg-gradient-to-br from-blue-500/[0.03] to-transparent backdrop-blur-md border border-white/[0.08] hover:border-blue-500/[0.2] transition-colors duration-500 overflow-hidden relative">
+                    <div className="absolute top-0 right-0 -mt-10 -mr-10 w-40 h-40 bg-blue-500/10 blur-[50px] rounded-full pointer-events-none" />
                     <h3 className="text-sm font-sans font-bold text-white tracking-wide mb-8 flex items-center gap-3">
-                      <span className="w-2 h-2 rounded-full bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.6)]" />
+                      <span className="w-2 h-2 rounded-full bg-blue-500 shadow-[0_0_12px_rgba(59,130,246,0.8)]" />
                       Frontend Architecture
                     </h3>
-                    <div className="grid grid-cols-3 sm:grid-cols-6 gap-3">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 md:gap-4 relative z-10">
                       {[
                         { name: 'React', Icon: TechIcons.React },
                         { name: 'Next.js', Icon: TechIcons.Nextjs },
                         { name: 'TypeScript', Icon: TechIcons.TS },
                         { name: 'JavaScript', Icon: TechIcons.JS },
-                        { name: 'shadcn', Icon: TechIcons.Shadcn },
                         { name: 'Tailwind', Icon: TechIcons.Tailwind },
+                        { name: 'shadcn/ui', Icon: TechIcons.Shadcn },
                       ].map((tech) => (
-                        <div key={tech.name} className="flex flex-col items-center gap-3">
-                          <div className="w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-white/[0.02] border border-white/[0.05] flex items-center justify-center text-white/40 group-hover:text-white transition-all duration-500 group-hover:-translate-y-1 group-hover:border-white/[0.15] group-hover:shadow-[0_4px_20px_rgba(255,255,255,0.05)]">
-                            <div className="scale-110 md:scale-125">
+                        <div key={tech.name} className="group/tech flex items-center gap-3 p-3 md:p-4 rounded-2xl bg-white/[0.02] border border-white/[0.04] hover:bg-white/[0.06] hover:border-white/[0.15] transition-all duration-300">
+                          <div className="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-white/[0.04] flex items-center justify-center text-white/40 group-hover/tech:text-white group-hover/tech:scale-110 transition-all duration-300 shrink-0 shadow-inner">
+                            <div className="scale-90 md:scale-100">
                               <tech.Icon />
                             </div>
                           </div>
-                          <span className="text-[9px] md:text-[10px] font-sans font-medium text-white/40 group-hover:text-white/80 transition-colors uppercase tracking-widest">
+                          <span className="text-[11px] md:text-xs font-sans font-semibold tracking-wide text-white/50 group-hover/tech:text-white transition-colors truncate">
                             {tech.name}
                           </span>
                         </div>
@@ -1335,13 +1120,13 @@ export function HomeHero() {
 
                 {/* Backend (Col 3, Row span 2) */}
                 <Reveal delay={0.2} className="lg:col-span-1 lg:row-span-2">
-                  <div className="h-full p-6 md:p-8 rounded-3xl bg-gradient-to-br from-emerald-500/[0.02] to-transparent backdrop-blur-md border border-white/[0.04] hover:border-emerald-500/[0.15] hover:bg-white/[0.02] transition-all duration-500 cursor-default relative overflow-hidden group flex flex-col">
-                    <div className="absolute inset-0 bg-emerald-500/[0.02] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  <div className="h-full p-6 md:p-8 rounded-3xl bg-gradient-to-br from-emerald-500/[0.03] to-transparent backdrop-blur-md border border-white/[0.08] hover:border-emerald-500/[0.2] transition-colors duration-500 overflow-hidden relative flex flex-col">
+                    <div className="absolute top-0 right-0 -mt-10 -mr-10 w-40 h-40 bg-emerald-500/10 blur-[50px] rounded-full pointer-events-none" />
                     <h3 className="text-sm font-sans font-bold text-white tracking-wide mb-8 flex items-center gap-3">
-                      <span className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.6)]" />
+                      <span className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_12px_rgba(16,185,129,0.8)]" />
                       Backend Systems
                     </h3>
-                    <div className="flex flex-col gap-3 flex-1 justify-between">
+                    <div className="flex flex-col gap-3 md:gap-4 flex-1 relative z-10 justify-between">
                       {[
                         { name: 'Python', Icon: TechIcons.Python },
                         { name: 'PostgreSQL', Icon: TechIcons.PostgreSQL },
@@ -1349,16 +1134,13 @@ export function HomeHero() {
                         { name: 'Prisma', Icon: TechIcons.Prisma },
                         { name: 'Better Auth', Icon: TechIcons.BetterAuth },
                       ].map((tech) => (
-                        <div
-                          key={tech.name}
-                          className="flex items-center gap-4 p-2.5 rounded-2xl hover:bg-white/[0.03] border border-transparent hover:border-white/[0.05] transition-all duration-300"
-                        >
-                          <div className="w-10 h-10 rounded-xl bg-white/[0.02] border border-white/[0.05] flex items-center justify-center text-white/40 group-hover:text-white transition-colors duration-500 shrink-0">
+                        <div key={tech.name} className="group/tech flex items-center gap-4 p-3.5 md:p-4 rounded-2xl bg-white/[0.02] border border-white/[0.04] hover:bg-white/[0.06] hover:border-white/[0.15] transition-all duration-300">
+                          <div className="w-10 h-10 md:w-11 md:h-11 rounded-xl bg-white/[0.04] flex items-center justify-center text-white/40 group-hover/tech:text-white group-hover/tech:scale-110 transition-all duration-300 shrink-0 shadow-inner">
                             <div className="scale-100">
                               <tech.Icon />
                             </div>
                           </div>
-                          <span className="text-xs font-sans font-medium text-white/50 group-hover:text-white/90 transition-colors tracking-wide">
+                          <span className="text-xs md:text-sm font-sans font-semibold tracking-wide text-white/50 group-hover/tech:text-white transition-colors">
                             {tech.name}
                           </span>
                         </div>
@@ -1369,26 +1151,25 @@ export function HomeHero() {
 
                 {/* Animation & State (Col 1) */}
                 <Reveal delay={0.3} className="lg:col-span-1">
-                  <div className="h-full p-6 md:p-8 rounded-3xl bg-gradient-to-br from-amber-500/[0.02] to-transparent backdrop-blur-md border border-white/[0.04] hover:border-amber-500/[0.15] hover:bg-white/[0.02] transition-all duration-500 cursor-default relative overflow-hidden group">
-                    <div className="absolute inset-0 bg-amber-500/[0.02] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                    <h3 className="text-sm font-sans font-bold text-white tracking-wide mb-6 flex items-center gap-3">
-                      <span className="w-2 h-2 rounded-full bg-amber-500 shadow-[0_0_10px_rgba(245,158,11,0.6)]" />
+                  <div className="h-full p-6 md:p-8 rounded-3xl bg-gradient-to-br from-amber-500/[0.03] to-transparent backdrop-blur-md border border-white/[0.08] hover:border-amber-500/[0.2] transition-colors duration-500 overflow-hidden relative">
+                    <div className="absolute top-0 right-0 -mt-10 -mr-10 w-40 h-40 bg-amber-500/10 blur-[50px] rounded-full pointer-events-none" />
+                    <h3 className="text-sm font-sans font-bold text-white tracking-wide mb-8 flex items-center gap-3">
+                      <span className="w-2 h-2 rounded-full bg-amber-500 shadow-[0_0_12px_rgba(245,158,11,0.8)]" />
                       Creative & State
                     </h3>
-                    <div className="flex flex-wrap gap-2">
+                    <div className="flex flex-col gap-3 relative z-10">
                       {[
                         { name: 'Three.js', Icon: TechIcons.Threejs },
-                        { name: 'Framer', Icon: TechIcons.FramerMotion },
+                        { name: 'Framer Motion', Icon: TechIcons.FramerMotion },
                         { name: 'Zustand', Icon: TechIcons.Zustand },
                       ].map((tech) => (
-                        <div
-                          key={tech.name}
-                          className="flex items-center gap-2 bg-white/[0.02] border border-white/[0.05] px-3 py-2 rounded-xl group-hover:border-white/[0.15] group-hover:bg-white/[0.04] transition-all duration-300"
-                        >
-                          <div className="text-white/40 group-hover:text-white transition-colors scale-90">
-                            <tech.Icon />
+                        <div key={tech.name} className="group/tech flex items-center gap-3 p-3 rounded-2xl bg-white/[0.02] border border-white/[0.04] hover:bg-white/[0.06] hover:border-white/[0.15] transition-all duration-300">
+                          <div className="w-8 h-8 rounded-lg bg-white/[0.04] flex items-center justify-center text-white/40 group-hover/tech:text-white group-hover/tech:scale-110 transition-all duration-300 shrink-0 shadow-inner">
+                            <div className="scale-75">
+                              <tech.Icon />
+                            </div>
                           </div>
-                          <span className="text-[10px] font-sans font-medium text-white/60 group-hover:text-white">
+                          <span className="text-[11px] md:text-xs font-sans font-semibold tracking-wide text-white/50 group-hover/tech:text-white transition-colors">
                             {tech.name}
                           </span>
                         </div>
@@ -1399,24 +1180,24 @@ export function HomeHero() {
 
                 {/* DevOps (Col 2) */}
                 <Reveal delay={0.4} className="lg:col-span-1">
-                  <div className="h-full p-6 md:p-8 rounded-3xl bg-gradient-to-br from-violet-500/[0.02] to-transparent backdrop-blur-md border border-white/[0.04] hover:border-violet-500/[0.15] hover:bg-white/[0.02] transition-all duration-500 cursor-default relative overflow-hidden group">
-                    <div className="absolute inset-0 bg-violet-500/[0.02] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                    <h3 className="text-sm font-sans font-bold text-white tracking-wide mb-6 flex items-center gap-3">
-                      <span className="w-2 h-2 rounded-full bg-violet-500 shadow-[0_0_10px_rgba(139,92,246,0.6)]" />
+                  <div className="h-full p-6 md:p-8 rounded-3xl bg-gradient-to-br from-violet-500/[0.03] to-transparent backdrop-blur-md border border-white/[0.08] hover:border-violet-500/[0.2] transition-colors duration-500 overflow-hidden relative">
+                    <div className="absolute top-0 right-0 -mt-10 -mr-10 w-40 h-40 bg-violet-500/10 blur-[50px] rounded-full pointer-events-none" />
+                    <h3 className="text-sm font-sans font-bold text-white tracking-wide mb-8 flex items-center gap-3">
+                      <span className="w-2 h-2 rounded-full bg-violet-500 shadow-[0_0_12px_rgba(139,92,246,0.8)]" />
                       DevOps
                     </h3>
-                    <div className="flex gap-4">
+                    <div className="flex flex-col gap-3 relative z-10">
                       {[
                         { name: 'Docker', Icon: TechIcons.Docker },
                         { name: 'Git', Icon: TechIcons.Git },
                       ].map((tech) => (
-                        <div key={tech.name} className="flex-1 flex flex-col items-center gap-3">
-                          <div className="w-full aspect-square rounded-2xl bg-white/[0.02] border border-white/[0.05] flex items-center justify-center text-white/40 group-hover:text-white transition-all duration-500 group-hover:-translate-y-1 group-hover:border-white/[0.15] group-hover:shadow-[0_4px_20px_rgba(255,255,255,0.05)]">
-                            <div className="scale-110">
+                        <div key={tech.name} className="group/tech flex items-center gap-3 p-3 rounded-2xl bg-white/[0.02] border border-white/[0.04] hover:bg-white/[0.06] hover:border-white/[0.15] transition-all duration-300">
+                          <div className="w-8 h-8 rounded-lg bg-white/[0.04] flex items-center justify-center text-white/40 group-hover/tech:text-white group-hover/tech:scale-110 transition-all duration-300 shrink-0 shadow-inner">
+                            <div className="scale-90">
                               <tech.Icon />
                             </div>
                           </div>
-                          <span className="text-[9px] md:text-[10px] font-sans font-medium text-white/40 uppercase tracking-widest group-hover:text-white/80 transition-colors">
+                          <span className="text-[11px] md:text-xs font-sans font-semibold tracking-wide text-white/50 group-hover/tech:text-white transition-colors">
                             {tech.name}
                           </span>
                         </div>
@@ -1428,25 +1209,26 @@ export function HomeHero() {
 
               {/* AI Tools */}
               <Reveal delay={0.3}>
-                <div className="mt-4 md:mt-8 flex flex-col sm:flex-row items-start sm:items-center justify-between p-6 md:p-8 rounded-3xl bg-gradient-to-br from-white/[0.02] to-transparent border border-white/[0.04] hover:border-white/[0.1] hover:bg-white/[0.03] transition-all duration-500">
-                  <div className="flex items-center gap-4 mb-4 sm:mb-0">
-                    <div className="w-10 h-10 rounded-full bg-white/[0.05] flex items-center justify-center shrink-0">
-                      <span className="w-2 h-2 rounded-full bg-white animate-pulse" />
+                <div className="mt-4 md:mt-6 flex flex-col sm:flex-row items-start sm:items-center justify-between p-6 md:p-8 rounded-3xl bg-gradient-to-r from-white/[0.02] to-white/[0.01] border border-white/[0.08] hover:border-white/[0.15] transition-all duration-500 overflow-hidden relative">
+                  <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-white/[0.05] to-transparent pointer-events-none" />
+                  <div className="flex items-center gap-4 mb-4 sm:mb-0 relative z-10">
+                    <div className="w-12 h-12 rounded-full bg-white/[0.05] border border-white/[0.1] flex items-center justify-center shrink-0 shadow-inner">
+                      <span className="w-2.5 h-2.5 rounded-full bg-white animate-pulse shadow-[0_0_10px_rgba(255,255,255,0.8)]" />
                     </div>
                     <div>
-                      <span className="block text-[10px] md:text-[11px] font-mono uppercase tracking-[0.2em] text-white/30">
+                      <span className="block text-[10px] md:text-xs font-mono uppercase tracking-[0.2em] text-white/40 mb-1">
                         Daily Drivers
                       </span>
-                      <span className="block text-sm font-sans font-bold text-white/80">
+                      <span className="block text-sm md:text-base font-display font-bold text-white/90">
                         AI & Productivity
                       </span>
                     </div>
                   </div>
-                  <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+                  <div className="flex flex-wrap items-center gap-2 sm:gap-3 relative z-10">
                     {['Codex', 'Cursor IDE', 'Antigravity'].map((tool) => (
                       <span
                         key={tool}
-                        className="px-4 py-2 rounded-xl bg-white/[0.02] border border-white/[0.05] text-[11px] font-sans text-white/60 font-semibold tracking-wide hover:bg-white/[0.08] hover:text-white hover:border-white/[0.2] transition-all cursor-default shadow-[0_0_0_1px_rgba(255,255,255,0.01)]"
+                        className="px-4 py-2.5 rounded-xl bg-white/[0.03] border border-white/[0.08] text-xs font-sans text-white/70 font-semibold tracking-wide hover:bg-white/[0.1] hover:text-white hover:border-white/[0.2] transition-all cursor-default shadow-sm"
                       >
                         {tool}
                       </span>

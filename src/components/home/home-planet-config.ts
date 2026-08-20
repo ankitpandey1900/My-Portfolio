@@ -8,7 +8,7 @@ export const HOME_PLANET_CONFIG: HomePlanetConfig = {
   identity: {
     name: 'Ankit Pandey',
     title: 'Full Stack Developer',
-    tagline: 'Architecting digital experiences that defy gravity.',
+    tagline: 'I build products. Life? Still in debugging mode.',
     bio: "I'm a passionate Software Engineering student racing to reach elite-level development.\n\nMy current focus:\n• Full Stack Development\n• Backend Architecture & System Design\n• AI Integration in practical applications\n• Creating polished, production-ready experiences\n\nCurrently investing heavily in building high-quality tools for students, developers, and creators.",
     currentFocus: 'Building high-quality tools',
     availability: {

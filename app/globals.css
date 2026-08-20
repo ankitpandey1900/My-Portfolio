@@ -1,14 +1,19 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
 @import 'shadcn/tailwind.css';
+@plugin "@tailwindcss/typography";
 
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-  --color-base-dark: #09090b; /* Zinc 950 - replacing space-black */
-  --color-base-panel: #18181b; /* Zinc 900 - replacing space-ink */
-  --color-base-surface: #27272a; /* Zinc 800 - replacing space-panel */
-  --color-accent-blue: #3b82f6; /* Clean blue */
+  --color-base-dark: #09090b;
+  /* Zinc 950 - replacing space-black */
+  --color-base-panel: #18181b;
+  /* Zinc 900 - replacing space-ink */
+  --color-base-surface: #27272a;
+  /* Zinc 800 - replacing space-panel */
+  --color-accent-blue: #3b82f6;
+  /* Clean blue */
   --color-space-muted: #5f6873;
   --color-sun-warm: #f2b866;
   --color-gold-soft: #d8a24a;
@@ -159,6 +164,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+
   *,
   ::before,
   ::after {
@@ -177,10 +183,12 @@
 ═══════════════════════════════════════════════════════════════════════════ */
 
 @keyframes twinkle {
+
   0%,
   100% {
     opacity: 0.3;
   }
+
   50% {
     opacity: 1;
   }
@@ -191,9 +199,11 @@
     transform: scale(1);
     opacity: 0;
   }
+
   30% {
     opacity: 0.6;
   }
+
   100% {
     transform: scale(3);
     opacity: 0;
@@ -205,6 +215,7 @@
     transform: scale(1);
     opacity: 0.6;
   }
+
   100% {
     transform: scale(1.5);
     opacity: 0;
@@ -231,9 +242,11 @@ body {
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
+
   html {
     @apply font-sans;
   }
@@ -268,8 +281,7 @@ body {
     display: grid;
     grid-template-rows: auto minmax(0, 1fr);
     align-content: stretch;
-    padding: max(1.75rem, env(safe-area-inset-top)) clamp(1.25rem, 4vw, 4.5rem)
-      max(1.5rem, env(safe-area-inset-bottom));
+    padding: max(1.75rem, env(safe-area-inset-top)) clamp(1.25rem, 4vw, 4.5rem) max(1.5rem, env(safe-area-inset-bottom));
     pointer-events: none;
     color: #eee6d7;
     overflow: hidden;
@@ -283,7 +295,7 @@ body {
     grid-template-rows: auto minmax(0, 1fr);
   }
 
-  .hero-frame > * {
+  .hero-frame>* {
     pointer-events: auto;
   }
 
@@ -805,11 +817,13 @@ body {
   }
 
   @keyframes hero-scroll-bob {
+
     0%,
     100% {
       transform: translateY(0);
       opacity: 0.55;
     }
+
     50% {
       transform: translateY(4px);
       opacity: 1;
@@ -880,11 +894,9 @@ body {
     display: block;
     width: 100%;
     height: 100%;
-    background: linear-gradient(
-      180deg,
-      rgba(248, 246, 242, 0.92) 0%,
-      rgba(168, 172, 182, 0.55) 100%
-    );
+    background: linear-gradient(180deg,
+        rgba(248, 246, 242, 0.92) 0%,
+        rgba(168, 172, 182, 0.55) 100%);
     transform-origin: top;
   }
 
@@ -1331,14 +1343,12 @@ body {
     z-index: 10;
     pointer-events: none;
     background:
-      linear-gradient(
-        100deg,
+      linear-gradient(100deg,
         rgba(3, 4, 6, 0.96) 0%,
         rgba(3, 4, 6, 0.88) 30%,
         rgba(3, 4, 6, 0.42) 52%,
         rgba(3, 4, 6, 0.12) 72%,
-        rgba(3, 4, 6, 0.02) 100%
-      ),
+        rgba(3, 4, 6, 0.02) 100%),
       radial-gradient(ellipse 68% 58% at 24% 48%, rgba(3, 4, 6, 0.55) 0%, transparent 74%);
     transition: opacity 900ms var(--ease-space);
   }
@@ -1937,13 +1947,11 @@ body {
     position: absolute;
     inset: 0;
     pointer-events: none;
-    background: repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 2px,
-      rgba(242, 244, 248, 0.015) 2px,
-      rgba(242, 244, 248, 0.015) 4px
-    );
+    background: repeating-linear-gradient(0deg,
+        transparent,
+        transparent 2px,
+        rgba(242, 244, 248, 0.015) 2px,
+        rgba(242, 244, 248, 0.015) 4px);
     opacity: 0.35;
   }
 
@@ -2213,8 +2221,7 @@ body {
     height: 100%;
     display: flex;
     flex-direction: column;
-    padding: max(3.5rem, calc(env(safe-area-inset-top) + 2.5rem)) clamp(1.5rem, 4vw, 2.5rem)
-      max(1.5rem, env(safe-area-inset-bottom));
+    padding: max(3.5rem, calc(env(safe-area-inset-top) + 2.5rem)) clamp(1.5rem, 4vw, 2.5rem) max(1.5rem, env(safe-area-inset-bottom));
     background: rgba(4, 5, 6, 0.88);
     backdrop-filter: blur(16px);
     border-left: 1px solid rgba(238, 230, 215, 0.05);
@@ -2342,6 +2349,7 @@ body {
     .section-grid--2 {
       grid-template-columns: repeat(2, 1fr);
     }
+
     .section-grid--3 {
       grid-template-columns: repeat(3, 1fr);
     }
@@ -2706,6 +2714,7 @@ body {
       from {
         transform: translateY(100%);
       }
+
       to {
         transform: translateY(0);
       }
@@ -3190,10 +3199,12 @@ body {
   }
 
   @keyframes command-deck-pulse {
+
     0%,
     100% {
       opacity: 1;
     }
+
     50% {
       opacity: 0.55;
     }
@@ -3859,6 +3870,7 @@ body {
 }
 
 @media (max-width: 760px) {
+
   .resume-dossier__metrics,
   .resume-page__metrics {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -3896,16 +3908,20 @@ body {
     transform: rotate(-45deg) translateX(0);
     opacity: 0;
   }
+
   5% {
     opacity: 1;
   }
+
   30% {
     opacity: 1;
   }
+
   40% {
     transform: rotate(-45deg) translateX(-300vw);
     opacity: 0;
   }
+
   100% {
     transform: rotate(-45deg) translateX(-300vw);
     opacity: 0;
@@ -3933,4 +3949,27 @@ body {
   border-radius: 50%;
   background: #fff;
   box-shadow: 0 0 10px 2px #fff;
+}
+
+/* Hide scrollbar globally for an immersive experience */
+::-webkit-scrollbar {
+  display: none;
+  width: 0px;
+  background: transparent;
+}
+
+html {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+body {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Disable Tailwind Typography default code backticks */
+.prose code::before,
+.prose code::after {
+  content: none !important;
 }
