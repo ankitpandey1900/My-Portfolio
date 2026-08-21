@@ -47,7 +47,7 @@ Key Information about Ankit Pandey:
   }));
 
   const result = streamText({
-    model: google('gemini-3.6-flash'),
+    model: google('gemini-3.5-flash'),
     messages: coreMessages,
     system: systemPrompt,
   });
